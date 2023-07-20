@@ -3,8 +3,14 @@ import css from './css.module.less'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
+
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from './vertexShader.glsl?raw'
+
+import aFragmentShader from './aFragmentShader.glsl?raw'
+
+
 import image from './texture/bayer.png'
 import { Text } from './Text.jsx'
 
@@ -16,7 +22,52 @@ export default class ShaderIntroduction extends Component {
     this.renderScene = this.renderScene.bind(this)
     this.renderAScene = this.renderAScene.bind(this)
   }
-  renderAScene() {}
+  renderAScene() {
+    const canvas = this.canvas.current
+    const renderer = new THREE.WebGLRenderer({ canvas, })
+    // 使用正交相机来投影平面
+    const camera = new THREE.OrthographicCamera(
+      -1, 1, 1, -1, -1, 1
+    )
+    const scene = new THREE.Scene()
+    const plane = new THREE.PlaneGeometry(2, 2)
+
+    const uniforms = {
+      iTime: { value: 0, },
+      iResolution: { value: new THREE.Vector3(), }, // 不传参数默认是0
+    }
+    const material = new THREE.ShaderMaterial({
+      fragmentShader: aFragmentShader,
+      uniforms,
+    })
+    scene.add(new THREE.Mesh(plane, material))
+    const render = (t) => {
+      const time = t * 0.001
+      this.resizeRendererToDisplaySize(renderer)
+      uniforms.iResolution.value.set(
+        canvas.width, canvas.height, 1
+      )
+      uniforms.iTime.value = time
+
+      renderer.render(scene, camera)
+
+
+      requestAnimationFrame(render)
+    }
+    requestAnimationFrame(render)
+  }
+  resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement
+    const width = canvas.clientWidth
+    const height = canvas.clientHeight
+    const needResize = canvas.width !== width || canvas.height !== height
+    if (needResize) {
+      renderer.setSize(
+        width, height, false
+      )
+    }
+    return needResize
+  }
   renderScene() {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
@@ -117,7 +168,7 @@ export default class ShaderIntroduction extends Component {
 
   }
   componentDidMount() {
-    this.renderScene()
+    this.renderAScene()
   }
 
   render() {
@@ -126,10 +177,10 @@ export default class ShaderIntroduction extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button>A</button>
+            <button onClick={this.renderAScene}>A</button>
             <button>B</button>
             <button>C</button>
-            <button>D</button>
+            <button onClick={this.renderScene}>complex</button>
           </div>
         </CanvasComponent>
         <Text />
