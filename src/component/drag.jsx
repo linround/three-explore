@@ -32,7 +32,9 @@ export function Drag(props) {
       transform: `translate(${offsetX}px, ${offsetY}px)`,
     },
     onPointerDown(e) {
-      selector.handleInitialEvent(e)
+      if (e.target.tagName === 'DIV') {
+        selector.handleInitialEvent(e)
+      }
     },
     onPointerMove() {},
   })

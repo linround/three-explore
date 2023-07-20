@@ -4,7 +4,9 @@ import css from './canvas.module.less'
 
 export const CanvasComponent = React.forwardRef((props, ref) => (
   <Drag>
-    <canvas ref={ref} className={css.canvas}></canvas>
+    <div className={css.frame}>
+      <canvas ref={ref} className={css.canvas}></canvas>
+    </div>
   </Drag>
 ))
 CanvasComponent.displayName = 'CanvasComponent'

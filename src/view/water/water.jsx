@@ -2,6 +2,8 @@ import { Component, createRef } from 'react'
 import css from './css.module.less'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import * as THREE from 'three'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
 export default class Water extends Component {
   constructor(props) {
     super(props)
@@ -15,13 +17,18 @@ export default class Water extends Component {
     // 传入aspect原因
     // 因为在整个canvas中，使用的都是归一化之后的坐标
     // 所以只需要传入长宽比即可
-    const aspect = 2
+    const aspect = 1
     const near = 0.1
     const far = 5
     const camera = new THREE.PerspectiveCamera(
       fov, aspect, near, far
     )
     camera.position.z = 2
+    const controls = new OrbitControls(camera, canvas)
+    controls.target.set(
+      0, 0, 0
+    )
+    controls.update()
     const scene = new THREE.Scene()
 
     {
@@ -65,7 +72,7 @@ export default class Water extends Component {
     function render(t) {
       const time = 0.001 * t
       cubes.forEach((cube, index) => {
-        const speed = 1 + index * .1
+        const speed = 1 + (index * .1)
         const rot = time * speed
         cube.rotation.x = rot
         cube.rotation.y = rot

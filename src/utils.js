@@ -21,7 +21,6 @@ export class Selector {
   handleInitialEvent(e) {
     const initCoordinate = getEventCoordinates(e)
     this.emit('beforeSelect', initCoordinate)
-    console.log(e.type)
     switch (e.type) {
     case 'pointerdown':{
       this.removeMoveListener = addDocEventListener('pointermove', (e) => {
