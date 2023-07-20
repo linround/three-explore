@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Root from './root.jsx'
 import ErrorPage from './error-page.jsx'
-import Water from '../view/water.jsx'
+import Water from '../view/water/water.jsx'
 import Menus from './menus.jsx'
 import { Demo } from '../demo/demo.jsx'
 
