@@ -3,6 +3,9 @@ import css from './css.module.less'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import fragmentShader from './fragmentShader.glsl?raw'
+import vertexShader from './vertexShader.glsl?raw'
+import image from './texture/bayer.png'
 
 export default class Water extends Component {
   constructor(props) {
@@ -24,11 +27,13 @@ export default class Water extends Component {
       fov, aspect, near, far
     )
     camera.position.z = 2
-    const controls = new OrbitControls(camera, canvas)
-    controls.target.set(
-      0, 0, 0
-    )
-    controls.update()
+    {
+      const controls = new OrbitControls(camera, canvas)
+      controls.target.set(
+        0, 0, 0
+      )
+      controls.update()
+    }
     const scene = new THREE.Scene()
 
     {
@@ -47,10 +52,30 @@ export default class Water extends Component {
     const geometry = new THREE.BoxGeometry(
       boxWidth, boxHeight, boxDepth
     )
-    function makeInstance(
-      geometry, color, x
-    ) {
-      const material = new THREE.MeshPhongMaterial({ color, })
+
+
+    const loader = new THREE.TextureLoader()
+    const texture = loader.load(image)
+    texture.minFilter = THREE.NearestFilter
+    texture.magFilter = THREE.NearestFilter
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+
+    const uniforms = {
+      iTime: { value: 0, },
+      iResolution: { value: new THREE.Vector3(
+        1, 1, 1
+      ), },
+      iChannel0: { value: texture, },
+    }
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
+    })
+
+
+    function makeInstance(geometry, x) {
       const cube = new THREE.Mesh(geometry, material)
       scene.add(cube)
       cube.position.x = x
@@ -58,15 +83,9 @@ export default class Water extends Component {
     }
 
     const cubes = [
-      makeInstance(
-        geometry, 0x44aa88, 0
-      ),
-      makeInstance(
-        geometry, 0x8844aa, -2
-      ),
-      makeInstance(
-        geometry, 0xaa8844, 2
-      )
+      makeInstance(geometry, 0),
+      makeInstance(geometry, -2),
+      makeInstance(geometry, 2)
     ]
 
     function render(t) {
@@ -77,6 +96,8 @@ export default class Water extends Component {
         cube.rotation.x = rot
         cube.rotation.y = rot
       })
+
+      uniforms.iTime.value = time
       renderer.render(scene, camera)
       requestAnimationFrame(render)
     }
