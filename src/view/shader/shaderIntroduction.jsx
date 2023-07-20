@@ -6,13 +6,17 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from './vertexShader.glsl?raw'
 import image from './texture/bayer.png'
+import { Text } from './Text.jsx'
 
-export default class Water extends Component {
+
+export default class ShaderIntroduction extends Component {
   constructor(props) {
     super(props)
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
+    this.renderAScene = this.renderAScene.bind(this)
   }
+  renderAScene() {}
   renderScene() {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
@@ -23,6 +27,7 @@ export default class Water extends Component {
     const aspect = 1
     const near = 0.1
     const far = 5
+    // 这是一个 透视相机具有近大远小的效果
     const camera = new THREE.PerspectiveCamera(
       fov, aspect, near, far
     )
@@ -119,15 +124,15 @@ export default class Water extends Component {
     return (
       <div className={css.container}>
         <CanvasComponent
-          ref={this.canvas} />
-        <main>
-          <h1>如何生成水？</h1>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-        </main>
+          ref={this.canvas} >
+          <div className={css.buttons}>
+            <button>A</button>
+            <button>B</button>
+            <button>C</button>
+            <button>D</button>
+          </div>
+        </CanvasComponent>
+        <Text />
       </div>
     )
   }
