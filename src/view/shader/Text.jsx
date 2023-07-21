@@ -8,6 +8,10 @@ export function Text() {
     <main>
       <h1>关于shader</h1>
       <ul>
+        <li>gl_FragCoord 是什么？</li>
+        <p>表示当前片元（像素）相对于窗口的坐标信息；是一个vec4类型的变量(x,y,z,1/w)；</p>
+        <p>x,y默认是像素的中心而非整数。例如当viewport范围是（0,0,800,600）时；(x,y)的坐标范围(0.5,0.5,799.5,599.5)；</p>
+        <p></p>
         <li>gl_FragColor 是什么？</li>
         <p>片元（像素）颜色，包含四个分量RGBA,每个分量的范围在[0,1]之间。</p>
         <li>gl_Position 是什么？</li>
@@ -49,9 +53,11 @@ export function Text() {
         <p> 所以Y的范围呈现一个规律得变化，颜色从左下角(0,0,0)到(1,1,0)；</p>
       </ul>
       <h1>方案 planeTexture</h1>
-      <li>从方案 planeTexture 可以知道什么？</li>
-      <p>在 planeTexture 中将一个8*8得图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
-      <p>在这个方案中验证了 texture2D 的实际功能就是通过 提供的坐标点，来对目标纹理进行采样，最终得到该坐标点的像素颜色值；</p>
+      <ul>
+        <li>从方案 planeTexture 可以知道什么？</li>
+        <p>在 planeTexture 中将一个8*8得图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
+        <p>在这个方案中验证了 texture2D 的实际功能就是通过 提供的坐标点，来对目标纹理进行采样，最终得到该坐标点的像素颜色值；</p>
+      </ul>
     </main>
   )
 }

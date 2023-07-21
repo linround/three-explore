@@ -201,9 +201,9 @@ export default class ShaderIntroduction extends Component {
 
   }
   componentDidMount() {
-    // this.renderNormalScene()
+    this.renderNormalScene()
     // this.renderPlaneTexture()
-    this.renderScene()
+    // this.renderScene()
   }
 
   render() {
