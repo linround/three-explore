@@ -62,7 +62,7 @@ export function Text() {
 
       <h1>疑问</h1>
       <ul>
-        <li>为什么在planeTexture 使用采样的的方式渲染图片的结果会与实际图片有差别？</li>
+        <li>为什么在planeTexture 使用采样的方式渲染图片的结果会与实际图片有差别？</li>
         <div className={css.code}>
           <p>texture.minFilter = THREE.NearestFilter</p>
           <p>texture.magFilter = THREE.NearestFilter</p>
