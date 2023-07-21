@@ -18,6 +18,7 @@ export function Text() {
         <li>gl_Position 是什么？</li>
         <p>顶点的裁剪坐标系坐标，顶点着色器接收到该坐标后，对齐进行变换，并转化为NDC坐标[-1,1]，GPU使用的是NDC坐标进行绘制</p>
         <p>一个四维的向量。四维的齐次矩阵便于表示在三维空间中的相关变换。</p>
+        <p>通常把表示顶点的位置数据的变量 position 赋值给 gl_Postion;</p>
         <p></p>
         <li>iResolutiond 是什么？</li>
         <p>iResolutiond 定义了视口的像素大小；</p>
