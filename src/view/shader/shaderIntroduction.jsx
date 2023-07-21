@@ -11,8 +11,11 @@ import vertexShader from './vertexShader.glsl?raw'
 import aFragmentShader from './aFragmentShader.glsl?raw'
 import aVertexShader from './aVertexShader.glsl?raw'
 
+import planeTextureFragmentShader from './planeTextureFragmentShader.glsl?raw'
+import planeTextureVertexShader from './planeTextureVertexShader.glsl?raw'
 
-import image from './texture/bayer.png'
+
+import bayer from './texture/bayer.png'
 import { Text } from './Text.jsx'
 
 
@@ -22,6 +25,43 @@ export default class ShaderIntroduction extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderAScene = this.renderAScene.bind(this)
+    this.renderPlaneTexture = this.renderPlaneTexture.bind(this)
+  }
+  renderPlaneTexture() {
+    const canvas = this.canvas.current
+    const renderer = new THREE.WebGLRenderer({ canvas, })
+    const camera = new THREE.OrthographicCamera(
+      -1, 1, 1, -1, -1, 1
+    )
+    const scene = new THREE.Scene()
+    const plane = new THREE.PlaneGeometry(2, 2)
+    const loader = new THREE.TextureLoader()
+    const texture = loader.load(bayer)
+
+    const uniforms = {
+      iTime: { value: 0, },
+      iResolution: { value: new THREE.Vector3(), },
+      iChannel0: { value: texture, },
+    }
+    const material = new THREE.ShaderMaterial({
+      fragmentShader: planeTextureFragmentShader,
+      vertexShader: planeTextureVertexShader,
+      uniforms,
+    })
+    scene.add(new THREE.Mesh(plane, material))
+
+    const render = (t) => {
+      const time = t * 0.001
+      this.resizeRendererToDisplaySize(renderer)
+      uniforms.iResolution.value.set(
+        canvas.width, canvas.height, 1
+      )
+      uniforms.iTime.value = time
+      renderer.render(scene, camera)
+      requestAnimationFrame(render)
+    }
+    requestAnimationFrame(render)
+
   }
   renderAScene() {
     const canvas = this.canvas.current
@@ -113,7 +153,7 @@ export default class ShaderIntroduction extends Component {
 
 
     const loader = new THREE.TextureLoader()
-    const texture = loader.load(image)
+    const texture = loader.load(bayer)
     texture.minFilter = THREE.NearestFilter
     texture.magFilter = THREE.NearestFilter
     texture.wrapS = THREE.RepeatWrapping
@@ -170,8 +210,9 @@ export default class ShaderIntroduction extends Component {
 
   }
   componentDidMount() {
-    this.renderAScene()
+    // this.renderAScene()
     // this.renderScene()
+    this.renderPlaneTexture()
   }
 
   render() {
@@ -181,8 +222,7 @@ export default class ShaderIntroduction extends Component {
           ref={this.canvas} >
           <div className={css.buttons}>
             <button onClick={this.renderAScene}>A</button>
-            <button>B</button>
-            <button>C</button>
+            <button onClick={this.renderPlaneTexture}>planeTexture</button>
             <button onClick={this.renderScene}>complex</button>
           </div>
         </CanvasComponent>
