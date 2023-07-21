@@ -9,6 +9,7 @@ import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from './vertexShader.glsl?raw'
 
 import aFragmentShader from './aFragmentShader.glsl?raw'
+import aVertexShader from './aVertexShader.glsl?raw'
 
 
 import image from './texture/bayer.png'
@@ -38,6 +39,7 @@ export default class ShaderIntroduction extends Component {
     }
     const material = new THREE.ShaderMaterial({
       fragmentShader: aFragmentShader,
+      vertexShader: aVertexShader,
       uniforms,
     })
     scene.add(new THREE.Mesh(plane, material))
@@ -169,6 +171,7 @@ export default class ShaderIntroduction extends Component {
   }
   componentDidMount() {
     this.renderAScene()
+    // this.renderScene()
   }
 
   render() {
