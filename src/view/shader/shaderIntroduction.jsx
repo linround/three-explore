@@ -38,6 +38,11 @@ export default class ShaderIntroduction extends Component {
     const loader = new THREE.TextureLoader()
     const texture = loader.load(bayer)
 
+    texture.minFilter = THREE.NearestFilter
+    texture.magFilter = THREE.NearestFilter
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+
     const uniforms = {
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },

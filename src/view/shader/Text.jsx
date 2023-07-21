@@ -2,6 +2,7 @@ import css from './css.module.less'
 import normalVertexShader from './normalVertexShader.glsl?url'
 import normalFragmentShader from './normalFragmentShader.glsl?url'
 import bayer from './texture/bayer.png?url'
+import * as THREE from 'three'
 
 export function Text() {
   return (
@@ -45,7 +46,7 @@ export function Text() {
         <p>bias：指定计算时的可选偏差；在使用mipmap计算纹理的适当细节级别后，会在执行实际纹理查找操作之前添加偏差；</p>
       </ul>
 
-      <h1>方案 normal 渲染</h1>
+      <h1>方案 normal</h1>
       <ul>
         <li>从方案 normal 可以知道什么？</li>
         <p>在 <a href={normalVertexShader}>normalVertexShader</a> 中使用 sin函数 和 iTime 重新定义了顶点 Y 的坐标；</p>
@@ -57,6 +58,18 @@ export function Text() {
         <li>从方案 planeTexture 可以知道什么？</li>
         <p>在 planeTexture 中将一个8*8得图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
         <p>在这个方案中验证了 texture2D 的实际功能就是通过 提供的坐标点，来对目标纹理进行采样，最终得到该坐标点的像素颜色值；</p>
+      </ul>
+
+      <h1>疑问</h1>
+      <ul>
+        <li>为什么在planeTexture 使用采样的的方式渲染图片的结果会与实际图片有差别？</li>
+        <div className={css.code}>
+          <p>texture.minFilter = THREE.NearestFilter</p>
+          <p>texture.magFilter = THREE.NearestFilter</p>
+          <p>texture.wrapS = THREE.RepeatWrapping</p>
+          <p>texture.wrapT = THREE.RepeatWrapping</p>
+        </div>
+        <p>纹理采样是的一些参数；以上的参数会影响到纹理采样的结果，从而造成采样结果失真的问题；</p>
       </ul>
     </main>
   )
