@@ -56,7 +56,7 @@ export function Text() {
       <h1>方案 planeTexture</h1>
       <ul>
         <li>从方案 planeTexture 可以知道什么？</li>
-        <p>在 planeTexture 中将一个8*8得图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
+        <p>在 planeTexture 中将一个8*8的图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
         <p>在这个方案中验证了 texture2D 的实际功能就是通过 提供的坐标点，来对目标纹理进行采样，最终得到该坐标点的像素颜色值；</p>
       </ul>
 

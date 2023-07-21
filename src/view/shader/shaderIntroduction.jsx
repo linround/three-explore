@@ -18,6 +18,8 @@ import planeTextureVertexShader from './planeTextureVertexShader.glsl?raw'
 import bayer from './texture/bayer.png'
 import { Text } from './Text.jsx'
 
+import { resizeRendererToDisplaySize } from '../../utils.js'
+
 
 export default class ShaderIntroduction extends Component {
   constructor(props) {
@@ -57,7 +59,7 @@ export default class ShaderIntroduction extends Component {
 
     const render = (t) => {
       const time = t * 0.001
-      this.resizeRendererToDisplaySize(renderer)
+      resizeRendererToDisplaySize(renderer)
       uniforms.iResolution.value.set(
         canvas.width, canvas.height, 1
       )
@@ -90,7 +92,7 @@ export default class ShaderIntroduction extends Component {
     scene.add(new THREE.Mesh(plane, material))
     const render = (t) => {
       const time = t * 0.001
-      this.resizeRendererToDisplaySize(renderer)
+      resizeRendererToDisplaySize(renderer)
       uniforms.iResolution.value.set(
         canvas.width, canvas.height, 1
       )
@@ -103,18 +105,7 @@ export default class ShaderIntroduction extends Component {
     }
     requestAnimationFrame(render)
   }
-  resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement
-    const width = canvas.clientWidth
-    const height = canvas.clientHeight
-    const needResize = canvas.width !== width || canvas.height !== height
-    if (needResize) {
-      renderer.setSize(
-        width, height, false
-      )
-    }
-    return needResize
-  }
+
   renderScene() {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
