@@ -1,6 +1,8 @@
 import css from './css.module.less'
-import aVertexShader from './aVertexShader.glsl?url'
-import aFragmentShader from './aFragmentShader.glsl?url'
+import normalVertexShader from './normalVertexShader.glsl?url'
+import normalFragmentShader from './normalFragmentShader.glsl?url'
+import bayer from './texture/bayer.png?url'
+
 export function Text() {
   return (
     <main>
@@ -39,12 +41,17 @@ export function Text() {
         <p>bias：指定计算时的可选偏差；在使用mipmap计算纹理的适当细节级别后，会在执行实际纹理查找操作之前添加偏差；</p>
       </ul>
 
-      <h1>方案 A 渲染</h1>
+      <h1>方案 normal 渲染</h1>
       <ul>
-        <li>从方案A可以知道什么？</li>
-        <p>在 <a href={aVertexShader}>aVertexShader</a> 中使用 sin函数 和 iTime 重新定义了顶点 Y 的坐标；</p>
-        <p>在 <a href={aFragmentShader}>aFragmentShader</a> 中使用像素点的坐标值来表示颜色。canvas的左下角是坐标 零点； </p>
+        <li>从方案 normal 可以知道什么？</li>
+        <p>在 <a href={normalVertexShader}>normalVertexShader</a> 中使用 sin函数 和 iTime 重新定义了顶点 Y 的坐标；</p>
+        <p>在 <a href={normalFragmentShader}>normalFragmentShader</a> 中使用像素点的坐标值来表示颜色。canvas的左下角坐标是(0,0)；右上角坐标是(1,1)；</p>
+        <p> 所以Y的范围呈现一个规律得变化，颜色从左下角(0,0,0)到(1,1,0)；</p>
       </ul>
+      <h1>方案 planeTexture</h1>
+      <li>从方案 planeTexture 可以知道什么？</li>
+      <p>在 planeTexture 中将一个8*8得图片<a href={bayer}>bayer</a> 纹理通过采样的方式渲染在了600*600的画布上</p>
+      <p>在这个方案中验证了 texture2D 的实际功能就是通过 提供的坐标点，来对目标纹理进行采样，最终得到该坐标点的像素颜色值；</p>
     </main>
   )
 }

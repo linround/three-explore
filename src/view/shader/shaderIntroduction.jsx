@@ -8,8 +8,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from './vertexShader.glsl?raw'
 
-import aFragmentShader from './aFragmentShader.glsl?raw'
-import aVertexShader from './aVertexShader.glsl?raw'
+import normalFragmentShader from './normalFragmentShader.glsl?raw'
+import normalVertexShader from './normalVertexShader.glsl?raw'
 
 import planeTextureFragmentShader from './planeTextureFragmentShader.glsl?raw'
 import planeTextureVertexShader from './planeTextureVertexShader.glsl?raw'
@@ -24,7 +24,7 @@ export default class ShaderIntroduction extends Component {
     super(props)
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
-    this.renderAScene = this.renderAScene.bind(this)
+    this.renderNormalScene = this.renderNormalScene.bind(this)
     this.renderPlaneTexture = this.renderPlaneTexture.bind(this)
   }
   renderPlaneTexture() {
@@ -63,7 +63,7 @@ export default class ShaderIntroduction extends Component {
     requestAnimationFrame(render)
 
   }
-  renderAScene() {
+  renderNormalScene() {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
     // 使用正交相机来投影平面
@@ -78,8 +78,8 @@ export default class ShaderIntroduction extends Component {
       iResolution: { value: new THREE.Vector3(), }, // 不传参数默认是0
     }
     const material = new THREE.ShaderMaterial({
-      fragmentShader: aFragmentShader,
-      vertexShader: aVertexShader,
+      fragmentShader: normalFragmentShader,
+      vertexShader: normalVertexShader,
       uniforms,
     })
     scene.add(new THREE.Mesh(plane, material))
@@ -180,20 +180,11 @@ export default class ShaderIntroduction extends Component {
       return cube
     }
 
-    const cubes = [
-      makeInstance(geometry, 0),
-      makeInstance(geometry, -2),
-      makeInstance(geometry, 2)
-    ]
+
+    makeInstance(geometry, 0)
 
     function render(t) {
       const time = 0.001 * t
-      cubes.forEach((cube, index) => {
-        const speed = 1 + (index * .1)
-        const rot = time * speed
-        cube.rotation.x = rot
-        cube.rotation.y = rot
-      })
 
       uniforms.iTime.value = time
       renderer.render(scene, camera)
@@ -210,9 +201,9 @@ export default class ShaderIntroduction extends Component {
 
   }
   componentDidMount() {
-    // this.renderAScene()
-    // this.renderScene()
-    this.renderPlaneTexture()
+    // this.renderNormalScene()
+    // this.renderPlaneTexture()
+    this.renderScene()
   }
 
   render() {
@@ -221,7 +212,7 @@ export default class ShaderIntroduction extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button onClick={this.renderAScene}>A</button>
+            <button onClick={this.renderNormalScene}>normal</button>
             <button onClick={this.renderPlaneTexture}>planeTexture</button>
             <button onClick={this.renderScene}>complex</button>
           </div>
