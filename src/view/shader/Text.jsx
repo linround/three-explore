@@ -69,7 +69,7 @@ export function Text() {
           <p>texture.wrapS = THREE.RepeatWrapping</p>
           <p>texture.wrapT = THREE.RepeatWrapping</p>
         </div>
-        <p>纹理采样是的一些参数；以上的参数会影响到纹理采样的结果，从而造成采样结果失真的问题；</p>
+        <p>纹理采样上的一些参数；以上的参数会影响到纹理采样的结果，从而造成采样结果失真的问题；</p>
       </ul>
     </main>
   )
