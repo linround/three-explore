@@ -16,10 +16,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // 这里计算的是当前顶点相对于视口所在的二维坐标点
     vec2 uv = fragCoord.xy;
-    // 纹理 大小是8*8的
-    // 这里将屏幕坐标直接映射到 8*8 得范围内部
-//    uv.x *= float(TILES);
-//    uv.y *= float(TILES);
 
     // 对uv向下取整 floor(uv) 可减少坐标数目
     // 取整后得坐标在进行归一化处理
@@ -28,7 +24,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     fragColor = color;
 }
-
+// 顶点着色其传入的uv坐标
 varying vec2 vUv;
 
 void main() {
