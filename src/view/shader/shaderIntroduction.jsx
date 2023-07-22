@@ -113,6 +113,11 @@ export default class ShaderIntroduction extends Component {
     // 传入aspect原因
     // 因为在整个canvas中，使用的都是归一化之后的坐标
     // 所以只需要传入长宽比即可
+    // aspect 变大会压缩
+    // aspect 变小会被拉伸
+    // 为什么会有这样的原因呢？
+    // 根据缩放变换，要求变换前后的宽高比是一致的
+    // 如果变换后的 宽高比变大，也就是宽度会大一些，那么在缩放时间，会压缩对应的宽度，从而导致原始图形被压缩；
     const aspect = 1
     const near = 0.1
     const far = 5
@@ -197,9 +202,9 @@ export default class ShaderIntroduction extends Component {
 
   }
   componentDidMount() {
-    this.renderNormalScene()
+    // this.renderNormalScene()
     // this.renderPlaneTexture()
-    // this.renderScene()
+    this.renderScene()
   }
 
   render() {
