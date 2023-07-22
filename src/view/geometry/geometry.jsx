@@ -31,6 +31,7 @@ export default class Geometry extends Component {
     const uniforms = {
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },
+      iMouse: { value: new THREE.Vector2(), },
     }
 
     const material = new THREE.ShaderMaterial({
@@ -39,17 +40,26 @@ export default class Geometry extends Component {
       uniforms,
     })
     scene.add(new THREE.Mesh(plane, material))
+    let x = 0
+    let y = 0
     const render = (t) => {
       const time = t * 0.001
       resizeRendererToDisplaySize(renderer)
       uniforms.iResolution.value.set(
         canvas.width, canvas.height, 1
       )
+      uniforms.iMouse.value.set(x, y)
       uniforms.iTime.value = time
+
       renderer.render(scene, camera)
       requestAnimationFrame(render)
     }
     requestAnimationFrame(render)
+
+    canvas.addEventListener('pointermove', (e) => {
+      x = e.offsetX
+      y = canvas.height - e.offsetY
+    })
 
   }
   render() {
