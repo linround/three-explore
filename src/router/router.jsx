@@ -5,6 +5,7 @@ import Menus from './menus.jsx'
 import { Demo } from '../demo/demo.jsx'
 import ShaderIntroduction from '../view/shader/shaderIntroduction.jsx'
 import Geometry from '../view/geometry/geometry.jsx'
+import Native from '../view/native/native.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: 'geometry',
         element: <Geometry />,
+      },
+      {
+        path: 'native',
+        element: <Native />,
       }
     ],
   },
