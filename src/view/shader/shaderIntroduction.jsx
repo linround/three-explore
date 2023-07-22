@@ -118,6 +118,7 @@ export default class ShaderIntroduction extends Component {
     // 为什么会有这样的原因呢？
     // 根据缩放变换，要求变换前后的宽高比是一致的
     // 如果变换后的 宽高比变大，也就是宽度会大一些，那么在缩放时间，会压缩对应的宽度，从而导致原始图形被压缩；
+    // 此处参考 计算机图形学第四版 8.4
     const aspect = 1
     const near = 0.1
     const far = 5
