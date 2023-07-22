@@ -8,11 +8,17 @@ export function Text() {
     <main>
       <h1>关于shader</h1>
       <ul>
+        <li>uniform 是什么？</li>
+        <p>GPU中所有的并行线程都是互相独立的；</p>
+        <p>uniform 有些类似 CPU 和 GPU 之间的桥梁</p>
+        <p>能够将一些输入从 CPU 发送给所有的线程，且这些输入对所有GPU线程来说都是一样的，并且是只读的 uniform 变量；</p>
         <li>gl_FragCoord 是什么？</li>
-        <p>表示当前片元（像素）相对于窗口的坐标信息；是一个vec4类型的变量(x,y,z,1/w)；</p>
+        <p>这是 glsl 默认提供的输入；</p>
+        <p>表示当前正在处理的片元（像素）或 屏幕片段（dpr有关） 相对于窗口的坐标信息；是一个vec4类型的变量(x,y,z,1/w)；</p>
         <p>x,y默认是像素的中心而非整数。例如当viewport范围是（0,0,800,600）时；(x,y)的坐标范围(0.5,0.5,799.5,599.5)；</p>
         <p></p>
         <li>gl_FragColor 是什么？</li>
+        <p>这是 glsl 默认给出的输出；</p>
         <p>片元（像素）颜色，包含四个分量RGBA,每个分量的范围在[0,1]之间。</p>
         <li>gl_Position 是什么？</li>
         <p>顶点的裁剪坐标系坐标，顶点着色器接收到该坐标后，对齐进行变换，并转化为NDC坐标[-1,1]，GPU使用的是NDC坐标进行绘制</p>
@@ -20,7 +26,8 @@ export function Text() {
         <p>通常把表示顶点的位置数据的变量 position 赋值给 gl_Postion;</p>
         <p></p>
         <li>iResolutiond 是什么？</li>
-        <p>iResolutiond 定义了视口的像素大小；</p>
+        <p>iResolutiond 定义了视口的像素大小，即分辨率；</p>
+        <p>通常也是指 canvas 的像素大小；</p>
         <p>注意：iResolutiond 被定义为了一个三维向量，通常只会用到 x 和 y； </p>
         <li>uv 是什么？</li>
         <p>所有的图像文件都是一个二维平面，水平方向是 u,垂直方向是 v；</p>

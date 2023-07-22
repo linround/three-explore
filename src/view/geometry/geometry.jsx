@@ -1,12 +1,15 @@
 import { Component, createRef } from 'react'
 import { CanvasComponent } from '../../component/canvas.jsx'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import * as THREE from 'three'
 
 import colorVertexShader from './colorVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
+
+
+import { Text } from './Text.jsx'
+import css from './css.module.less'
 
 export default class Geometry extends Component {
   constructor(props) {
@@ -24,8 +27,6 @@ export default class Geometry extends Component {
     )
     const scene = new THREE.Scene()
 
-    const controls = new OrbitControls(camera, canvas)
-    controls.update()
     const plane = new THREE.PlaneGeometry(2, 2)
     const uniforms = {
       iTime: { value: 0, },
@@ -42,7 +43,7 @@ export default class Geometry extends Component {
       const time = t * 0.001
       resizeRendererToDisplaySize(renderer)
       uniforms.iResolution.value.set(
-        canvas.w, canvas.height, 1
+        canvas.width, canvas.height, 1
       )
       uniforms.iTime.value = time
       renderer.render(scene, camera)
@@ -53,9 +54,9 @@ export default class Geometry extends Component {
   }
   render() {
     return (
-      <div>
-        Geometry
+      <div className={css.container}>
         <CanvasComponent ref={this.canvas} />
+        <Text />
       </div>
     )
   }

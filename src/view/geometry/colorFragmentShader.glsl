@@ -15,7 +15,10 @@ vec4 red(){
 }
 
 void mainImage(out vec4 fragColor,in vec2 fragCoord){
-    fragColor = vec4(COLOR);
+    float r = abs(sin(iTime));
+    float g = abs(sin(iTime/2.0));
+    float b = abs(sin(iTime/4.0));
+    fragColor = vec4((fragCoord / iResolution.xy),0.0,1.0);
 }
 
 // 这个是顶点着色其传递的 uv 坐标
