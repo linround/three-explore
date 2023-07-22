@@ -2,7 +2,6 @@ import css from './css.module.less'
 import normalVertexShader from './normalVertexShader.glsl?url'
 import normalFragmentShader from './normalFragmentShader.glsl?url'
 import bayer from './texture/bayer.png?url'
-import * as THREE from 'three'
 
 export function Text() {
   return (
