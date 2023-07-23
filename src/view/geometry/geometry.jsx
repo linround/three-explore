@@ -8,6 +8,9 @@ import colorFragmentShader from './colorFragmentShader.glsl?raw'
 import straightLineVertexShader from './straightLineVertexShader.glsl?raw'
 import straightLineFragmentShader from './straightLineFragmentShader.glsl?raw'
 
+import smoothstepFragmentShader from './smoothstepFragmentShader.glsl?raw'
+import smoothstepVertexShader from './smoothstepVertexShader.glsl?raw'
+
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
@@ -23,6 +26,7 @@ export default class Geometry extends Component {
   componentDidMount() {
     // this.renderColor()
     this.renderStraightLine()
+    // this.renderSoomthstep()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -71,6 +75,9 @@ export default class Geometry extends Component {
   }
   renderStraightLine() {
     this.renderScene(straightLineFragmentShader, straightLineVertexShader)
+  }
+  renderSoomthstep () {
+    this.renderScene(smoothstepFragmentShader, smoothstepVertexShader)
   }
   render() {
     return (
