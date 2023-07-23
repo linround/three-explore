@@ -5,6 +5,10 @@ import * as THREE from 'three'
 import colorVertexShader from './colorVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 
+import straightLineVertexShader from './straightLineVertexShader.glsl?raw'
+import straightLineFragmentShader from './straightLineFragmentShader.glsl?raw'
+
+
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
 
@@ -17,9 +21,10 @@ export default class Geometry extends Component {
     this.canvas = createRef()
   }
   componentDidMount() {
-    this.renderScene()
+    // this.renderColor()
+    this.renderStraightLine()
   }
-  renderScene() {
+  renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
     const camera = new THREE.OrthographicCamera(
@@ -35,8 +40,8 @@ export default class Geometry extends Component {
     }
 
     const material = new THREE.ShaderMaterial({
-      fragmentShader: colorFragmentShader,
-      vertexShader: colorVertexShader,
+      fragmentShader,
+      vertexShader,
       uniforms,
     })
     scene.add(new THREE.Mesh(plane, material))
@@ -60,12 +65,21 @@ export default class Geometry extends Component {
       x = e.offsetX
       y = canvas.height - e.offsetY
     })
-
+  }
+  renderColor() {
+    this.renderScene(colorFragmentShader, colorVertexShader)
+  }
+  renderStraightLine() {
+    this.renderScene(straightLineFragmentShader, straightLineVertexShader)
   }
   render() {
     return (
       <div className={css.container}>
-        <CanvasComponent ref={this.canvas} />
+        <CanvasComponent ref={this.canvas}>
+          <div className={css.buttons}>
+            <button onClick={this.renderStraightLine}>straightLine</button>
+          </div>
+        </CanvasComponent>
         <Text />
       </div>
     )
