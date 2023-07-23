@@ -31,8 +31,8 @@ export class Text extends Component {
           <p>( x - edge0 ) / ( edge1 - edge0 ) &gt; 1; 时 ,t 为1，差值结果为 1；</p>
           <p>
             详情查看，
-            <a href={straightLineFragmentShader}> 线性差值</a>，
-            <a href={curveFragmentShader}>非线性差值</a>
+            <a href={straightLineFragmentShader}> shader 线性差值</a>，
+            <a href={curveFragmentShader}>shader 非线性差值</a>
           </p>
 
           <li>fract 函数;</li>

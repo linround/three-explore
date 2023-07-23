@@ -11,6 +11,9 @@ import straightLineFragmentShader from './straightLineFragmentShader.glsl?raw'
 import smoothstepFragmentShader from './smoothstepFragmentShader.glsl?raw'
 import smoothstepVertexShader from './smoothstepVertexShader.glsl?raw'
 
+import curveFragmentShader from './curveFragmentShader.glsl?raw'
+import curveVertexShader from './curveVertexShader.glsl?raw'
+
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
@@ -22,11 +25,16 @@ export default class Geometry extends Component {
   constructor(props) {
     super(props)
     this.canvas = createRef()
+    this.renderScene = this.renderScene.bind(this)
+    this.renderColor = this.renderColor.bind(this)
+    this.renderStraightLine = this.renderStraightLine.bind(this)
+    this.renderCurve = this.renderCurve.bind(this)
   }
   componentDidMount() {
     // this.renderColor()
-    this.renderStraightLine()
+    // this.renderStraightLine()
     // this.renderSoomthstep()
+    this.renderCurve()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -76,6 +84,9 @@ export default class Geometry extends Component {
   renderStraightLine() {
     this.renderScene(straightLineFragmentShader, straightLineVertexShader)
   }
+  renderCurve() {
+    this.renderScene(curveFragmentShader, curveVertexShader)
+  }
   renderSoomthstep () {
     this.renderScene(smoothstepFragmentShader, smoothstepVertexShader)
   }
@@ -85,6 +96,7 @@ export default class Geometry extends Component {
         <CanvasComponent ref={this.canvas}>
           <div className={css.buttons}>
             <button onClick={this.renderStraightLine}>straightLine</button>
+            <button onClick={this.renderCurve}>curve</button>
           </div>
         </CanvasComponent>
         <Text />
