@@ -13,7 +13,4 @@ export class CodeText extends Component {
   }
 }
 
-CodeText.propTypes = { children: PropTypes.any, }
-CodeText.prototypes = {
-  children: PropTypes.element,
-}
+CodeText.propTypes = { children: PropTypes.element, }

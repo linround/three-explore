@@ -1,7 +1,7 @@
-import css from './css.module.less'
 import normalVertexShader from './normalVertexShader.glsl?url'
 import normalFragmentShader from './normalFragmentShader.glsl?url'
 import bayer from './texture/bayer.png?url'
+import { CodeText } from '../../component/codeText.jsx'
 
 export function Text() {
   return (
@@ -44,10 +44,10 @@ export function Text() {
         <li>texture2D 是什么？</li>
         <p>从纹理中检索纹理像素；</p>
         <p>texture2D 函数返回一个纹理像素值。即给定坐标的纹理的颜色值</p>
-        <div className={css.code}>
+        <CodeText>
           <p>vec4 texture2D(sampler2D sampler, vec2 coord)</p>
           <p>vec4 texture2D(sampler2D sampler, vec2 coord, float bias)</p>
-        </div>
+        </CodeText>
         <p>sampler： 纹理绑定到的采样器；</p>
         <p>coord: 要检索的纹素的二维坐标；</p>
         <p>bias：指定计算时的可选偏差；在使用mipmap计算纹理的适当细节级别后，会在执行实际纹理查找操作之前添加偏差；</p>
@@ -70,12 +70,12 @@ export function Text() {
       <h1>疑问</h1>
       <ul>
         <li>为什么在planeTexture 使用采样的方式渲染图片的结果会与实际图片有差别？</li>
-        <div className={css.code}>
+        <CodeText>
           <p>texture.minFilter = THREE.NearestFilter</p>
           <p>texture.magFilter = THREE.NearestFilter</p>
           <p>texture.wrapS = THREE.RepeatWrapping</p>
           <p>texture.wrapT = THREE.RepeatWrapping</p>
-        </div>
+        </CodeText>
         <p>纹理采样上的一些参数；以上的参数会影响到纹理采样的结果，从而造成采样结果失真的问题；</p>
       </ul>
     </main>
