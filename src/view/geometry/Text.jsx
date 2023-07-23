@@ -1,5 +1,7 @@
 import { Component } from 'react'
 import { CodeText } from '../../component/codeText.jsx'
+import straightLineFragmentShader from './straightLineFragmentShader.glsl?url'
+import curveFragmentShader from './curveFragmentShader.glsl?url'
 
 export class Text extends Component {
   render() {
@@ -27,6 +29,12 @@ export class Text extends Component {
           </CodeText>
           <p>( x - edge0 ) / ( edge1 - edge0 ) &lt; 0; edg0 时 ,t 为0，差值结果为 0；</p>
           <p>( x - edge0 ) / ( edge1 - edge0 ) &gt; 1; 时 ,t 为1，差值结果为 1；</p>
+          <p>
+            详情查看，
+            <a href={straightLineFragmentShader}> 线性差值</a>，
+            <a href={curveFragmentShader}>非线性差值</a>
+          </p>
+
           <li>fract 函数;</li>
           <CodeText>
             <>

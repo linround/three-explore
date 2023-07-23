@@ -11,6 +11,7 @@ uniform vec2 iMouse;
 // 这里传入的是一个绝对值
 // 所以xy绝对值在范围内时，取得范围内的一个 差值结果；
 // 在范围外时（也就是一定大于上边界），取得的结果时 1；
+// 这是一个线性差值
 float plot(vec2 st){
     return smoothstep(0.01,0.0,abs(st.y-st.x));
 }
