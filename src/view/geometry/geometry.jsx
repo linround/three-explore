@@ -15,6 +15,8 @@ import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import squareFragmentShader from './squareFragmentShader.glsl?raw'
 import animationFragmentShader from './animationFragmentShader.glsl?raw'
 
+import lightFragementShader from './lightFragementShader.glsl?raw'
+
 import bayer from './texture/bayer.png'
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
@@ -33,6 +35,7 @@ export default class Geometry extends Component {
     this.renderCurve = this.renderCurve.bind(this)
     this.renderSquare = this.renderSquare.bind(this)
     this.renderAnimate = this.renderAnimate.bind(this)
+    this.renderLight = this.renderLight.bind(this)
   }
   componentDidMount() {
     // this.renderColor()
@@ -40,7 +43,8 @@ export default class Geometry extends Component {
     // this.renderSoomthstep()
     // this.renderCurve()
     // this.renderSquare()
-    this.renderAnimate()
+    // this.renderAnimate()
+    this.renderLight()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -111,6 +115,9 @@ export default class Geometry extends Component {
   renderAnimate() {
     this.renderScene(animationFragmentShader, commonVertexShader)
   }
+  renderLight() {
+    this.renderScene(lightFragementShader, commonVertexShader)
+  }
   render() {
     return (
       <div className={css.container}>
@@ -119,6 +126,8 @@ export default class Geometry extends Component {
             <button onClick={this.renderStraightLine}>straightLine</button>
             <button onClick={this.renderCurve}>curve</button>
             <button onClick={this.renderSquare}>wave</button>
+            <button onClick={this.renderAnimate}>Animate</button>
+            <button onClick={this.renderLight}>imageLight</button>
           </div>
         </CanvasComponent>
         <Text />
