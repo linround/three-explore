@@ -5,14 +5,13 @@ import * as THREE from 'three'
 import colorVertexShader from './colorVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 
-import straightLineVertexShader from './straightLineVertexShader.glsl?raw'
 import straightLineFragmentShader from './straightLineFragmentShader.glsl?raw'
 
 import smoothstepFragmentShader from './smoothstepFragmentShader.glsl?raw'
-import smoothstepVertexShader from './smoothstepVertexShader.glsl?raw'
 
 import curveFragmentShader from './curveFragmentShader.glsl?raw'
-import curveVertexShader from './curveVertexShader.glsl?raw'
+
+import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
@@ -82,13 +81,13 @@ export default class Geometry extends Component {
     this.renderScene(colorFragmentShader, colorVertexShader)
   }
   renderStraightLine() {
-    this.renderScene(straightLineFragmentShader, straightLineVertexShader)
+    this.renderScene(straightLineFragmentShader, commonVertexShader)
   }
   renderCurve() {
-    this.renderScene(curveFragmentShader, curveVertexShader)
+    this.renderScene(curveFragmentShader, commonVertexShader)
   }
   renderSoomthstep () {
-    this.renderScene(smoothstepFragmentShader, smoothstepVertexShader)
+    this.renderScene(smoothstepFragmentShader, commonVertexShader)
   }
   render() {
     return (
