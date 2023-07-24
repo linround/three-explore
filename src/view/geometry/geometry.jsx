@@ -32,9 +32,9 @@ export default class Geometry extends Component {
   }
   componentDidMount() {
     // this.renderColor()
-    // this.renderStraightLine()
+    this.renderStraightLine()
     // this.renderSoomthstep()
-    this.renderCurve()
+    // this.renderCurve()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current

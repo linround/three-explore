@@ -52,6 +52,12 @@ export class Text extends Component {
               <p>······</p>
             </>
           </CodeText>
+          <p>等价于：</p>
+          <CodeText>
+            <p>
+              min(max(x, minVal), maxVal)
+            </p>
+          </CodeText>
           <p>将 x 指限定在 [ minVal, maxVal ] 范围</p>
           <li>绘制一条直线</li>
         </ul>

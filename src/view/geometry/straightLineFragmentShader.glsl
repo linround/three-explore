@@ -22,7 +22,7 @@ void main() {
     float y = st.x;
 
 
-    vec3 color = vec3(y);
+    vec3 color = vec3(1.0);
     //
     float pct = plot(st);// 结果在[0,1]之间
 
@@ -36,7 +36,12 @@ void main() {
     // 以上由于交换了上下边界的大小 可观察 smoostep函数
     // pct 此时 在红线范围内 为差值结果，在红线范围外为1
     // 所以红线范围外的只有背景色
+
+
+    // 最终可以看作是颜色的一个混合
     // 红线范围内的 就是 差值结果 + 背景色
+    // 越靠近中心点 插值结果越接近目标颜色
+    // 远离中心点会慢慢的加重背景色的比重，减少目标色比重
     color = (1.0-pct)*color + pct * vec3(1.0,0.0,0.0);
 
     gl_FragColor=vec4(color,1.0);
