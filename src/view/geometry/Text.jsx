@@ -9,6 +9,18 @@ export class Text extends Component {
       <main>
         <h1>关于 Geometry</h1>
         <ul>
+          <li>step 函数；</li>
+          <CodeText>
+            <>
+              <p>float step(float edge, float x)</p>
+              <p>vec2 step(vec2 edge, vec2 x)</p>
+              <p>······</p>
+            </>
+          </CodeText>
+          <p>例如：</p>
+          <p>x  &lt;= edge ; 返回 0；</p>
+          <p>x  &gt; edge ; 返回 1；</p>
+          <p>通过比较两个值生成阶跃函数；</p>
           <li>smoothstep 函数</li>
           <CodeText>
             <>
@@ -59,7 +71,6 @@ export class Text extends Component {
             </p>
           </CodeText>
           <p>将 x 指限定在 [ minVal, maxVal ] 范围</p>
-          <li>绘制一条直线</li>
         </ul>
       </main>
     )

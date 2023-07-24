@@ -13,6 +13,8 @@ import curveFragmentShader from './curveFragmentShader.glsl?raw'
 
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 
+import squareFragmentShader from './squareFragmentShader.glsl?raw'
+
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
@@ -31,9 +33,10 @@ export default class Geometry extends Component {
   }
   componentDidMount() {
     // this.renderColor()
-    // this.renderStraightLine()
+    this.renderStraightLine()
     // this.renderSoomthstep()
-    this.renderCurve()
+    // this.renderCurve()
+    // this.renderSquare()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -89,6 +92,9 @@ export default class Geometry extends Component {
   renderSoomthstep () {
     this.renderScene(smoothstepFragmentShader, commonVertexShader)
   }
+  renderSquare() {
+    this.renderScene(squareFragmentShader, commonVertexShader)
+  }
   render() {
     return (
       <div className={css.container}>
@@ -96,6 +102,7 @@ export default class Geometry extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderStraightLine}>straightLine</button>
             <button onClick={this.renderCurve}>curve</button>
+            <button onClick={this.renderSquare}>square</button>
           </div>
         </CanvasComponent>
         <Text />
