@@ -21,21 +21,29 @@ float plot(vec2 st,float res){
     // 此时 smoothstep(0.39,0.4,y)
     // y 小于 0.39 的 都是 0
     // y 在 0.39-0.4 之间的是一个插值
-    // y 在 4.0 之上的都是 1
+    // y 在 0.4 之上的都是 1
 
 
     // 后半部分
     // smoothstep(0.4,0.41)
     // y 小于0.4 的都是0
     // y 在 0.4-0.41 之间的都是插值
-    // y 在4.01之上的都是1
+    // y 在0.41之上的都是1
 
     // 综上
     // 0.41以上都是0
     // 0.41~0.1 为1-插值
     // 0.4~0.39为插值
     // 0.39以下为0
-    return smoothstep(res-0.01,res,st.y) - smoothstep(res,res+0.01,st.y);
+
+    //   0.39   0.4
+    // 0   0  x  1    1     1   1
+    //          0.4       0.41
+    // 0   0  0  0     x    1   1
+
+    //    0.39    0.4       0.41
+    // 0    0  x   1   1-x   0     0
+      return smoothstep(res-0.01,res,st.y) - smoothstep(res,res+0.01,st.y);
 }
 
 void main() {
