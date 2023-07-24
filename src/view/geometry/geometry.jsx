@@ -15,6 +15,7 @@ import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import squareFragmentShader from './squareFragmentShader.glsl?raw'
 import animationFragmentShader from './animationFragmentShader.glsl?raw'
 
+import bayer from './texture/bayer.png'
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
@@ -50,10 +51,19 @@ export default class Geometry extends Component {
     const scene = new THREE.Scene()
 
     const plane = new THREE.PlaneGeometry(2, 2)
+    const loader = new THREE.TextureLoader()
+    const texture = loader.load(bayer)
+
+    texture.minFilter = THREE.NearestFilter
+    texture.magFilter = THREE.NearestFilter
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+
     const uniforms = {
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },
       iMouse: { value: new THREE.Vector2(), },
+      iChannel0: { value: texture, },
     }
 
     const material = new THREE.ShaderMaterial({

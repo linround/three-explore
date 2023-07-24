@@ -9,6 +9,15 @@ export class Text extends Component {
       <main>
         <h1>关于 Geometry</h1>
         <ul>
+          <li>length 函数</li>
+          <CodeText>
+            <>
+              <p>float length(float x)</p>
+              <p>float length(vec2 x)</p>
+              <p>······</p>
+            </>
+          </CodeText>
+          <p>length函数返回的是模的值</p>
           <li>step 函数；</li>
           <CodeText>
             <>
