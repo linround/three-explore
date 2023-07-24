@@ -15,7 +15,7 @@ import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import squareFragmentShader from './squareFragmentShader.glsl?raw'
 import animationFragmentShader from './animationFragmentShader.glsl?raw'
 
-import lightFragementShader from './lightFragementShader.glsl?raw'
+import lightFragmentShader from './lightFragmentShader.glsl?raw'
 
 import bayer from './texture/bayer.png'
 
@@ -116,7 +116,7 @@ export default class Geometry extends Component {
     this.renderScene(animationFragmentShader, commonVertexShader)
   }
   renderLight() {
-    this.renderScene(lightFragementShader, commonVertexShader)
+    this.renderScene(lightFragmentShader, commonVertexShader)
   }
   render() {
     return (
