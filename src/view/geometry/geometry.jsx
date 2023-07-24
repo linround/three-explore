@@ -2,7 +2,6 @@ import { Component, createRef } from 'react'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import * as THREE from 'three'
 
-import colorVertexShader from './colorVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 
 import straightLineFragmentShader from './straightLineFragmentShader.glsl?raw'
@@ -14,7 +13,7 @@ import curveFragmentShader from './curveFragmentShader.glsl?raw'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 
 import squareFragmentShader from './squareFragmentShader.glsl?raw'
-import animationFragementShader from './animationFragementShader.glsl?raw'
+import animationFragmentShader from './animationFragmentShader.glsl?raw'
 
 
 import { resizeRendererToDisplaySize } from '../../utils.js'
@@ -85,7 +84,7 @@ export default class Geometry extends Component {
     })
   }
   renderColor() {
-    this.renderScene(colorFragmentShader, colorVertexShader)
+    this.renderScene(colorFragmentShader, commonVertexShader)
   }
   renderStraightLine() {
     this.renderScene(straightLineFragmentShader, commonVertexShader)
@@ -100,7 +99,7 @@ export default class Geometry extends Component {
     this.renderScene(squareFragmentShader, commonVertexShader)
   }
   renderAnimate() {
-    this.renderScene(animationFragementShader, commonVertexShader)
+    this.renderScene(animationFragmentShader, commonVertexShader)
   }
   render() {
     return (
