@@ -30,13 +30,14 @@ export default class Geometry extends Component {
     this.renderColor = this.renderColor.bind(this)
     this.renderStraightLine = this.renderStraightLine.bind(this)
     this.renderCurve = this.renderCurve.bind(this)
+    this.renderSquare = this.renderSquare.bind(this)
   }
   componentDidMount() {
     // this.renderColor()
-    this.renderStraightLine()
+    // this.renderStraightLine()
     // this.renderSoomthstep()
     // this.renderCurve()
-    // this.renderSquare()
+    this.renderSquare()
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -102,7 +103,7 @@ export default class Geometry extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderStraightLine}>straightLine</button>
             <button onClick={this.renderCurve}>curve</button>
-            <button onClick={this.renderSquare}>square</button>
+            <button onClick={this.renderSquare}>wave</button>
           </div>
         </CanvasComponent>
         <Text />

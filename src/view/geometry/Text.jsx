@@ -55,7 +55,11 @@ export class Text extends Component {
               <p>······</p>
             </>
           </CodeText>
-          <p>计算x的小数部分；</p>
+          <p>计算x的小数部分 ( 注意x为负数时 )；</p>
+          <p>等价于：</p>
+          <CodeText>
+            <p>x - floor(x)</p>
+          </CodeText>
           <li>clamp 函数;</li>
           <CodeText>
             <>

@@ -12,6 +12,8 @@ uniform vec2 iMouse;
 // 所以xy绝对值在范围内时，取得范围内的一个 差值结果；
 // 在范围外时（也就是一定大于上边界），取得的结果时 1；
 // 这是一个线性差值
+
+// 这里直接使用传入的坐标来计算 该坐标的 目标颜色比重
 float plot(vec2 st){
     return smoothstep(0.01,0.0,abs(st.y-st.x));
 }
