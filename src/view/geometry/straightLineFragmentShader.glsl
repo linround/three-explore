@@ -22,7 +22,7 @@ void main() {
     float y = st.x;
 
 
-    vec3 color = vec3(1.0);
+    vec3 color = vec3(y);
     //
     float pct = plot(st);// 结果在[0,1]之间
 
