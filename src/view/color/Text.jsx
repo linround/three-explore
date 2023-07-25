@@ -18,7 +18,8 @@ export function Text() {
         <p>等价于：</p>
         <CodeText>
           <>
-            <p>x×(1−a)+y×a</p>
+            <p>mix(x,y,a)；</p>
+            <p>x×(1−a)+y×a；</p>
 
             <p> {'//'} colorB可以看作是目标色；</p>
             <p> {'//'} colorA可以看作是底色；</p>
