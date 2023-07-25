@@ -62,13 +62,15 @@ void colorLine(){
 //    color = (1.0-pct)*colorA + (pct) * colorB;
 
     vec2 st = gl_FragCoord.xy/iResolution.xy;
-    vec3 color = vec3(0.0);
-    vec3 pct = vec3(st.x);
+    vec3 color;
+
+
+    float periodValue = (sin(iTime*PI)+1.0)/2.0;
 
     float value = pow(st.x,1.0);
 
 
-    vec3 colorA = vec3(0.0,0.0,0.0);
+    vec3 colorA = vec3(st.x,st.y,st.y);
     vec3 colorB = vec3(1.0,0.0,0.0);
 
     // 这里的底色是 colorA
@@ -81,14 +83,21 @@ void colorLine(){
     // 这里计算比重 按比重混合背景色 和目标色
     color = mix(color,smoothColor,plot(st,smoothValue));
 
-    float sinValue = (sin(st.x*PI*2.0 * iTime*10.0)+1.0)/2.0;
+    float sinValue = periodValue*(sin(st.x*PI*2.0)+1.0)/2.0;
     vec3 sinColor = vec3(0.0,0.0,1.0);
     color = mix(color,sinColor,plot(st,sinValue));
 
 
-    float lineValue = 0.5 * (sin(iTime)+1.0);
+    float lineValue = 0.5  * periodValue;
     vec3 lineColor = vec3(1.0,1.0,1.0);
     color = mix(color,lineColor,plot(st,lineValue));
+
+
+    vec2 point = vec2(0.5,lineValue);
+    vec3 pointColor = vec3(0.0,0.0,0.0);
+
+    float dist = distance(st,point);
+    color = mix(color,pointColor,dist);
 
 
     gl_FragColor = vec4(color,1.0);

@@ -5,6 +5,19 @@ export function Text() {
     <main>
       <h1>Color</h1>
       <ul>
+        <li>HSB</li>
+        <p>HSB 代表 hue(色调),saturation(饱和度),brightness(亮度)</p>
+        <p>另外：</p>
+        <p>HSV代表  hue(色调), saturation(饱和度), value(明度)</p>
+        <p>HSL代表  hue(色调), saturation(饱和度), lightness(亮度)</p>
+        <ul>
+          <li>色调</li>
+          <p>决定了颜色，例如：红色，蓝色</p>
+          <li>饱和度</li>
+          <p>决定了颜色的纯度，颜色越纯，饱和度越高</p>
+          <li>亮度</li>
+          <p>颜色的明亮程度</p>
+        </ul>
         <li>mix 函数</li>
         <p>将值限制在两个值之间；</p>
         <CodeText>

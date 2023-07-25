@@ -5,8 +5,11 @@ import * as THREE from 'three'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
+
+
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
+import hsbFragmentShader from './hsbFragmentShader.glsl?raw'
 
 export class Color extends Component {
   constructor(props) {
@@ -14,9 +17,14 @@ export class Color extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderColor = this.renderColor.bind(this)
+    this.renderHSB = this.renderHSB.bind(this)
   }
   componentDidMount() {
-    this.renderColor()
+    // this.renderColor()
+    this.renderHSB()
+  }
+  renderHSB() {
+    this.renderScene(hsbFragmentShader, commonVertexShader)
   }
   renderColor() {
     this.renderScene(colorFragmentShader, commonVertexShader)
@@ -76,7 +84,8 @@ export class Color extends Component {
       <div className={css.container}>
         <CanvasComponent ref={this.canvas}>
           <div className={css.buttons}>
-            <button>button</button>
+            <button onClick={this.renderColor}>Color</button>
+            <button onClick={this.renderHSB}>HSB</button>
           </div>
         </CanvasComponent>
         <Text />
