@@ -81,12 +81,12 @@ void colorLine(){
     // 这里计算比重 按比重混合背景色 和目标色
     color = mix(color,smoothColor,plot(st,smoothValue));
 
-    float sinValue = (sin(st.x*PI*2.0)+1.0)/2.0;
+    float sinValue = (sin(st.x*PI*2.0 + iTime)+1.0)/2.0;
     vec3 sinColor = vec3(0.0,0.0,1.0);
     color = mix(color,sinColor,plot(st,sinValue));
 
 
-    float lineValue = 0.5;
+    float lineValue = 0.5 * (sin(iTime)+1.0);
     vec3 lineColor = vec3(1.0,1.0,1.0);
     color = mix(color,lineColor,plot(st,lineValue));
 
