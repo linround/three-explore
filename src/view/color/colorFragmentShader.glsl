@@ -2,6 +2,7 @@ uniform vec3 iResolution;
 uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
+#define PI 3.1415926
 
 
 
@@ -76,7 +77,19 @@ void colorLine(){
 
     float smoothValue = smoothstep(0.0,1.0,st.x);
     vec3 smoothColor = vec3(1.0,1.0,0.0);
+
+    // 这里计算比重 按比重混合背景色 和目标色
     color = mix(color,smoothColor,plot(st,smoothValue));
+
+    float sinValue = (sin(st.x*PI*2.0)+1.0)/2.0;
+    vec3 sinColor = vec3(0.0,0.0,1.0);
+    color = mix(color,sinColor,plot(st,sinValue));
+
+
+    float lineValue = 0.5;
+    vec3 lineColor = vec3(1.0,1.0,1.0);
+    color = mix(color,lineColor,plot(st,lineValue));
+
 
     gl_FragColor = vec4(color,1.0);
 
