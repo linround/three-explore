@@ -49,7 +49,7 @@ float plot(vec2 st,float res){
 void main() {
     vec2 st = gl_FragCoord.xy / iResolution.xy;
     // 这是准备绘制的曲线
-    float y = pow(st.x,2.0);
+    float y = pow(st.x,5.0);
 
 
     vec3 color = vec3(y);
