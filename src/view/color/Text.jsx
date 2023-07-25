@@ -14,7 +14,17 @@ export function Text() {
         </CodeText>
         <p>x 指定了插值范围的起点</p>
         <p>y 指定了插值范围的末尾</p>
-        <p>用于指定在x 和 y 之间插值的值</p>
+        <p>a 用于指定在x 和 y 之间插值的值</p>
+        <p>等价于：</p>
+        <CodeText>
+          <>
+            <p>x×(1−a)+y×a</p>
+
+            <p> {'//'} colorB可以看作是目标色；</p>
+            <p> {'//'} colorA可以看作是底色；</p>
+            <p>color = (1.0-pct)*colorA + (pct) * colorB;</p>
+          </>
+        </CodeText>
         <li>vec 向量</li>
         <CodeText>
           <>

@@ -21,10 +21,10 @@ void moreColor(){
 }
 
 
+vec3 colorA = vec3(0.0,0.0,0.0);
+vec3 colorB = vec3(1.0,0.0,0.0);
 // 在这里验证了 mix 函数
 void mixCOlor(){
-    vec3 colorA = vec3(0.0,0.0,1.0);
-    vec3 colorB = vec3(1.0,0.0,0.0);
 
     vec3 color = vec3(0.0);
     float pct = abs(sin(iTime));
@@ -32,6 +32,11 @@ void mixCOlor(){
     gl_FragColor = vec4(color,1.0);
 }
 
+
+
+float plot(){
+    return 0.0;
+}
 
 
 

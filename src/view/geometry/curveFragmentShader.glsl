@@ -72,5 +72,7 @@ void main() {
     // 这里减除插值的插值的背景色，是为了减少底色的影响 从而只取得目标线条颜色
     color = (1.0-pct)*color + (pct) * vec3(1.0,0.0,0.0);
 
+//    color = mix(color,vec3(1.0,0.0,0.0),pct);
+
     gl_FragColor=vec4(color,1.0);
 }
