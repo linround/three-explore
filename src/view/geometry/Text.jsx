@@ -55,6 +55,32 @@ export class Text extends Component {
             <a href={straightLineFragmentShader}> shader 线性差值1</a>，
             <a href={curveFragmentShader}>shader 线性差值2</a>
           </p>
+          <CodeText>
+
+            <>
+              <p> 这里计算的是比重</p>
+              <p> 前半部分</p>
+              <p>  st.y 的值越接近 value 比重越接近 1</p>
+              <p>  st.y 的值 小于等于 value-0.01的都是 0</p>
+              <p>  st.y 的值 大于等于 value 的 都是1</p>
+              <p>  后半部分</p>
+              <p>  st.y 的值越接近 value+0.01 比重越靠近1</p>
+              <p>  st.y 的值 小于等于 value 的都是0</p>
+              <p>  st.y 的值大于等于 value+0.01 的都是1</p>
+              <p> 两者相减</p>
+              <p> 越靠近 value 越接近1</p>
+              <p>  st.y 的值 小于等于 value-0.01 都是0</p>
+              <p>  st.y 的值 大于等于 value+0.01 都是 0</p>
+              <p>  这里解释一下为什么</p>
+              <p> 可以想象下 越靠近 value+0.01 两者相减的值 从 value {'=>'} value+0.01 越来越趋向0，最终成为 0</p>
+              <p> 直接从前部分即可知道  越靠近 value-0.01 越趋向 0，最终成为 0；</p>
+              <p>函数如下：</p>
+              <p>float plot(vec2 st,float value) {'{'}</p>
+              <p>   return smoothstep(value-0.01,value,st.y)</p>
+              <p>   -smoothstep(value,value+0.01,st.y);</p>
+              <p>{'}'}</p>
+            </>
+          </CodeText>
 
           <li>fract 函数;</li>
           <CodeText>

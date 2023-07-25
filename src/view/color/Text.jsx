@@ -8,9 +8,11 @@ export function Text() {
         <li>mix 函数</li>
         <p>将值限制在两个值之间；</p>
         <CodeText>
-          <p>float mix(float x, float y, float a)</p>
-          <p>vec2 mix(vec2 x, vec2 y, vec2 a)</p>
-          <p>······</p>
+          <>
+            <p>float mix(float x, float y, float a)</p>
+            <p>vec2 mix(vec2 x, vec2 y, vec2 a)</p>
+            <p>······</p>
+          </>
         </CodeText>
         <p>x 指定了插值范围的起点</p>
         <p>y 指定了插值范围的末尾</p>
@@ -27,6 +29,7 @@ export function Text() {
           </>
         </CodeText>
         <li>vec 向量</li>
+
         <CodeText>
           <>
             <p> vec3 red = vec3(1.0,0.0,0.0);</p>
