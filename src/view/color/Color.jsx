@@ -10,6 +10,7 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 import hsbFragmentShader from './hsbFragmentShader.glsl?raw'
+import rectFragmentShader from './rectFragmentShader.glsl?raw'
 
 export class Color extends Component {
   constructor(props) {
@@ -18,10 +19,15 @@ export class Color extends Component {
     this.renderScene = this.renderScene.bind(this)
     this.renderColor = this.renderColor.bind(this)
     this.renderHSB = this.renderHSB.bind(this)
+    this.renderRect = this.renderRect.bind(this)
   }
   componentDidMount() {
     // this.renderColor()
-    this.renderHSB()
+    // this.renderHSB()
+    this.renderRect()
+  }
+  renderRect() {
+    this.renderScene(rectFragmentShader, commonVertexShader)
   }
   renderHSB() {
     this.renderScene(hsbFragmentShader, commonVertexShader)
@@ -86,6 +92,7 @@ export class Color extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderColor}>Color</button>
             <button onClick={this.renderHSB}>HSB</button>
+            <button onClick={this.renderRect}>Rect</button>
           </div>
         </CanvasComponent>
         <Text />

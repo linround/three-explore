@@ -6,10 +6,12 @@ export function Text() {
     <main>
       <h1>Color</h1>
       <ul>
-        <p>这里包含了颜色空间的转换公式</p>
-        <p>模拟了日落</p>
-        <p>验证参数的引用传递和值传递</p>
-        <p><a href={hsbFragmentShader}>查看</a></p>
+        <p>
+          这里包含了颜色空间的转换公式 、
+          模拟了日落 、
+          验证参数的引用传递 和 值传递。
+          <a href={hsbFragmentShader}>查看</a>
+        </p>
         <li>HSB</li>
         <p>HSB 代表 hue(色调),saturation(饱和度),brightness(亮度)</p>
         <p>另外：</p>
