@@ -3,6 +3,7 @@ uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
 #define PI 3.1415926
+#define TWO_PI 6.28318530718
 
 
 
@@ -64,6 +65,48 @@ void HSBMap(){
 }
 
 
+// 定义一个绕某个点进行旋转 的函数
+void roate(out vec2 st,float px,float py){
+    float angle = 1.0*PI;
+    st.x = (st.x-px) * cos(angle) - (st.y-py) * sin(angle)+px;
+    st.y = (st.x-px) * sin(angle) + (st.y-py) * cos(angle)+py;
+}
+
+
+// 在极坐标系中计算颜色
+void polarCoordinates(){
+    vec2 st = gl_FragCoord.xy/iResolution.xy;
+    vec3 color = vec3(0.0);
+
+//    以中心点为原点 计算极坐标
+
+//    计算指向中心点的向量
+    float px = 0.5;
+    float py = 0.5;
+//    这里可以进行旋转
+//    roate(st,px,py);
+    vec2 toCenter = vec2(px,py)-st;
+//    计算角度 (-PI~PI)
+    float angle = atan(toCenter.y,toCenter.x);
+    //    归一化角度 [-0.5,0.5] => [0, 1.0]
+    float normalAngle = angle/TWO_PI + 0.5;
+
+//    计算向量长度
+    float radius = length(toCenter)*2.0;
+
+    color = vec3(normalAngle,radius,1.0);
+
+//    将极坐标颜色转换为rgb
+    color = hsb2rgb(color);
+
+    gl_FragColor = vec4(color,1.0);
+}
+
+
+
+
+
+
 
 // 验证一下 in 类型 是引用传递还是值传递
 // 验证结果如下
@@ -90,7 +133,9 @@ void testIn(){
 
 
 void main() {
+    polarCoordinates();
 //     sunset();
 //    HSBMap();
-    testIn();
+//    验证参数的引用传递和值传递
+//    testIn();
 }
