@@ -46,15 +46,26 @@ float rectTopRight(in vec2 st,in vec2 topRight){
 
 
 
-float rectVertex(in vec2 st, in vec2 bottomLeftVertex,in vec2 topRightVertex){
-    float bottomLeft = rectLeftBottom(st,bottomLeftVertex);
-    float topRight = rectTopRight(st,topRightVertex);
+float rectVertex(in vec2 st, in vec2 VertexA,in vec2 VertexB){
+    float bottom = min(VertexA.y,VertexB.y);
+    float left = min(VertexA.x,VertexB.x);
+
+    float top = max(VertexA.y,VertexB.y);
+    float right = max(VertexA.x,VertexB.x);
+
+
+    float bottomLeft = rectLeftBottom(st,vec2(left,bottom));
+    float topRight = rectTopRight(st,vec2(right,top));
     return bottomLeft * topRight;
 }
 
 void vertexRect(){
-    vec2 bottomLeft = vec2(0.1,0.1);
-    vec2 topRight = vec2(0.9,0.9);
+//    这里定义了矩形的 两个对角顶点
+//    使用对角顶点来 生成矩形
+    vec2 bottomLeft = vec2(0.2,0.2);
+
+    float top = (sin(iTime)+1.0)/2.0;
+    vec2 topRight = vec2(0.8,top);
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     float pct = rectVertex(st,bottomLeft,topRight);
 
