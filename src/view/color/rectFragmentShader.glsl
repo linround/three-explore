@@ -62,10 +62,11 @@ float rectVertex(in vec2 st, in vec2 VertexA,in vec2 VertexB){
 void vertexRect(){
 //    这里定义了矩形的 两个对角顶点
 //    使用对角顶点来 生成矩形
-    vec2 bottomLeft = vec2(0.2,0.2);
+    vec2 bottomLeft = vec2(0.5,0.5);
 
     float top = (sin(iTime)+1.0)/2.0;
-    vec2 topRight = vec2(0.8,top);
+    float right = top;
+    vec2 topRight = vec2(right,top);
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     float pct = rectVertex(st,bottomLeft,topRight);
 
