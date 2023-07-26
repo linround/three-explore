@@ -17,7 +17,7 @@ void sunset(){
     vec3 bgColor = vec3(0.0,0.0,0.0);
     vec3 sunColor = vec3(1.0,1.0,0.0);
 
-    float dist = (0.50-distance(st,point))/2.0;
+    float dist = (1.0-distance(st,point))/1.42;
 
     vec3 color = bgColor + sunColor * dist;
 
@@ -41,18 +41,56 @@ vec3 rgb2hsb(in vec3 c){
 }
 
 
+vec3 hsb2rgb(in vec3 c){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0);
+    rgb = rgb*rgb*(3.0-2.0*rgb);
+    return c.z * mix(vec3(1.0),rgb,c.y);
+}
+
+
 void HSBMap(){
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     vec3 color = vec3(0.0);
     color = vec3(st.x,1.0,st.y);
 
+    // 这里是将rgb映射成hsb
     vec3 hsb = rgb2hsb(color);
-    gl_FragColor = vec4(hsb,1.0);
+
+    // 这里是将hsb映射为rgb
+    vec3 rgb = hsb2rgb(color);
+
+    gl_FragColor = vec4(rgb,1.0);
 
 }
 
 
+
+// 验证一下 in 类型 是引用传递还是值传递
+// 验证结果如下
+// 使用 in 类型传递时 是值传递
+// 使用 inout 传递时 是引用传递
+// 使用 out 类型传递时 是引用传递
+void inF(inout vec3 color){
+    color = vec3(1.0,1.0,0.0);
+}
+
+// 不使用以上三种类型时  是值传递
+vec3 inFD( vec3 color){
+    color = vec3(1.0,0.0,1.0);
+    return color;
+}
+void testIn(){
+    vec3 color = vec3(1.0,0.0,0.0);
+    inF(color);
+
+    gl_FragColor = vec4(color,1.0);
+}
+
+
+
+
 void main() {
-    // sunset();
-    HSBMap();
+//     sunset();
+//    HSBMap();
+    testIn();
 }

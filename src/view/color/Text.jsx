@@ -64,6 +64,30 @@ export function Text() {
             <p>vector[3] = vector.a = vector.w = vector.q;</p>
           </>
         </CodeText>
+        <li>in、inout、out指定参数类型</li>
+        <p>验证一下 in 类型 是引用传递还是值传递</p>
+        <p>验证结果如下：</p>
+        <p>使用 in 类型传递时 是值传递</p>
+        <p>使用 inout 传递时 是引用传递</p>
+        <p>使用 out 类型传递时 是引用传递</p>
+        <p>不使用以上三种类型时  是值传递</p>
+        <CodeText>
+          <>
+            <p> void inF(inout vec3 color){'{'}</p>
+            <p> color = vec3(1.0,1.0,0.0);</p>
+            <p> {'}'}</p>
+            <p>  不使用以上三种类型时  是值传递</p>
+            <p> vec3 inFD( vec3 color){'{'}</p>
+            <p> color = vec3(1.0,0.0,1.0);</p>
+            <p> return color;</p>
+            <p> {'}'}</p>
+            <p>   void testIn(){'{'}</p>
+            <p>  vec3 color = vec3(1.0,0.0,0.0);</p>
+            <p>  inF(color);</p>
+            <p>  gl_FragColor = vec4(color,1.0);</p>
+            <p> {'}'}</p>
+          </>
+        </CodeText>
       </ul>
     </main>
   )
