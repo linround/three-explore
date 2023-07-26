@@ -66,6 +66,8 @@ void vertexRect(){
 
     float top = (sin(iTime)+1.0)/2.0;
     float right = top;
+
+
     vec2 topRight = vec2(right,top);
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     float pct = rectVertex(st,bottomLeft,topRight);
@@ -76,6 +78,15 @@ void vertexRect(){
     vec3 colorB = vec3(0.0,0.0,1.0);
 
     vec3 color = mix(bgColor,colorA,pct);
+
+
+
+    float top2 = 0.7 * (sin(iTime)+1.0)/2.0;
+    float right2 = 0.1;
+    color = mix(color,colorB,rectVertex(st,bottomLeft,vec2(right2,top2)));
+
+
+
     gl_FragColor = vec4(color,1.0);
 
 }
