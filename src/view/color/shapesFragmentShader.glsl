@@ -100,19 +100,19 @@ void circle(in vec2 st){
 
 
     float py = (sin(iTime)+1.0)/2.0;
-    vec2 center =vec2(0.5,py);
+    float px = py;
     float r = 0.1;
     vec3 bgColor = vec3(st.x);
 
 
 //    几何step 函数可以绘制一个圆
-    float pct = makeCirle(r,center,st,false);
+    float pct = makeCirle(r,vec2(px,0.5),st,false);
     vec3 borderColor = vec3(1.0,1.0,0.0);
     vec3 color = mix(bgColor,borderColor,pct);
 
 
 //    这里使用的smoothstep绘制了一个外圆，通过调节 blur 实现边缘的模糊效果
-    float smoothPct = makeCirle(r*2.0,center,st,true);
+    float smoothPct = makeCirle(r*2.0,vec2(0.5,py),st,true);
     vec3 smoothColor = vec3(0.0,0.0,1.0);
     color = mix(color,smoothColor,smoothPct);
 
