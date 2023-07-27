@@ -99,7 +99,8 @@ void circle(in vec2 st){
 
 
 
-    vec2 center =vec2(0.5);
+    float py = (sin(iTime)+1.0)/2.0;
+    vec2 center =vec2(0.5,py);
     float r = 0.1;
     vec3 bgColor = vec3(st.x);
 
