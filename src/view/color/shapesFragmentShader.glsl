@@ -79,6 +79,11 @@ float smoothBorder(float edge,float value,float blur){
 // format 是否使用平滑smooth 边缘
 float makeCirle(float r,vec2 center,in vec2 st,bool format ){
     float len = distance(center,st);
+//    len = distance(st,vec2(0.4)) + distance(st,vec2(0.6));
+//    len = distance(st,vec2(0.4)) * distance(st,vec2(0.6));
+//    len = min(distance(st,vec2(0.8)),distance(st,vec2(0.2)));
+//    len = max(distance(st,vec2(0.4)),distance(st,vec2(0.6)));
+//    len = pow(distance(st,vec2(0.4)),distance(st,vec2(0.6)));
     float pct = 0.0;
     float borderWidth = 0.005;
 
@@ -102,7 +107,7 @@ void circle(in vec2 st){
 
     float py = (sin(iTime)+1.0)/2.0;
     float px = py;
-    float r = 0.1;
+    float r = (sin(iTime)+1.0)/20.0;
     vec3 bgColor = vec3(st.x);
 
 
@@ -117,8 +122,23 @@ void circle(in vec2 st){
     vec3 smoothColor = vec3(0.0,0.0,1.0);
     color = mix(color,smoothColor,smoothPct);
 
+
+    float staticPct = makeCirle(r,vec2(0.5,0.5),st,true);
+    vec3 staticColor = vec3(0.0,1.0,1.0);
+    color = mix(color,staticColor,staticPct);
+
     gl_FragColor = vec4(color,1.0);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
