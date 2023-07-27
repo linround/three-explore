@@ -14,8 +14,15 @@ export function Text() {
           验证参数的引用传递 和 值传递。
           <a href={hsbFragmentShader}>查看</a>
         </p>
+        <p>
+          介绍了使用distance函数来创建 圆形；介绍了如何转换思想，以向量点积的方式来建立圆形；
+          介绍了如何利用 fract 函数来创建距离场；
+          <a href={shapesFragmentShader}>查看</a>
+        </p>
         <p>这里介绍了如何利用 step函数 和 smoothstep函数 来构造矩形；
           step函数 的结果 从某些方面看来是特殊的 smoothstep函数 的结果；
+
+          介绍了如何利用
         <a href={rectFragmentShader}> smoothstep 示例</a>与
         <a href={shapesFragmentShader}> step 示例</a>；
         </p>

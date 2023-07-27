@@ -133,6 +133,87 @@ void circle(in vec2 st){
 
 
 
+// 下面介绍如何使用点乘  来实现圆形
+// 使用 sqrt 函数所计算的长度 会耗费较多的计算性能
+// 这里的r 实际代表的应该是直径
+float dotCircle(in vec2 st, in float rSquared){
+    vec2 dist = st-vec2(0.5);
+
+
+    // 这里使用点乘 计算了距离的平方
+    // 距离的平方 和 r 进行比较。
+    // 小于特定值 v-0.001 的在平滑直接为1
+    // 大于特定值 v 的 直接为0
+    // 对于 v-0.001 到 v 的过程是一个平滑为0的过程
+
+
+    // 针对这个函数中的v 其实应该看作半径的平方
+    // 在这里 优化了一个计算方法
+    // 将通常使用 根号 来确定半径 然后进行约束的方式 ；转化为了 给定半径的平方，从而判断 向量长度的平法
+    // 将开根号 的方式 优化成 乘法的方式
+    float pct = smoothstep(rSquared,rSquared-0.001,dot(dist,dist));
+    return pct;
+}
+void makeDotCircle(in vec2 st){
+    float num = (sin(iTime)+1.0)/2.0;
+    float rSquared = 0.25 * num;
+    float pct = dotCircle(st,rSquared);
+
+    gl_FragColor = vec4(vec3(pct),1.0);
+}
+
+
+
+
+
+
+
+
+// 制作距离场
+
+void makeDistanceFields(in vec2 st){
+    vec3 color = vec3(1.0,0.0,0.0);
+    float d = 0.0;
+//    定义一个动态的[0,1]范围中心点
+    float px = (sin(iTime)+1.0)/2.0;
+    float py = px;
+
+//    将st 从[0,1] 映射到 [-1,1]
+    st = st*2.0-1.0;
+
+//  在每一个区域中 都计算对应区域坐标点 与中心点的向量
+    vec2 center = vec2(px,py);
+    vec2 dist = (abs(st)-center);
+
+//    计算每一个向量的长度并乘以10  以此扩充范围
+//    d = length(dist)*10.0;
+
+
+//    min(dist,vec2(0.3))
+//
+    float multiple = (sin(iTime)+1.0)*10.0;
+    d = length( min(dist,vec2(0.1,0.1)) )*multiple;
+//    d = length(max(dist,vec2(0.1,0.1)))*10.0;
+//    使用fract 函数对每一段区域进行取小数，来表示颜色
+    color = vec3(fract(d));
+
+
+    gl_FragColor = vec4(color,1.0);
+}
+
+
+// 上述 展示了
+// 1. 求每个区域点 到中心点center 的向量 dist（有中心点指向坐标点）
+// 2. 比较该向量 使用  min(dist,vec2(0.1,0.1))
+// 3. 对于 x,y分力量都大于 vec2(0.1,0.1) ，回去固定向量 vec2(0.1,0.1)
+// 4. 其余坐标向量按规则取
+// 5. 比如dist = [0.2 0.05] =>[0.1,0.05]
+
+
+
+
+
+
 
 
 
@@ -153,6 +234,15 @@ void main() {
 //    Floor(st);
 
 //
-    circle(st);
+//    生成圆的 常用方式
+//    circle(st);
+//    使用点乘 生成圆
+//    makeDotCircle(st);
+
+
+
+    makeDistanceFields(st);
+
+
 
 }
