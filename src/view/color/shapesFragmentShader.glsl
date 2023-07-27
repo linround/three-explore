@@ -84,6 +84,7 @@ float makeCirle(float r,vec2 center,in vec2 st,bool format ){
 
     //    format 用来判断是否使用smooth 来平滑边缘
     if(format) {
+//        使用blur 来设置平滑的范围
         float blur = 0.02;
         pct = smoothBorder(r,len,blur);
     } else {
