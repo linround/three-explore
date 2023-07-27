@@ -45,7 +45,7 @@ float rectTopRight(in vec2 st,in vec2 topRight){
 }
 
 
-
+// 这里使用 两个顶点生成矩形
 float rectVertex(in vec2 st, in vec2 VertexA,in vec2 VertexB){
     float bottom = min(VertexA.y,VertexB.y);
     float left = min(VertexA.x,VertexB.x);
@@ -110,9 +110,57 @@ void generateRect(){
     gl_FragColor = vec4(color,1.0);
 }
 
+
+
+
+
+
+
+// 以上实现了矩形的绘制
+// 下面是关于 只绘制边缘轮廓的示例
+
+
+
+
+void rectBorder(){
+    vec2 st = gl_FragCoord.xy/iResolution.xy;
+//    使用两对顶点 绘制两个矩形
+
+//   再在对两个矩形取逻辑与，从而实现边缘的显示
+    float vertexLeftA = 0.1;
+    float vertexBottomA = 0.1;
+    float vertexTopA = 0.9;
+    float vertexRightA = 0.9;
+    float width = 0.01;
+
+
+    float outPoint = rectVertex(st,vec2(vertexLeftA,vertexBottomA),vec2(vertexTopA,vertexRightA));
+    float inPct = rectVertex(
+        st,
+        vec2(vertexLeftA+width/2.0,vertexBottomA+width/2.0),
+        vec2(vertexTopA-width/2.0,vertexRightA-width/2.0)
+    );
+
+    vec3 bgColor = vec3(st.x);
+    vec3 lineColor = vec3(1.0,0.0,1.0);
+    vec3 color = mix(bgColor,lineColor,outPoint-inPct);
+
+    gl_FragColor = vec4(color,1.0);
+
+
+}
+
+
+
+
+
+
+
 void main(){
 //    传统的方式生成矩形
 //    generateRect();
 //  使用顶点生成矩形
-    vertexRect();
+//    vertexRect();
+
+    rectBorder();
 }

@@ -1,6 +1,7 @@
 import { CodeText } from '../../component/codeText.jsx'
 import hsbFragmentShader from './hsbFragmentShader.glsl?url'
 import rectFragmentShader from './rectFragmentShader.glsl?url'
+import shapesFragmentShader from './shapesFragmentShader.glsl?url'
 
 export function Text() {
   return (
@@ -12,11 +13,13 @@ export function Text() {
           模拟了日落 、
           验证参数的引用传递 和 值传递。
           <a href={hsbFragmentShader}>查看</a>
-          <p>这里介绍了如何利用 step函数 和 smoothstep函数 来构造矩形；
-            step函数 的结果 从某些方面看来是特殊的 smoothstep函数 的结果；
-          <a href={rectFragmentShader}> 查看</a>
-          </p>
         </p>
+        <p>这里介绍了如何利用 step函数 和 smoothstep函数 来构造矩形；
+          step函数 的结果 从某些方面看来是特殊的 smoothstep函数 的结果；
+        <a href={rectFragmentShader}> smoothstep 示例</a>与
+        <a href={shapesFragmentShader}> step 示例</a>；
+        </p>
+        <p>在使用 smoothstep 构建边界时，还可以利用其实现边缘的模糊效果；</p>
         <li>HSB</li>
         <p>HSB 代表 hue(色调),saturation(饱和度),brightness(亮度)</p>
         <p>另外：</p>

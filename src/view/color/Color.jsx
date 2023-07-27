@@ -11,6 +11,7 @@ import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import colorFragmentShader from './colorFragmentShader.glsl?raw'
 import hsbFragmentShader from './hsbFragmentShader.glsl?raw'
 import rectFragmentShader from './rectFragmentShader.glsl?raw'
+import shapesFragmentShader from './shapesFragmentShader.glsl?raw'
 
 export class Color extends Component {
   constructor(props) {
@@ -20,11 +21,16 @@ export class Color extends Component {
     this.renderColor = this.renderColor.bind(this)
     this.renderHSB = this.renderHSB.bind(this)
     this.renderRect = this.renderRect.bind(this)
+    this.renderShapes = this.renderShapes.bind(this)
   }
   componentDidMount() {
     // this.renderColor()
     // this.renderHSB()
-    this.renderRect()
+    // this.renderRect()
+    this.renderShapes()
+  }
+  renderShapes() {
+    this.renderScene(shapesFragmentShader, commonVertexShader)
   }
   renderRect() {
     this.renderScene(rectFragmentShader, commonVertexShader)
@@ -93,6 +99,7 @@ export class Color extends Component {
             <button onClick={this.renderColor}>Color</button>
             <button onClick={this.renderHSB}>HSB</button>
             <button onClick={this.renderRect}>Rect</button>
+            <button onClick={this.renderShapes}>Shape</button>
           </div>
         </CanvasComponent>
         <Text />
