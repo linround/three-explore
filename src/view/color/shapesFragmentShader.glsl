@@ -67,8 +67,56 @@ void Floor(in vec2 st){
 
 
 
+//
+float smoothBorder(float edge,float value,float blur){
+    return smoothstep(edge-blur,edge,value)-smoothstep(edge,edge+blur,value);
+}
 
 
+// r 半径
+// center 圆的中心坐标
+// st 圆所在平面坐标
+// format 是否使用平滑smooth 边缘
+float makeCirle(float r,vec2 center,in vec2 st,bool format ){
+    float len = distance(center,st);
+    float pct = 0.0;
+    float borderWidth = 0.005;
+
+    //    format 用来判断是否使用smooth 来平滑边缘
+    if(format) {
+        float blur = 0.02;
+        pct = smoothBorder(r,len,blur);
+    } else {
+        float outPct = step(r,len);
+        float inPct = step(r+borderWidth,len);
+        pct = outPct - inPct;
+    }
+    return pct;
+}
+
+
+void circle(in vec2 st){
+
+
+
+    vec2 center =vec2(0.5);
+    float r = 0.1;
+    vec3 bgColor = vec3(st.x);
+
+
+//    几何step 函数可以绘制一个圆
+    float pct = makeCirle(r,center,st,false);
+    vec3 borderColor = vec3(1.0,1.0,0.0);
+    vec3 color = mix(bgColor,borderColor,pct);
+
+
+//    这里使用的smoothstep绘制了一个外圆，通过调节 blur 实现边缘的模糊效果
+    float smoothPct = makeCirle(r*2.0,center,st,true);
+    vec3 smoothColor = vec3(0.0,0.0,1.0);
+    color = mix(color,smoothColor,smoothPct);
+
+    gl_FragColor = vec4(color,1.0);
+}
 
 
 
@@ -77,9 +125,12 @@ void main() {
 // 基础语句
 //  shapes(st);
 
-    // 使用 step 函数
-    Step(st);
+    // 使用 step 函数 绘制一个矩形
+//    Step(st);
 
 //    Floor(st);
+
+//
+    circle(st);
 
 }

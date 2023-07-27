@@ -160,7 +160,8 @@ void main(){
 //    传统的方式生成矩形
 //    generateRect();
 //  使用顶点生成矩形
-//    vertexRect();
+    vertexRect();
 
-    rectBorder();
+// 这里可以根据顶点生成对应宽度的矩形轮廓
+//    rectBorder();
 }

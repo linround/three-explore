@@ -99,7 +99,7 @@ export class Color extends Component {
             <button onClick={this.renderColor}>Color</button>
             <button onClick={this.renderHSB}>HSB</button>
             <button onClick={this.renderRect}>Rect</button>
-            <button onClick={this.renderShapes}>Shape</button>
+            <button onClick={this.renderShapes}>Shapes</button>
           </div>
         </CanvasComponent>
         <Text />
