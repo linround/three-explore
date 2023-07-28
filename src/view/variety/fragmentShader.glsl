@@ -7,9 +7,8 @@ uniform sampler2D iChannel0;
 
 
 // 根据 坐标生成矩形盒子
-float box(in vec2 st, in vec2 size){
+float box(in vec2 st, in vec2 size,in vec2 center){
     float edge = 0.001;
-    vec2 center = vec2(0.0,0.0);
 
     float nx = center.x-size.x/2.0;
     float px = center.x+size.x/2.0;
@@ -26,9 +25,9 @@ float box(in vec2 st, in vec2 size){
 
 
 // 生成交叉的两个盒子
-float crossBox(in vec2 st,in vec2 size){
-    float horizontal = box(st,size);
-    float vertical = box(st,vec2(size.y,size.x));
+float crossBox(in vec2 st,in vec2 size,in vec2 center){
+    float horizontal = box(st,size,center);
+    float vertical = box(st,vec2(size.y,size.x),center);
     return vertical+horizontal;
 }
 
@@ -63,11 +62,12 @@ void main() {
     vec3 boxColor = vec3(1.0,1.0,1.0);
     vec3 color = vec3(0.0);
 
-    float pct = crossBox(st,vec2(0.3,0.05));
+    float pct = crossBox(st,vec2(0.3,0.05),vec2(0.0,0.0));
     color = mix(color,boxColor,pct);
 
-    float pct2 = crossBox(st,vec2(0.1,0.2));
+    float pct2 = crossBox(st,vec2(0.1,0.2),vec2(0.0,0.0));
     color = mix(color,boxColor,pct2);
+
 
 
     gl_FragColor = vec4(color,1.0);
