@@ -6,7 +6,11 @@ import shapesFragmentShader from './shapesFragmentShader.glsl?url'
 export function Text() {
   return (
     <main>
-      <h1>Color</h1>
+      <h1>Color </h1>
+      <p>
+        色彩空间基础；
+        <a href={'https://zhuanlan.zhihu.com/p/24214731'}>查看</a>
+      </p>
       <ul>
         <p>
           这里包含了颜色空间的转换公式 、
