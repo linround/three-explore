@@ -191,11 +191,19 @@ void makeDistanceFields(in vec2 st){
 
 //    min(dist,vec2(0.3))
 //
-    float multiple = (sin(iTime)+1.0)*10.0;
-    d = length( min(dist,vec2(0.1,0.1)) )*multiple;
+    float multiple = 10.0;
+    d = length( dist )*multiple;
+//    d = length( min(dist,center) )*multiple;
+
+//    产生一个带圆角的矩形
 //    d = length(max(dist,vec2(0.1,0.1)))*10.0;
 //    使用fract 函数对每一段区域进行取小数，来表示颜色
-    color = vec3(fract(d));
+//    color = vec3(fract(d));
+
+//    大于三的全是白色
+//    color = vec3(step(3.0,d));
+
+    color = vec3((step(3.0,d))-(step(4.0,d)));
 
 
     gl_FragColor = vec4(color,1.0);
