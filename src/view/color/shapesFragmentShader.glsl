@@ -298,6 +298,30 @@ void polarShapes(in vec2 st) {
 }
 
 
+void polygon(in vec2 st){
+
+    vec3 color = vec3(0.0);
+    float d = 0.0;
+//    坐标映射到 [-1,1]
+    st = st*2.0-1.0;
+//    多边形的边数
+    int N = (5);
+
+//    当前坐标的角度和半径
+    float a = atan(st.y,st.x);
+    float r = TWO_PI/float(N);
+
+//    距离场
+    d = cos(floor(0.9+a/r)*r-a)*length(st);
+
+    float pct = step(0.4,d);
+    color = vec3(pct);
+
+
+
+    gl_FragColor = vec4(color,1.0);
+}
+
 
 
 
@@ -337,11 +361,13 @@ void main() {
 
 
 // 普通的圆心和半径来构建 圆
-    circleTest(st);
+//    circleTest(st);
 
 
     //    使用极坐标构建形状
-    polarShapes(st);
+//    polarShapes(st);
 
+
+    polygon(st);
 
 }
