@@ -228,6 +228,88 @@ void makeDistanceFields(in vec2 st){
 
 
 
+// 关于如何构建 圆形
+// 化简后 （0.5 -x）2 + y2 = 0.25
+// 以上 通用可以使用极坐标方程
+
+void circle_0_5_0(in vec2 st){
+    vec3 bg = vec3(0.0);
+    vec3 circleColor = vec3(0.0,0.0,1.0);
+
+    vec2 center = vec2(0.5,0);
+    float r = 0.5;
+    vec2 pos = center - st;
+    float len = length(pos);
+    float pct = step(r,len);
+    vec3 color = mix(bg,circleColor,pct);
+    gl_FragColor = vec4(color,1.0);
+
+}
+// 使用方程 （0.5 -x）2 + （0.5 -y）2 = 0.5-y
+//化简后 （0.5 -x）2 + y2 = 0.25
+void circleTest(in vec2 st){
+    vec3 bg = vec3(0.0);
+    vec3 circleColor = vec3(1.0,0.0,0.0);
+
+    vec2 pos = vec2(0.5)-st;
+    float len = length(pos);
+    float r = 0.5;
+
+//    分析这里 在st.y>0.5的上面 始终是小于0的 所哟阶跃函数产生的是1
+//    主要的分析需要注意 st.y < 0.5 的部分
+//    在这一部分 0.5-st.y的值需要小于len2（len2表示len的平方）；
+//    该如何看待这一点？
+    float pct = step(r-st.y,len*len);
+    vec3 color = mix(bg,circleColor,pct);
+    gl_FragColor = vec4(color,1.0);
+//    circle_0_5_0(st);
+
+}
+
+
+
+// 使用极坐标来构建形状
+// 通过改变角度和圆的半径 以此获得不同的形状
+void polarShapes(in vec2 st) {
+    float num = 1.3*sin(iTime)*(sin(iTime)+1.0)/2.0;
+    vec3 color = vec3(0.0,0.0,0.0);
+//    坐标向量
+    vec2 pos = vec2(0.5,0.5)-st;
+    float r = length(pos)*2.0;
+    float a = atan(pos.y,pos.x);
+    float f = (cos(a*num));
+//    f = (cos(a));
+//    f = abs(sin(a));
+//    f = abs(sin(a*10.0));
+
+//    smoothstep 获取的是
+//    小于f 全是0
+//    大于f+0.02 全是1
+    float pct =1.0-smoothstep(f,f+0.02,r);
+//    step(f,r)  f小于 r 是0.0； f大于 r 是1.0
+//    所以区域指的是 cos(a)>leng(pos)
+    pct = step(r,f);
+    vec3 circleColor = vec3(1.0,0.0,0.0);
+    color = mix(color,circleColor,pct);
+
+
+    gl_FragColor = vec4(color,1.0);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -248,9 +330,18 @@ void main() {
 //    makeDotCircle(st);
 
 
+//  关于距离场
+//    makeDistanceFields(st);
 
-    makeDistanceFields(st);
 
+
+
+// 普通的圆心和半径来构建 圆
+    circleTest(st);
+
+
+    //    使用极坐标构建形状
+    polarShapes(st);
 
 
 }
