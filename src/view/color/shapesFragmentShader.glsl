@@ -289,7 +289,7 @@ void polarShapes(in vec2 st) {
 //    step(f,r)  f小于 r 是0.0； f大于 r 是1.0
 //    所以区域指的是 cos(a)>leng(pos)
     pct = step(r,f);
-    vec3 circleColor = vec3(1.0,0.0,0.0);
+    vec3 circleColor = vec3(1.0,1.0,1.0);
     color = mix(color,circleColor,pct);
 
 
@@ -365,9 +365,9 @@ void main() {
 
 
     //    使用极坐标构建形状
-//    polarShapes(st);
+    polarShapes(st);
 
-
-    polygon(st);
+// 构建多边形
+//    polygon(st);
 
 }
