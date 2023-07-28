@@ -126,7 +126,6 @@ export default class Geometry extends Component {
             <button onClick={this.renderStraightLine}>straightLine</button>
             <button onClick={this.renderCurve}>curve</button>
             <button onClick={this.renderSquare}>wave</button>
-            <button onClick={this.renderAnimate}>Animate</button>
             <button onClick={this.renderLight}>imageLight</button>
           </div>
         </CanvasComponent>
