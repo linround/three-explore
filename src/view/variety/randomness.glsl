@@ -103,8 +103,8 @@ vec2 truchetPattern(in vec2 st, in float index){
 
 void randomImage(in vec2 st){
     vec3 color = vec3(0.0,0.0,0.0);
-    vec3 lineColor = vec3(1.0,1.0,0.0);
-    st*=5.0;
+    vec3 lineColor = vec3(1.0,1.0,1.0);
+    st*=10.0;
 
     vec2 ipos = floor(st);
     vec2 fpos = fract(st);
@@ -122,13 +122,12 @@ void randomImage(in vec2 st){
 
 //    在转换后的区域画圆
     float inR = 0.5*(sin(iTime)+1.0)/2.0;
-//    inR = 0.4;
+    inR = 0.4;
     float outR = 1.0-inR;
     float circlePct = step(inR,length(tile-vec2(0.0)))-step(outR,length(tile-vec2(0.0)))
     + step(inR,length(tile-vec2(1.0)))-step(outR,length(tile-vec2(1.0)));
 
-    circlePct *= (sin(iTime)+1.0)/2.0;
-    color = mix(color,lineColor,circlePct);
+//    color = mix(color,lineColor,circlePct);
 
 
     gl_FragColor =vec4(color,1.0);
