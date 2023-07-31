@@ -94,7 +94,7 @@ export class Variety extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderTranslate}>Translate</button>
             <button onClick={this.renderPatterns}>Patterns</button>
-            <button> Random</button>
+            <button onClick={this.renderRandom}> Random</button>
           </div>
         </CanvasComponent>
         <Text />
