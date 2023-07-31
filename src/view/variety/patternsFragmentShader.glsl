@@ -185,7 +185,7 @@ vec3 makeTruchetTiles(in vec2 st,inout vec3 fragColor){
     float cx = st.x;
     float cy = st.y;
     vec3 color = fragColor;
-    vec3 tileColor = vec3(1.0,1.0,1.0);
+    vec3 tileColor = fragColor*0.5;
 
     st = st*2.0;
     st = fract(st);
@@ -214,7 +214,7 @@ void main() {
     color = makeBrick(st,color);
 
 //    生成花样瓷砖
-//    color = makeTruchetTiles(st,color);
+    color = makeTruchetTiles(st,color);
     gl_FragColor = vec4(color,1.0);
 
 }
