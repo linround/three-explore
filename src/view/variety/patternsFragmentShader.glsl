@@ -24,7 +24,7 @@ vec2 roate2d( vec2 st,float angle){
 }
 
 float plot(in float t,in float s){
-    return smoothstep(t-0.01,t,s)-smoothstep(t,t+0.01,s);
+    return smoothstep(t-0.1,t,s)-smoothstep(t,t+0.01,s);
 }
 
 
@@ -71,7 +71,64 @@ void patterns(in vec2 st){
 
 
 
-void complexPatterns(in vec2 st){
+
+vec3 complexPatterns(in vec2 st,inout vec3 fragColor){
+//
+    st = st*8.0;
+    st = fract(st);
+    vec3 color = fragColor;
+
+
+
+
+
+// 将坐标范围转化为 [-1,1]
+    st = (st*2.0)-1.0;
+//    再转化为四个 [0,1]
+    st = abs(st);
+    float v = -st.x+1.6;
+    v = -st.x+1.5*(sin(iTime)+1.0)/2.0;
+    float pct = plot(st.y,v);
+    color = vec3(st.x,st.y,0.0);
+    vec3 lineColor = vec3(1.0,1.0,0.0);
+
+    color = mix(color,lineColor,pct);
+
+    return color;
+}
+
+
+
+
+
+float brick(in vec2 st,in vec2 size,in vec2 center){
+
+    float left = step(center.x-size.x/2.0,st.x);
+    float right = step(center.x+size.x/2.0,st.x);
+    float top = step(center.y+size.y/2.0,st.y);
+    float bottom = step(center.y-size.y/2.0,st.y);
+
+    return (bottom-top)*(left-right);
+}
+vec3 makeBrick(in vec2 st,inout vec3 fragColor){
+    vec2 size = vec2(0.9,0.3);
+    vec2 center = vec2(0.5,0.5);
+    vec3 color = fragColor;
+    vec3 brickColor = vec3(1.0,1.0,0.0);
+
+
+//    划分st
+    st *=8.0;
+    float offsetX = iTime;
+    st.x = st.x + offsetX*step(1.0,mod(st.y,2.0));
+
+    st = fract(st);
+
+
+
+    float pct = brick(st,size,center);
+    color =mix(color,brickColor,pct);
+    return color;
 
 }
 
@@ -81,9 +138,83 @@ void complexPatterns(in vec2 st){
 
 
 
+
+float plotTruchetTiles(in float v, in float s){
+    return smoothstep(v-0.001,v,s);
+}
+
+
+
+vec2 areaRoate2d(in vec2 st,float angle){
+    st-=0.5;
+    st = mat2( cos(angle),-sin(angle),
+    sin(angle),cos(angle)
+    )*st;
+    st+=0.5;
+    return st;
+}
+vec2 divideArea(inout vec2 st) {
+    //    划分坐标
+    st = st*2.0;
+//  不同区域旋转不同
+//
+    float numX = step(1.0,st.x);
+    float numY = step(1.0,st.y);
+    st = fract(st);
+    if(numX<1.0){
+        if(numY<1.0){
+            st = areaRoate2d(st,0.0);
+        }else{
+            st = areaRoate2d(st,PI/2.0);
+        }
+
+    } else if(numX>=1.0){
+        if(numY>=1.0){
+            st = areaRoate2d(st,PI);
+        }else{
+
+            st = areaRoate2d(st,PI*3.0/2.0);
+        }
+    }
+
+    return st;
+}
+
+
+vec3 makeTruchetTiles(in vec2 st,inout vec3 fragColor){
+    float cx = st.x;
+    float cy = st.y;
+    vec3 color = fragColor;
+    vec3 tileColor = vec3(1.0,1.0,1.0);
+
+    st = st*2.0;
+    st = fract(st);
+
+
+//    接着在两个单位区域进行划分
+    st = divideArea(st);
+
+
+
+    float v = -st.x+1.0;
+    float pct = plotTruchetTiles(st.y,v);
+    color = mix(color,tileColor,pct);
+
+    return color;
+}
+
 void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
 //    这个是比较简单的图案
-    patterns(st);
+//    patterns(st);
+
+//    较为复杂的图案
+    vec3 color = complexPatterns(st,gl_FragColor.xyz);
+//    生成墙面的砖块
+    color = makeBrick(st,color);
+
+//    生成花样瓷砖
+//    color = makeTruchetTiles(st,color);
+    gl_FragColor = vec4(color,1.0);
 
 }
