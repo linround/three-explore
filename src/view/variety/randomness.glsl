@@ -121,13 +121,15 @@ void randomImage(in vec2 st){
     color = mix(color,lineColor,pct);
 
 //    在转换后的区域画圆
+    vec3 circleColor = vec3(tile.x,0.0,tile.y);
     float inR = 0.5*(sin(iTime)+1.0)/2.0;
     inR = 0.4;
     float outR = 1.0-inR;
     float circlePct = step(inR,length(tile-vec2(0.0)))-step(outR,length(tile-vec2(0.0)))
     + step(inR,length(tile-vec2(1.0)))-step(outR,length(tile-vec2(1.0)));
+    circlePct*= (sin(iTime)+1.0)/2.0;
 
-//    color = mix(color,lineColor,circlePct);
+    color = mix(color,circleColor,circlePct);
 
 
     gl_FragColor =vec4(color,1.0);
@@ -154,6 +156,8 @@ void main() {
 
 //    生成随机噪声图像
 //    randomPoint(st);
+
+//    可生成随机图案
     randomImage(st);
 
 }
