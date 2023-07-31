@@ -10,6 +10,7 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
 import patternsFragmentShader from './patternsFragmentShader.glsl?raw'
+import randomness from './randomness.glsl?raw'
 
 export class Variety extends Component {
 
@@ -19,6 +20,10 @@ export class Variety extends Component {
     this.renderScene = this.renderScene.bind(this)
     this.renderTranslate = this.renderTranslate.bind(this)
     this.renderPatterns = this.renderPatterns.bind(this)
+    this.renderRandom = this.renderRandom.bind(this)
+  }
+  renderRandom() {
+    this.renderScene(randomness, commonVertexShader)
   }
   renderPatterns() {
     this.renderScene(patternsFragmentShader, commonVertexShader)
@@ -28,7 +33,8 @@ export class Variety extends Component {
   }
   componentDidMount() {
     // this.renderTranslate()
-    this.renderPatterns()
+    // this.renderPatterns()
+    this.renderRandom()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -88,6 +94,7 @@ export class Variety extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderTranslate}>Translate</button>
             <button onClick={this.renderPatterns}>Patterns</button>
+            <button> Random</button>
           </div>
         </CanvasComponent>
         <Text />
