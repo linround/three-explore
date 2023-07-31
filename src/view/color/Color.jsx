@@ -25,9 +25,9 @@ export class Color extends Component {
   }
   componentDidMount() {
     // this.renderColor()
-    // this.renderHSB()
+    this.renderHSB()
     // this.renderRect()
-    this.renderShapes()
+    // this.renderShapes()
   }
   renderShapes() {
     this.renderScene(shapesFragmentShader, commonVertexShader)

@@ -5,8 +5,11 @@ import { Text } from './Text.jsx'
 import * as THREE from 'three'
 import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
+
+
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
+import patternsFragmentShader from './patternsFragmentShader.glsl?raw'
 
 export class Variety extends Component {
 
@@ -15,12 +18,17 @@ export class Variety extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderTranslate = this.renderTranslate.bind(this)
+    this.renderPatterns = this.renderPatterns.bind(this)
+  }
+  renderPatterns() {
+    this.renderScene(patternsFragmentShader, commonVertexShader)
   }
   renderTranslate() {
     this.renderScene(fragmentShader, commonVertexShader)
   }
   componentDidMount() {
-    this.renderTranslate()
+    // this.renderTranslate()
+    this.renderPatterns()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -78,7 +86,8 @@ export class Variety extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button >Translate</button>
+            <button onClick={this.renderTranslate}>Translate</button>
+            <button onClick={this.renderPatterns}>Patterns</button>
           </div>
         </CanvasComponent>
         <Text />

@@ -18,7 +18,7 @@ void sunset(){
     vec3 bgColor = vec3(0.0,0.0,0.0);
     vec3 sunColor = vec3(1.0,1.0,0.0);
 
-    float dist = (1.0-distance(st,point))/1.42;
+    float dist = (1.0-distance(st,point))/1.0;
 
     vec3 color = bgColor + sunColor * dist;
 
@@ -133,8 +133,8 @@ void testIn(){
 
 
 void main() {
-    polarCoordinates();
-//     sunset();
+//    polarCoordinates();
+     sunset();
 //    HSBMap();
 //    验证参数的引用传递和值传递
 //    testIn();
