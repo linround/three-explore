@@ -99,10 +99,10 @@ void dynamicGridCell(in vec2 st){
 //    划分单元格
     st*=6.0;
 
-
     vec2 ist = floor(st);
     vec2 fst = fract(st);
-    float mDist = 1.0;
+    float mDist = 1.0;// 最近的距离
+    vec2 mPoint; // 保留最近的点
 
 //    计算周围单元格中心形成该单元格的距离分布
     for(int y=-1;y<=1;y++){
@@ -117,7 +117,10 @@ void dynamicGridCell(in vec2 st){
 //            减去fst 即可得到在某个邻居中中心点到该网格小数部分的距离
             vec2 diff =neighbor+point-fst;
             float dist = length(diff);
-            mDist = min(mDist,dist);
+            if(dist<mDist){
+                mDist = dist;
+                mPoint = point;
+            }
 
         }
     }
@@ -127,6 +130,7 @@ void dynamicGridCell(in vec2 st){
 
 //    绘制中心
     color = mix(color,vec3(1.0),pct) ;
+    color.z = mPoint.y*mPoint.x;
 
 
 
