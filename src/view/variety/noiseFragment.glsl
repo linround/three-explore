@@ -16,7 +16,6 @@ float random(in vec2 st){
 //    取随机值的小数部分
     float vf = fract(vSin);
 
-
     return vf;
 }
 
