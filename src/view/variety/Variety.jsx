@@ -11,6 +11,7 @@ import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
 import patternsFragmentShader from './patternsFragmentShader.glsl?raw'
 import randomness from './randomness.glsl?raw'
+import noiseFragment from './noiseFragment.glsl?raw'
 
 export class Variety extends Component {
 
@@ -21,6 +22,10 @@ export class Variety extends Component {
     this.renderTranslate = this.renderTranslate.bind(this)
     this.renderPatterns = this.renderPatterns.bind(this)
     this.renderRandom = this.renderRandom.bind(this)
+    this.renderNoise = this.renderNoise.bind(this)
+  }
+  renderNoise() {
+    this.renderScene(noiseFragment, commonVertexShader)
   }
   renderRandom() {
     this.renderScene(randomness, commonVertexShader)
@@ -34,7 +39,8 @@ export class Variety extends Component {
   componentDidMount() {
     // this.renderTranslate()
     // this.renderPatterns()
-    this.renderRandom()
+    // this.renderRandom()
+    this.renderNoise()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -95,6 +101,7 @@ export class Variety extends Component {
             <button onClick={this.renderTranslate}>Translate</button>
             <button onClick={this.renderPatterns}>Patterns</button>
             <button onClick={this.renderRandom}> Random</button>
+            <button onClick={this.renderNoise}> Noise</button>
           </div>
         </CanvasComponent>
         <Text />

@@ -139,9 +139,107 @@ void randomImage(in vec2 st){
 
 
 
+float floatRandom (in float x) {
+    return fract(sin(x)*1e4);
+}
 
 
 
+
+void makeNoise(in vec2 st){
+    st*=vec2(4.0,2.0);
+
+    vec3 color = vec3(0.0,0.0,0.0);
+    vec3 dotColor = vec3(1.0,1.0,0.0);
+
+    float i = float(st.x);
+    float f = fract(st.x);
+
+//
+    float y =floatRandom(i);
+
+//    对坐标的小数部分进行随机插值
+//    使用整数部分生成一个随机插值 范围， 在这个范围内对小数部分进行对应的插值处理
+//    y = mix(floatRandom(i),floatRandom(i+1.0),f);
+//    y = mix(floatRandom(i),floatRandom(i+1.0),smoothstep(0.0,1.0,f));
+
+    float pct = plot(y,st.y);
+    color = mix(color,dotColor,pct);
+
+
+
+
+
+    gl_FragColor = vec4(color,1.0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 2d噪声
+
+float noise(in vec2 st){
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+//   利用四个角度生成随机值
+    float a = random(i);
+    float b = random(i+vec2(1.0,0.0));
+    float c = random(i+vec2(0.0,1.0));
+    float d = random(i+vec2(1.0,1.0));
+
+    float ux = smoothstep(0.0,1.0,f.x);
+    float uy = smoothstep(0.0,1.0,f.y);
+
+
+
+
+    return mix(a,b,ux)+
+    (c-a)*uy*(1.0-ux)+
+    (d-b)*ux*uy;
+}
+
+
+
+
+// 与点的差值不一样
+// 在2D平面中，我们需要利用四个角 进行插值处理
+// 那么 在3d 插值中，我们需要对八个角 进行插值处理
+void make2DNoise(in vec2 st){
+
+    vec2 mouseST = iMouse.xy/iResolution.xy;
+
+    vec3 color = vec3(0.0,0.0,0.0);
+    vec3 dotColor = vec3(1.0,1.0,0.0);
+
+    vec2 pos = vec2(st*5.0);
+
+//     pos = vec2((st*pow(st.x,2.0)*50.0)+mouseST*10.0);
+    float n = noise(pos);
+
+
+
+
+    gl_FragColor = vec4(vec3(n),1.0);
+}
 
 
 // 以下的随机都与sin函数相关
@@ -160,4 +258,10 @@ void main() {
 //    可生成随机图案
     randomImage(st);
 
+
+//    生成噪声
+//    makeNoise(st);
+
+//    2d平面噪声
+//    make2DNoise(st);
 }
