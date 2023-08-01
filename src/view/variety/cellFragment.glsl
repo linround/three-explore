@@ -134,7 +134,7 @@ void dynamicGridCell(in vec2 st){
 
 
 
-//    color.r += step(.99, fst.x) + step(.98, fst.y);
+    color.r += step(.99, fst.x) + step(.98, fst.y);
     gl_FragColor = vec4(color,1.0);
 
 }
