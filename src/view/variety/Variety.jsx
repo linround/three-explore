@@ -13,6 +13,7 @@ import patternsFragmentShader from './patternsFragmentShader.glsl?raw'
 import randomness from './randomness.glsl?raw'
 import noiseFragment from './noiseFragment.glsl?raw'
 import cellFragment from './cellFragment.glsl?raw'
+import fogFragment from  './fogFragment.glsl?raw'
 
 export class Variety extends Component {
 
@@ -25,6 +26,10 @@ export class Variety extends Component {
     this.renderRandom = this.renderRandom.bind(this)
     this.renderNoise = this.renderNoise.bind(this)
     this.renderCell = this.renderCell.bind(this)
+    this.renderFog = this.renderFog.bind(this)
+  }
+  renderFog() {
+    this.renderScene(fogFragment, commonVertexShader)
   }
   renderCell() {
     this.renderScene(cellFragment, commonVertexShader)
@@ -47,6 +52,7 @@ export class Variety extends Component {
     // this.renderRandom()
     // this.renderNoise()
     this.renderCell()
+    // this.renderFog()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -109,6 +115,7 @@ export class Variety extends Component {
             <button onClick={this.renderRandom}> Random</button>
             <button onClick={this.renderNoise}> Noise</button>
             <button onClick={this.renderCell}> Cell</button>
+            <button onClick={this.renderFog}> Fog</button>
           </div>
         </CanvasComponent>
         <Text />

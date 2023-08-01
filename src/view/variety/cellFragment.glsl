@@ -97,7 +97,7 @@ void dynamicGridCell(in vec2 st){
 
     vec3 color = vec3(0.0);
 //    划分单元格
-    st*=6.0;
+    st*=8.0;
 
     vec2 ist = floor(st);
     vec2 fst = fract(st);
@@ -111,6 +111,7 @@ void dynamicGridCell(in vec2 st){
 
 //            计算其邻居的随机中心位置以及自己的中心位置
             vec2 point = random2(ist+neighbor);
+
             point = 0.5+0.5*sin(iTime+TWO_PI*point);
 
 //            point 计算的是 某个点的随机位置。加上neighbor即可得到该 网格的中心位置
@@ -126,7 +127,10 @@ void dynamicGridCell(in vec2 st){
     }
 
     color = vec3(mDist);
-    float pct = 1.-step(.02, mDist);
+
+
+//    如果该点的及其周围八个邻点
+    float pct = 1.-step(.03, mDist);
 
 //    绘制中心
     color = mix(color,vec3(1.0),pct) ;
