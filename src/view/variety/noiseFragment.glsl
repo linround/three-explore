@@ -107,8 +107,8 @@ float circle(vec2 st,float radius){
     f+=sin(angle*50.0)*0.05*noise(st+iTime*0.2);
 
     float m = abs(mod(angle+iTime*2.0,TWO_PI)-PI)/3.6;
-    m+=noise(st+iTime*0.1)*0.5;
-    f+=sin(angle*200.0)*0.1*pow(m,0.2);
+    m+=noise(st+iTime*0.1)*1.5;
+    f+=sin(angle*200.0)*0.1*pow(m,2.);
 
 
 
@@ -127,7 +127,7 @@ void makeShape(in vec2 st){
     vec3 color = vec3(0.0,0.0,0.0);
     vec3 lineColor = vec3(1.0,1.0,0.0);
 
-    float pct = borderCircle(st,0.8,0.02);
+    float pct = borderCircle(st,0.8,0.01);
     color = mix(color,lineColor,pct);
 
     gl_FragColor = vec4(color,1.0);
