@@ -86,6 +86,49 @@ void gridCell(in vec2 st){
 }
 
 
+void relativeGridCell(in vec2 st){
+    st*=3.0;
+    vec2 ist = floor(st);
+    vec2 fst = fract(st);
+
+    vec2 nxy[9];
+    nxy[0] = vec2(-1.0,-1.0);
+    nxy[1] = vec2(-1.0,0.0);
+    nxy[2] = vec2(-1.0,1.0);
+    nxy[3] = vec2(0.0,-1.0);
+    nxy[4] = vec2(0.0,0.0);
+    nxy[5] = vec2(0.0,1.0);
+    nxy[6] = vec2(1.0,-1.0);
+    nxy[7] = vec2(1.0,0.0);
+    nxy[8] = vec2(1.0,1.0);
+
+
+
+
+
+    float mdist = 1.0;
+//    当前网格关键点
+    vec2 pointRandom = random2(ist);
+
+    for(int i=0;i<9;i++){
+
+        vec2 neighbor = nxy[i];
+        //            找到邻网格的随机点
+        vec2 neighborRandom = random2(ist+neighbor);
+        //          邻网格关键点
+        vec2 neighborPointkey = ist+neighbor+neighborRandom;
+
+        vec2 diff = neighborRandom+neighbor-fst;
+        float len = length(diff);
+        mdist = min(mdist,len);
+    }
+
+    vec3 color = vec3(mdist);
+    gl_FragColor = vec4(color,1.0);
+
+}
+
+
 
 
 
@@ -126,7 +169,7 @@ void dynamicGridCell(in vec2 st){
         }
     }
 
-    color = vec3(mDist);
+    color = vec3(1.0-mDist);
 
 
 //    如果该点的及其周围八个邻点
@@ -157,7 +200,7 @@ void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
 //    cell(st);
 
-    gridCell(st);
-//
-//    dynamicGridCell(st);
+//    gridCell(st);
+//      relativeGridCell(st);
+    dynamicGridCell(st);
 }

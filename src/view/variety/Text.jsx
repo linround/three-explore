@@ -1,7 +1,8 @@
 import cellFragment from './cellFragment.glsl?url'
 import cell1 from './cell_1.png?url'
 import cell2 from './cell_2.png?url'
-import cell3 from './cell_3.gif?url'
+import cell5 from './cell_5.gif?url'
+import cell4 from './cell_4.png?url'
 export function Text() {
   return (
     <main>
@@ -28,9 +29,12 @@ export function Text() {
           <p>计算该网格内的小数坐标部分到 该网格关键点的距离，以此距离代表该网格内某一点的像素值；</p>
         </ul>
         <img src={cell2}/>
-        <li>使得静态网格内部的坐标点，与周围关键点行成一个相关性</li>
+        <li>使得静态网格内部的坐标点的距离场，与周围网格关键点行成一个相关性</li>
         <p>以3*3的九宫格为例；<a>周围关键点</a>主要是指周围网格的关键点</p>
         <p>在九宫格中，以中心点为 (x,y) 坐标；那么其周围的<a>八个</a>格子坐标分别 (x+-01,y+-01) </p>
+        <img src={cell4}/>
+        <p></p>
+        <img src={cell5}/>
       </ul>
     </main>
   )
