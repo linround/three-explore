@@ -14,7 +14,7 @@ void cell(in vec2 st){
     points[1] = vec2(0.2,0.8);
     points[2] = vec2(0.8,0.65);
     points[3] = vec2(0.32,0.25);
-    points[4] = iMouse/iResolution.xy;
+    points[4] = vec2(0.5,0.5);
 
 
     float mDist = 1.0;
@@ -78,6 +78,7 @@ void gridCell(in vec2 st){
         //    绘制这个中心点
         //    距离中心点小于0.02的都是0，外部都是1
         float pct = step(0.02,dist);
+
         color=mix(color,centerColor,1.0-pct);
     }
 
@@ -97,7 +98,7 @@ void dynamicGridCell(in vec2 st){
 
     vec3 color = vec3(0.0);
 //    划分单元格
-    st*=8.0;
+    st*=3.0;
 
     vec2 ist = floor(st);
     vec2 fst = fract(st);
@@ -122,7 +123,6 @@ void dynamicGridCell(in vec2 st){
                 mDist = dist;
                 mPoint = point;
             }
-
         }
     }
 
@@ -157,7 +157,7 @@ void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
 //    cell(st);
 
-//    gridCell(st);
-
-    dynamicGridCell(st);
+    gridCell(st);
+//
+//    dynamicGridCell(st);
 }
