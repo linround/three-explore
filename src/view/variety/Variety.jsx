@@ -51,8 +51,8 @@ export class Variety extends Component {
     // this.renderPatterns()
     // this.renderRandom()
     // this.renderNoise()
-    this.renderCell()
-    // this.renderFog()
+    // this.renderCell()
+    this.renderFog()
   }
 
   renderScene(fragmentShader, vertexShader) {
