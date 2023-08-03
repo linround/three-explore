@@ -45,7 +45,7 @@ vec2 Project(vec3 p0)
 
 //Angle-axis rotation
 
-// 以某个向量u为轴，绕u向量旋转 角度 a
+// 以u向量为轴，绕u向量旋转 角度 a
 mat4 Rotate(vec3 u,float a)
 {
     float c = cos(a);
