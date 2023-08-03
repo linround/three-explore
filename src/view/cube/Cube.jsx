@@ -7,54 +7,22 @@ import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
 
+import cubeShader from './cubeShader.glsl?raw'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
-import fragmentShader from './fragmentShader.glsl?raw'
-import patternsFragmentShader from './patternsFragmentShader.glsl?raw'
-import randomness from './randomness.glsl?raw'
-import noiseFragment from './noiseFragment.glsl?raw'
-import cellFragment from './cellFragment.glsl?raw'
-import fogFragment from  './fogFragment.glsl?raw'
 
-export class Variety extends Component {
-
+export class Cube extends Component {
   constructor(props) {
     super(props)
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
-    this.renderTranslate = this.renderTranslate.bind(this)
-    this.renderPatterns = this.renderPatterns.bind(this)
-    this.renderRandom = this.renderRandom.bind(this)
-    this.renderNoise = this.renderNoise.bind(this)
-    this.renderCell = this.renderCell.bind(this)
-    this.renderFog = this.renderFog.bind(this)
-  }
-  renderFog() {
-    this.renderScene(fogFragment, commonVertexShader)
-  }
-  renderCell() {
-    this.renderScene(cellFragment, commonVertexShader)
-  }
-  renderNoise() {
-    this.renderScene(noiseFragment, commonVertexShader)
-  }
-  renderRandom() {
-    this.renderScene(randomness, commonVertexShader)
-  }
-  renderPatterns() {
-    this.renderScene(patternsFragmentShader, commonVertexShader)
-  }
-  renderTranslate() {
-    this.renderScene(fragmentShader, commonVertexShader)
+    this.renderCube = this.renderCube.bind(this)
   }
   componentDidMount() {
-    // this.renderTranslate()
-    // this.renderPatterns()
-    // this.renderRandom()
-    // this.renderNoise()
-    // this.renderCell()
-    this.renderFog()
+    this.renderCube()
   }
-
+  renderCube() {
+    this.renderScene(cubeShader, commonVertexShader)
+  }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
     const renderer = new THREE.WebGLRenderer({ canvas, })
@@ -104,18 +72,14 @@ export class Variety extends Component {
       y = canvas.height - e.offsetY
     })
   }
+
   render() {
     return (
       <div className={css.container}>
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button onClick={this.renderTranslate}>Translate</button>
-            <button onClick={this.renderPatterns}>Patterns</button>
-            <button onClick={this.renderRandom}> Random</button>
-            <button onClick={this.renderNoise}> Noise</button>
-            <button onClick={this.renderCell}> Cell</button>
-            <button onClick={this.renderFog}> Fog</button>
+            <button onClick={this.renderTranslate}>Cube</button>
           </div>
         </CanvasComponent>
         <Text />

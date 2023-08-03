@@ -1,7 +1,6 @@
 import cellFragment from './cellFragment.glsl?url'
 import cell1 from './cell_1.png?url'
 import cell2 from './cell_2.png?url'
-import cell5 from './cell_5.gif?url'
 import cell4 from './cell_4.png?url'
 export function Text() {
   return (

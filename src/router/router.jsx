@@ -8,6 +8,7 @@ import Geometry from '../view/geometry/geometry.jsx'
 import Native from '../view/native/native.jsx'
 import { Color } from '../view/color/Color.jsx'
 import { Variety } from '../view/variety/Variety.jsx'
+import { Cube } from '../view/cube/Cube.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: 'variety',
         element: <Variety />,
+      },
+      {
+        path: 'cube',
+        element: <Cube />,
       }
     ],
   },
