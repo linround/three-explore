@@ -50,6 +50,9 @@ mat4 Rotate(vec3 u,float a)
 {
     float c = cos(a);
     float s = sin(a);
+//    在四元数的介绍中 2.1
+//    https://krasjet.github.io/quaternion/quaternion.pdf
+//    在进行任何计算之前需要将这个旋转轴u 转化为一个单位向量
     u = normalize(u);
 
     vec3 c0 = vec3(c + (u.x*u.x) * (1.0-c), (u.y*u.x) * (1.0-c) + (u.z*s), (u.z*u.x) * (1.0-c) - (u.y*s));
