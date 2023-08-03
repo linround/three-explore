@@ -34,7 +34,9 @@ export function Text() {
         <p>在九宫格中，以中心点为 (x,y) 坐标；那么其周围的<a>八个</a>格子坐标分别 (x+-01,y+-01) </p>
         <img src={cell4}/>
         <p></p>
-        <img src={cell5}/>
+        <iframe width="640" height="360" frameBorder="0"
+          src="https://www.shadertoy.com/embed/dtfyRl?gui=true&t=10&paused=true&muted=false"
+          allowFullScreen></iframe>
       </ul>
     </main>
   )

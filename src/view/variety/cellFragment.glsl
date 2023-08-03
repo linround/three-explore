@@ -169,7 +169,7 @@ void dynamicGridCell(in vec2 st){
         }
     }
 
-    color = vec3(0.8-mDist);
+    color = vec3(1.0-mDist);
 
 
 //    如果该点的及其周围八个邻点
