@@ -135,6 +135,7 @@ float fbm (in vec2 st){
 
     for(int i=0;i<=OCTAVES;i++){
         value+=amplitude*noise(st);
+//        fbm 算法中 对坐标进行差异化 非常重要，这样才能形成比较细微的点
         st=rot*st*2.0+shift;
         amplitude*=0.5;
     }
