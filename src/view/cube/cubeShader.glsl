@@ -23,7 +23,13 @@ Beams of Light - https://youtu.be/lVdWxKZVYC0
 //Preview of the shape being drawn. (may fall out of sync with the sound when paused)
 
 
-mat4 gModel = mat4(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1);
+
+// 这里定义的
+mat4 gModel = mat4(
+    1,0,0,0, //长 x
+    0,1,0,0, // 宽 z
+    0,0,1,0, // 高 y
+    0,0,0,1);
 
 
 //Single point projection
@@ -38,6 +44,8 @@ vec2 Project(vec3 p0)
 
 
 //Angle-axis rotation
+
+// 以某个向量u为轴，绕u向量旋转 角度 a
 mat4 Rotate(vec3 u,float a)
 {
     float c = cos(a);
@@ -48,12 +56,22 @@ mat4 Rotate(vec3 u,float a)
     vec3 c1 = vec3((u.x*u.y) * (1.0-c) - (u.z*s), c + (u.y*u.y) * (1.0-c), (u.z*u.y) * (1.0-c) + (u.x*s));
     vec3 c2 = vec3((u.x*u.z) * (1.0-c) + (u.y*s), (u.y*u.z) * (1.0-c) - (u.x*s), c + (u.z*u.z) * (1.0-c));
 
-    return mat4(mat3(c0,c1,c2));
+
+    // 也可以写作 mat4(mat3(c0,c1,c2));
+    return mat4(
+    vec4(c0,0.0),
+    vec4(c1,0.0),
+    vec4(c2,0.0),
+    vec4(0.0,0.0,0.0,1.0));
 }
 
 mat4 Scale(vec3 v)
 {
-    return mat4(vec4(v.x,0,0,0), vec4(0,v.y,0,0), vec4(0,0,v.z,0), vec4(0,0,0,1));
+    return mat4(
+    vec4(v.x,0,0,0),
+    vec4(0,v.y,0,0),
+    vec4(0,0,v.z,0),
+    vec4(0,0,0,1));
 }
 
 //Projected line
@@ -109,10 +127,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 //    cout += Line3d(cube[6],cube[4], uv);
 
 //   侧面
-//    cout += Line3d(cube[0],cube[4], uv);
-//    cout += Line3d(cube[5],cube[1], uv);
-//    cout += Line3d(cube[2],cube[6], uv);
-//    cout += Line3d(cube[7],cube[3], uv);
+    cout += Line3d(cube[0],cube[4], uv);
+    cout += Line3d(cube[5],cube[1], uv);
+    cout += Line3d(cube[2],cube[6], uv);
+    cout += Line3d(cube[7],cube[3], uv);
 
     cout *= vec3(1.0,1.0,1.0);
 
