@@ -6,6 +6,7 @@ export function Text() {
       <ul>
         <li>四元数的可视化；<a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>（视频）</a></li>
         <li>四元数与三维旋转；<a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >（pdf）16/73</a></li>
+        <p>2.1节处关于投影的一点点疑问，需要更细致的表示叉乘方式</p>
         <ul>
           <li>复数相乘可以看作：一个转换矩阵乘以另一个复数向量；</li>
           <li>复数相乘可以看作：旋转与缩放的复合；</li>
