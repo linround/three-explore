@@ -52,7 +52,7 @@ void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     vec2 translate = vec2(0.5,0.5);
     mat2 roate = roate2d(iTime);
-    mat2 scale = scale2d(vec2(0.5*sin(iTime)+1.0));
+    mat2 scale = scale2d(vec2(0.5*sin(iTime)+1.0,1.0));
 //    移动中心点
     st-=translate;
 //    绕中心点进行旋转
