@@ -1,3 +1,5 @@
+import img3d from './img/img3d.png?url'
+import img4d from './img/img4d.png?url'
 export function Text() {
   return (
     <main>
@@ -10,6 +12,8 @@ export function Text() {
         <ul>
           <li>复数相乘可以看作：一个转换矩阵乘以另一个复数向量；</li>
           <li>复数相乘可以看作：旋转与缩放的复合；</li>
+          <li><img src={img3d}/></li>
+          <li><img src={img4d}/></li>
         </ul>
         <li>构建立方体</li>
         <></>
