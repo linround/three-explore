@@ -4,6 +4,7 @@ import img2 from './img/img_2.png?url'
 import img3 from './img/img_3.png?url'
 import img4 from './img/img_4.png?url'
 import img5 from './img/img_5.png?url'
+import img6 from './img/img_6.png?url'
 export function Text() {
   return (
     <main>
@@ -12,6 +13,11 @@ export function Text() {
       <ul>
         <li>四元数的可视化；<a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>（视频）</a></li>
         <li>四元数与三维旋转；<a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >（pdf）29/73</a></li>
+
+        <p>图形学基础中与pdf中关于旋转矩阵的最终化简结果如下：</p>
+        <div />
+        <img src={img6}/>
+
         <p>验证二维的复数乘法与旋转缩放的关系</p>
         <p>求得三维空间中，向量v绕向量u旋转 angle角度的通用公式</p>
         <p>求四元数的加减法，标量乘法，以及两个四元数相乘的通用公式</p>
