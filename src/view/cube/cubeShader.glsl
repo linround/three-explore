@@ -35,11 +35,11 @@ mat4 gModel = mat4(
 //Single point projection
 vec2 Project(vec3 p0)
 {
-    vec3 vanish = vec3(0.0,-2.0,0.0);
+    vec3 vanish = vec3(2.0,0.0,0.0);
 
     p0 -= vanish;
 
-    return length(vanish) * p0.xz / p0.y;
+    return length(vanish) / p0.x * p0.yz;
 }
 
 
