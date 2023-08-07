@@ -103,6 +103,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float time = iTime;
 
     gModel *= Scale(vec3(0.25));
+//    这里是对模型进行旋转
     gModel *= Rotate(vec3(0, 0, 1), iTime);
 
     vec3 cube[8];
