@@ -96,14 +96,14 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    vec2 res = iResolution.xy / iResolution.y;
-    vec2 uv = (fragCoord.xy / iResolution.y) - (res / 2.0);
+//    平面坐标
+    vec2 uv = ((fragCoord.xy / iResolution.xy)-0.50)*2.0;
     uv *= 2.0;
 
     float time = iTime;
 
-    gModel *= Scale(vec3(0.25));
-//    这里是对模型进行旋转
+    gModel *= Scale(vec3(0.5));
+//    这里是对模型进行 以z轴为旋转轴 进行旋转
     gModel *= Rotate(vec3(0, 0, 1), iTime);
 
     vec3 cube[8];
@@ -125,10 +125,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     cout += Line3d(cube[2],cube[0], uv);
 
 //    上面
-//    cout += Line3d(cube[4],cube[5], uv);
-//    cout += Line3d(cube[5],cube[7], uv);
-//    cout += Line3d(cube[7],cube[6], uv);
-//    cout += Line3d(cube[6],cube[4], uv);
+    cout += Line3d(cube[4],cube[5], uv);
+    cout += Line3d(cube[5],cube[7], uv);
+    cout += Line3d(cube[7],cube[6], uv);
+    cout += Line3d(cube[6],cube[4], uv);
 
 //   侧面
     cout += Line3d(cube[0],cube[4], uv);
