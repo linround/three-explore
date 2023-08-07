@@ -89,6 +89,7 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     vec2 dir = normalize(p1.xy - p0.xy);
     uv = (uv - p0.xy) * mat2(dir.x, dir.y, -dir.y, dir.x);
 
+//     clamp(x,min,max)  该函数是取一个中间值
     float d = distance(uv, clamp(uv, vec2(0.0), vec2(distance(p0.xy, p1.xy), 0.0)));
 
     return smoothstep(4.0/iResolution.y, 0.0, d);
