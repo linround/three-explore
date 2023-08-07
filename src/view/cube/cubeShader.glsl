@@ -78,16 +78,23 @@ mat4 Scale(vec3 v)
 }
 
 //Projected line
+// 传入三维空间中的两个点坐标  和 一个投影平面
 float Line3d(vec3 p0,vec3 p1,vec2 uv)
 {
+//    p0点被缩放
     p0 = (vec4(p0,1.0) * gModel).xyz;
     p1 = (vec4(p1,1.0) * gModel).xyz;
 
     p0.xy = Project(p0);
     p1.xy = Project(p1);
 
+//    得到投影后的 线段单位向量
     vec2 dir = normalize(p1.xy - p0.xy);
-    uv = (uv - p0.xy) * mat2(dir.x, dir.y, -dir.y, dir.x);
+//    当前坐标 减去 起始点投影的坐标点   *  一个旋转矩阵
+    uv = (uv - p0.xy) * mat2(
+    dir.x, dir.y,
+    -dir.y, dir.x
+    );
 
 //     clamp(x,min,max)  该函数是取一个中间值
     float d = distance(uv, clamp(uv, vec2(0.0), vec2(distance(p0.xy, p1.xy), 0.0)));
@@ -103,7 +110,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     float time = iTime;
 
-    gModel *= Scale(vec3(0.5));
+//    gModel *= Scale(vec3(0.5));
 //    这里是对模型进行 以z轴为旋转轴 进行旋转
     gModel *= Rotate(vec3(0, 0, 1), iTime);
 

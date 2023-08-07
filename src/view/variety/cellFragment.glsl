@@ -194,10 +194,21 @@ void dynamicGridCell(in vec2 st){
 
 
 
-
+// 同样 宽x 为400 高y为800的时候
+// 宽比高 = 400/800=0.5
+// st.x乘以宽高比 实际的x范围变为了0.5
+// 此时在x轴上实际只占用了原图的一半
 
 void main() {
+//    这里可以假设 iResolution 为 宽x 1200 高y 600
+
+//    在做归一化处理的时候，会直接将整个轴认为是1  所以轴之间的比例会影响 到 图像渲染的比例
+//    所以st的初始计算结果虽然宽高是0-1，但是其比例变化了
     vec2 st = gl_FragCoord.xy/iResolution.xy;
+//    这里计算了 宽/高 = 1200/600=2
+//    st.x 乘以宽高比  其范围变味了0-2.所以调节之后的比例 实际的像素的比是1：1的
+//    常用的dpi 为2 时 和这个类似，1px实际代表了两个像素
+    st.x*=iResolution.x/iResolution.y;
 //    cell(st);
 
 //    gridCell(st);
