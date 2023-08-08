@@ -9,6 +9,7 @@ import Native from '../view/native/native.jsx'
 import { Color } from '../view/color/Color.jsx'
 import { Variety } from '../view/variety/Variety.jsx'
 import { Cube } from '../view/cube/Cube.jsx'
+import { Image } from '../view/image/image.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: 'cube',
         element: <Cube />,
+      },
+      {
+        path: 'image',
+        element: <Image />,
       }
     ],
   },
