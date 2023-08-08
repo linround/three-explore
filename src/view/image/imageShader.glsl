@@ -27,9 +27,6 @@ float getKernelWight(){
 void imageProcess(in vec2 uv){
 
 
-//    计算一像素
-    vec2 imgSize = vec2(width,height);
-    vec2 onePixel = vec2(1.0)/imgSize;
 
 
     vec2 roundPoints[9];
@@ -45,6 +42,11 @@ void imageProcess(in vec2 uv){
 
 
     vec4 colorSum = vec4(0.0);
+
+
+    //    计算一像素
+    vec2 imgSize = vec2(width,height);
+    vec2 onePixel = vec2(1.0)/imgSize;
     uv *= imgSize;
 
 
