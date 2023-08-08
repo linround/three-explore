@@ -194,13 +194,6 @@ export default class ShaderIntroduction extends Component {
     }
     requestAnimationFrame(render)
 
-
-
-
-
-
-
-
   }
   componentDidMount() {
     // this.renderNormalScene()
