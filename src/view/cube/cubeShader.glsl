@@ -35,11 +35,12 @@ mat4 gModel = mat4(
 //Single point projection
 vec2 Project(vec3 p0)
 {
-    vec3 vanish = vec3(2.0,0.0,0.0);
 
+    vec3 vanish = vec3(0.0,4.0,0.0);
+//  计算投影方向
     p0 -= vanish;
 
-    return length(vanish) / p0.x * p0.yz;
+    return length(vanish) / p0.y * p0.xz;
 }
 
 
@@ -86,6 +87,7 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     p1 = (vec4(p1,1.0) * gModel).xyz;
 
     p0.xy = Project(p0);
+//    p0.xy = vec2(0.8);
     p1.xy = Project(p1);
 
 //    得到投影后的 线段单位向量
@@ -112,7 +114,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 //    gModel *= Scale(vec3(0.5));
 //    这里是对模型进行 以z轴为旋转轴 进行旋转
-    gModel *= Rotate(vec3(0, 0, 1), iTime);
+    gModel *= Rotate(vec3(0, 0, 1), PI/6.0);
 
     vec3 cube[8];
     cube[0] = vec3(-1,-1,-1);
@@ -131,20 +133,20 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     cout += Line3d(cube[1],cube[3], uv);
     cout += Line3d(cube[3],cube[2], uv);
     cout += Line3d(cube[2],cube[0], uv);
-
-//    上面
+//
+////    上面
     cout += Line3d(cube[4],cube[5], uv);
     cout += Line3d(cube[5],cube[7], uv);
     cout += Line3d(cube[7],cube[6], uv);
     cout += Line3d(cube[6],cube[4], uv);
-
-//   侧面
+//
+////   侧面
     cout += Line3d(cube[0],cube[4], uv);
     cout += Line3d(cube[5],cube[1], uv);
     cout += Line3d(cube[2],cube[6], uv);
     cout += Line3d(cube[7],cube[3], uv);
 
-    cout *= vec3(1.0,1.0,1.0);
+    cout *= vec3(1.0,1.0,0.0);
 
     fragColor = vec4(cout, 1.0);
 }
