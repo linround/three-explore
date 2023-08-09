@@ -38,11 +38,27 @@ mat4 gModel = mat4(
 vec2 Project(vec3 p0)
 {
 
-    vec3 vanish = vec3(0.0,4.0,0.0);
-//  计算投影方向
-    p0 -= vanish;
+//    vec3 vanish = vec3(3.0,0.0,0.0);
+//    //  计算投影方向
+//    p0 -= vanish;
+//
+//    return length(vanish) / p0.x * p0.yz;
 
-    return length(vanish) / p0.y * p0.xz;
+
+//    在z方向上进行观察
+//    以下投影是在xy平面上
+//  Zprp 是观察点，Zvp 是要投影的平面Z轴坐标，投影面距离观察点越近，投影结果就会越小
+    vec3 Zprp = vec3(0.0,0.0,3.0);
+    vec3 Zvp = vec3(0.0,0.0,2.0);
+    float u = (Zvp.z - p0.z)/(Zprp.z-p0.z);
+    //  计算投影方向
+//    1.计算投影点和 观察点的向量
+//    2.计算在投影平面上的投影比例
+//    3.此时利用相似三角形的性质，进行比例计算。得到新的位于投影平面上的坐标点
+    float x = p0.x*(Zprp.z-Zvp.z)/(Zprp.z-p0.z)+Zprp.x*u;
+    float y = p0.y*(Zprp.z-Zvp.z)/(Zprp.z-p0.z)+Zprp.y*u;
+
+    return vec2(x,y);
 }
 
 
@@ -84,10 +100,13 @@ mat4 Scale(vec3 v)
 // 传入三维空间中的两个点坐标  和 一个投影平面
 float Line3d(vec3 p0,vec3 p1,vec2 uv)
 {
-//    p0点被缩放
-    p0 = (vec4(p0,1.0) * gModel).xyz;
-    p1 = (vec4(p1,1.0) * gModel).xyz;
+//    对p0点进行旋转和缩放 得到新的p0点
+    p0 = (gModel*vec4(p0,1.0)).xyz;
+//    对p1点进行旋转和缩放 得到新的p1点
+    p1 = (gModel*vec4(p1,1.0)).xyz;
 
+
+//    对缩放和旋转后的点进行投影
     p0.xy = Project(p0);
 //    p0.xy = vec2(0.8);
     p1.xy = Project(p1);
@@ -108,16 +127,24 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-//    平面坐标
+//    平面坐标映射
     vec2 uv = ((fragCoord.xy / iResolution.xy)-0.50)*2.0;
-    uv *= 2.0;
+//    将空间映射到[-3,3]
+    uv *= 3.0;
 
     float time = iTime;
 
+//    单位矩阵乘以 缩放矩阵 再乘以旋转矩阵
+//    I*S*R
 //    gModel *= Scale(vec3(0.5));
-//    这里是对模型进行 以z轴为旋转轴 进行旋转
-    gModel *= Rotate(vec3(0, 0, 1), PI/6.0);
+//    对gModel 进行了旋转  如果旋转了0° 在使用x,y,z 任意一个轴点进行观察时 都是一样的，结果看起来类似一个平面图形
 
+
+//    以下定义了一个沿着y轴旋转  一定角度 的矩阵  ；所以 当沿着 x轴或z轴 进行观察投影时，可以看到一个相对立体的结果
+    gModel *= Rotate(vec3(0, 1, 0), 1.*PI/6.0);
+
+
+//    定义立方体八个顶点的坐标
     vec3 cube[8];
     cube[0] = vec3(-1,-1,-1);
     cube[1] = vec3( 1,-1,-1);
@@ -130,7 +157,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     vec3 cout = vec3(0);
 
-//    下面
+//    下面 在空间中对点进行透视投影
     cout += Line3d(cube[0],cube[1], uv);
     cout += Line3d(cube[1],cube[3], uv);
     cout += Line3d(cube[3],cube[2], uv);
