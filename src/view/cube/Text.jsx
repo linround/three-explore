@@ -11,6 +11,14 @@ export function Text() {
       <h1>立方体的2D投影</h1>
       <p>实现将立方体投影线在2D平面上，并进行显示</p>
       <ul>
+        <li>投影方案</li>
+        <ul>
+          <li>选定观察点P</li>
+          <li>通过空间坐标变换，将原来的的空间坐标转换为一贯差点为原点，PO为z轴的空间坐标系</li>
+          <p>一开始在世界空间中的做标可以认为是模型的坐标，将模型的坐标转化到观察坐标中，以方便进行在观察平面中进行投影；</p>
+          <p>将模型坐标转化为观察坐标的方式，即将原先所在的坐标系的原点与观察点重合，将原先所在坐标系的轴与观察坐标系的轴进行重合；</p>
+          <li>通过投影将三维空间坐标映射到平行于xoy平面的画布上</li>
+        </ul>
         <li><a href={'https://www.shadertoy.com/view/4dG3RK'}>立方体示例1</a></li>
         <li>四元数的可视化；<a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>（视频）</a></li>
         <li>四元数与三维旋转；<a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >（pdf）29/73</a></li>

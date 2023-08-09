@@ -33,6 +33,8 @@ mat4 gModel = mat4(
 
 
 //Single point projection
+// 该假设 模型的坐标轴 和 实际空间坐标轴 重合时
+//  比如从 y 方向观察 模型 对模型进行投影
 vec2 Project(vec3 p0)
 {
 
