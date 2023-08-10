@@ -147,8 +147,6 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 
 
-    p1 = vec3(0.98,0.98,0.);
-    p0 = vec3(0.,0.0,0.);
 
 //    计算投影后的坐标项链==向量，并进行归一化。这样可以计算得到对应的旋转角度
     vec2 dir = normalize(p1.xy - p0.xy);
@@ -175,7 +173,7 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     float d = distance(ruv, vec2(minx,0.0));
 
 //    d大于0.01的都是 返回0  d<0.0的都是返回1（距离是绝对值，不可能为负）
-    return smoothstep(0.0010, 0.0, d);
+    return smoothstep(0.010, 0.0, d);
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
