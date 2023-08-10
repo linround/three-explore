@@ -146,10 +146,11 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 
 
-
+    /*
+//    这里设点固定两点，是为了更好的模拟判断 点是否在线段之上
     p1 = vec3(0.98,0.98,0.);
     p0 = vec3(0.,0.0,0.);
-
+*/
 //    计算投影后的坐标项链==向量，并进行归一化。这样可以计算得到对应的旋转角度
     vec2 dir = normalize(p1.xy - p0.xy);
     float dist = distance(p1.xy,p0.xy);
