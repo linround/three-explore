@@ -6,11 +6,13 @@ import img4 from './img/img_4.png?url'
 import img5 from './img/img_5.png?url'
 import img6 from './img/img_6.png?url'
 import { CodeText } from '../../component/codeText.jsx'
+import codeUrl from './cubeShader.glsl?url'
+
 export function Text() {
   return (
     <main>
       <h1>立方体的2D投影</h1>
-      <p>实现将立方体投影线在2D平面上，并进行显示</p>
+      <p>实现将立方体投影线在2D平面上，并进行显示 ；<a href={codeUrl}>查看</a></p>
       <CodeText>
         <>
           <p>在shader中的旋转、平移、缩放时，矩阵运算方式与书本中常用的方式不一样</p>
