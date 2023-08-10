@@ -147,26 +147,35 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 
 
+    p1 = vec3(0.98,0.98,0.);
+    p0 = vec3(0.,0.0,0.);
 
 //    计算投影后的坐标项链==向量，并进行归一化。这样可以计算得到对应的旋转角度
     vec2 dir = normalize(p1.xy - p0.xy);
+    float dist = distance(p1.xy,p0.xy);
 
 //    关于如何判断某个点 是否是某条线上的
 //    计算当前坐标 到p0点的向量
 //    将当前向量旋转与 p0p1 方向相同的角度
 
-//    这里将uv与p0之间形成的向量逆时针旋转θ度
-    vec2 ruv = (uv.xy - p0.xy)*mat2(
-        dir.x, dir.y,
-        -dir.y, dir.x
+//    这里将uv与p0之间形成的向量逆时针旋转-θ度
+//    θ是  投影后的p0和p1向量和x轴的角度
+
+    vec2 rc1 =vec2(dir.x, dir.y);
+    vec2 rc2 =vec2(-dir.y, dir.x);
+    vec2 ruv = (uv - p0.xy)*mat2(
+        rc1,rc2 // 注意这是列运算哦
     );
 
-    float minx = clamp(ruv.x,0.0,distance(p0.xy,p1.xy));
+
+//    clamp 进行选择一个较小的
+    float minx = clamp(ruv.x,0.0,dist);
 //     clamp(x,min,max)  该函数是取一个中间值
 //    首先取的p0p1投影在平面上的点的长度
     float d = distance(ruv, vec2(minx,0.0));
 
-    return smoothstep(0.010, 0.0, d);
+//    d大于0.01的都是 返回0  d<0.0的都是返回1（距离是绝对值，不可能为负）
+    return smoothstep(0.0010, 0.0, d);
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
