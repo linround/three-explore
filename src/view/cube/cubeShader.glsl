@@ -164,7 +164,7 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     vec2 rc1 =vec2(dir.x, dir.y);
     vec2 rc2 =vec2(-dir.y, dir.x);
     vec2 ruv = (uv - p0.xy)*mat2(
-        rc1,rc2 // 注意这是列运算哦
+        rc1,rc2 // 注意这是列运算
     );
 
 
