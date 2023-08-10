@@ -83,6 +83,14 @@ mat4 Scale(vec3 v)
     vec4(0,0,0,1));
 }
 
+
+
+float plotPoint(in vec2 center,in vec2 point){
+    float dist = distance(center,point);
+    return dist>0.01?0.0:1.0;
+}
+
+
 //Projected line
 // 传入三维空间中的两个点坐标  和 一个投影平面
 float Line3d(vec3 p0,vec3 p1,vec2 uv)
@@ -97,8 +105,33 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     p0.xy = Project(p0);
     p1.xy = Project(p1);
 
+//    return plotPoint(p0.xy,uv.xy)+plotPoint(p1.xy,uv.xy);// 这里计算的是八个顶点的绘制情况
+
 //    计算投影后的坐标项链==向量，并进行归一化
     vec2 dir = normalize(p1.xy - p0.xy);
+
+
+
+
+
+
+    //    使用传统方式，已知两个点，确认高点是否在其连线上
+    /*
+    vec2 line = p1.xy-p0.xy;
+    float k = line.y/line.x;
+    float b = p1.y-k*p1.x;
+    float y = k*uv.x+b;
+    float dist = abs(y-uv.y);
+
+    float startX = min(p1.x,p0.x)+0.01;
+    float endX = max(p1.x,p0.x)+.01;
+    if(uv.x<startX || uv.x>endX){
+        return 0.0;
+    }
+    return smoothstep(0.010, 0.0, dist);
+    */
+
+
 
 
 //    关于如何判断某个点 是否是某条线上的
@@ -106,15 +139,15 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 //    将当前向量旋转与 p0p1 方向相同的角度
 
 //    这里将uv与p0之间形成的向量逆时针旋转θ度
-    uv = (uv.xy - p0.xy)*mat2(
-    dir.x, dir.y,
-    -dir.y, dir.x
+    vec2 ruv = (uv.xy - p0.xy)*mat2(
+        dir.x, dir.y,
+        -dir.y, dir.x
     );
 
-    float minx = clamp(uv.x,0.0,distance(p0.xy,p1.xy));
+    float minx = clamp(ruv.x,0.0,distance(p0.xy,p1.xy));
 //     clamp(x,min,max)  该函数是取一个中间值
 //    首先取的p0p1投影在平面上的点的长度
-    float d = distance(uv, vec2(minx,0.0));
+    float d = distance(ruv, vec2(minx,0.0));
 
     return smoothstep(0.010, 0.0, d);
 }
