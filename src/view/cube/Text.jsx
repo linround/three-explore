@@ -5,11 +5,23 @@ import img3 from './img/img_3.png?url'
 import img4 from './img/img_4.png?url'
 import img5 from './img/img_5.png?url'
 import img6 from './img/img_6.png?url'
+import { CodeText } from '../../component/codeText.jsx'
 export function Text() {
   return (
     <main>
       <h1>立方体的2D投影</h1>
       <p>实现将立方体投影线在2D平面上，并进行显示</p>
+      <CodeText>
+        <>
+          <p>在shader中的旋转、平移、缩放时，矩阵运算方式与书本中常用的方式不一样</p>
+          <ul>
+            <li>shader中的向量都是行向量</li>
+            <li>使用行向量与矩阵相乘时，一般都是 <a>后乘</a> 该矩阵；</li>
+            <li>shader中的矩阵，是由列向量组成的</li>
+          </ul>
+          <p>在书本中计算时都采用的时列向量来表示普通的向量，而书本中的矩阵都是行向量，所以<a>前乘</a>该矩阵</p>
+        </>
+      </CodeText>
       <ul>
         <li>投影方案</li>
         <ul>

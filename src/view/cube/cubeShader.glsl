@@ -105,11 +105,11 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 //    计算当前坐标 到p0点的向量
 //    将当前向量旋转与 p0p1 方向相同的角度
 
-//    这里将uv与p0之间形成的向量逆时针旋转θ度，是为了后续便于 在x轴上直接进行比较
-    uv = mat2(
-    dir.x, -dir.y,
-    dir.y, dir.x
-    )*(uv.xy - p0.xy);
+//    这里将uv与p0之间形成的向量逆时针旋转θ度
+    uv = (uv.xy - p0.xy)*mat2(
+    dir.x, dir.y,
+    -dir.y, dir.x
+    );
 
     float minx = clamp(uv.x,0.0,distance(p0.xy,p1.xy));
 //     clamp(x,min,max)  该函数是取一个中间值
