@@ -21,10 +21,7 @@ export class Cube extends Component {
     this.renderCube()
   }
   renderCube() {
-    const shaderUrl = './cubeShader.glsl?raw'
-    import(shaderUrl).then((res) => {
-      this.renderScene(res.default, commonVertexShader)
-    })
+    this.renderScene(cubeShader, commonVertexShader)
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
