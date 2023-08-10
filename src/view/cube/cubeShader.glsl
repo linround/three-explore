@@ -147,6 +147,8 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 
 
+    p1 = vec3(0.98,0.98,0.);
+    p0 = vec3(0.,0.0,0.);
 
 //    计算投影后的坐标项链==向量，并进行归一化。这样可以计算得到对应的旋转角度
     vec2 dir = normalize(p1.xy - p0.xy);
@@ -166,14 +168,35 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
     );
 
 
+
+
+    //    这里可以这么认为
+    //    1.ruv逆时针旋转-θ，当uv点是线段上的点的时候
+    //    1.1 可以想象 ruv 即 uv-p0，旋转后的点 位于x轴上，并且 旋转后的点 x坐标位于 0~dist 之间.dist 即 p1-p0可以认为是旋转后的 p1-p0
+    //    1.2 minx 这个时候实际就是取了 uv-p0 的 X坐标
+    //    1.3 这个时候 ruv （uv-p0） 与 （minx，0）。实际是同一个坐标点，此时计算的距离d为0
+
+    //    2. 当点不位于线段上的时候可分为两种情况
+    //    2.1 uv位于线段的延长线上
+    //    2.1.1 当位于线段延长线的时候，对ruv（uv-p0）进行逆时针旋转-θ 度，此时旋转后的 x 坐标 也会位于 0~dist 两端的延长线上
+    //    2.1.2 此时计算的距离 就是取 x坐标 到 0 的距离了 此时会根据误差范围来判定 uv不再线段上
+    //
+    //    2.2 uv位于线段的两侧
+    //    2.2.1 对于位于线段两侧的情况，宣祖安 ruv(uv-p0)在y轴距离上总会与 坐标轴有差距
+    //    2.2.2 这个时候可以直接利用1.1-2 式 。计算y轴距离，或计算该点与两端点之间的距离
+    //    2.2.3 根据误差范围来判断该店是否位于线段之上
+
+
 //    clamp 进行选择一个较小的
-    float minx = clamp(ruv.x,0.0,dist);
+    float minx = clamp(ruv.x,0.0,dist);//1.1-1 式
 //     clamp(x,min,max)  该函数是取一个中间值
-//    首先取的p0p1投影在平面上的点的长度
-    float d = distance(ruv, vec2(minx,0.0));
+//    ruv 已经被旋转过
+//    以下的相当于 将
+
+    float d = distance(vec2(minx,0.0),ruv );// 1.1-2 式
 
 //    d大于0.01的都是 返回0  d<0.0的都是返回1（距离是绝对值，不可能为负）
-    return smoothstep(0.010, 0.0, d);
+    return smoothstep(0.01, 0.0, d);
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
