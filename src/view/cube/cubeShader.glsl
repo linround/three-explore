@@ -91,6 +91,38 @@ float plotPoint(in vec2 center,in vec2 point){
 }
 
 
+float normalCubeLine(vec3 p0,vec3 p1,vec2 uv){
+
+    // 使用传统方式，已知两个点，确认高点是否在其连线上
+    // 对于 p0.x等于p0.y 即斜率为0的情况进行特殊处理
+
+    vec2 line = p1.xy-p0.xy;
+    float k = line.y/line.x;
+    float b = p1.y-k*p1.x;
+    float y = k*uv.x+b;
+    float dist = abs(y-uv.y);
+    float minX = min(p1.x,p0.x)+0.01;
+    float maxX = max(p1.x,p0.x)+.01;
+    float minY = min(p1.y,p0.y)+0.01;
+    float maxY = max(p1.y,p0.y)+.01;
+    if(line.x ==0.0){
+        if(uv.y<maxY && uv.y>minY){
+            if(abs(uv.x - minX)<0.01) {
+                return 1.0;
+            }
+            if(abs(uv.x-maxX)<0.01){
+                return 1.0;
+            }
+        }
+        return 0.0;
+    }else {
+        if(uv.x<minX || uv.x>maxX){
+            return 0.0;
+        }
+        return smoothstep(0.010, 0.0, dist);
+    }
+}
+
 //Projected line
 // 传入三维空间中的两个点坐标  和 一个投影平面
 float Line3d(vec3 p0,vec3 p1,vec2 uv)
@@ -107,32 +139,17 @@ float Line3d(vec3 p0,vec3 p1,vec2 uv)
 
 //    return plotPoint(p0.xy,uv.xy)+plotPoint(p1.xy,uv.xy);// 这里计算的是八个顶点的绘制情况
 
-//    计算投影后的坐标项链==向量，并进行归一化
+
+
+
+    //    return normalCubeLine(p0,p1,uv); // 使用传统的方式绘制立方体
+
+
+
+
+
+//    计算投影后的坐标项链==向量，并进行归一化。这样可以计算得到对应的旋转角度
     vec2 dir = normalize(p1.xy - p0.xy);
-
-
-
-
-
-
-    //    使用传统方式，已知两个点，确认高点是否在其连线上
-    /*
-    vec2 line = p1.xy-p0.xy;
-    float k = line.y/line.x;
-    float b = p1.y-k*p1.x;
-    float y = k*uv.x+b;
-    float dist = abs(y-uv.y);
-
-    float startX = min(p1.x,p0.x)+0.01;
-    float endX = max(p1.x,p0.x)+.01;
-    if(uv.x<startX || uv.x>endX){
-        return 0.0;
-    }
-    return smoothstep(0.010, 0.0, dist);
-    */
-
-
-
 
 //    关于如何判断某个点 是否是某条线上的
 //    计算当前坐标 到p0点的向量
