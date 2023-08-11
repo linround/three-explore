@@ -11,7 +11,7 @@ import codeUrl from './cubeShader.glsl?url'
 export function Text() {
   return (
     <main>
-      <h1>立方体的2D投影</h1>
+      <h1>立方体点的2D投影</h1>
       <p>实现将立方体投影线在2D平面上，并进行显示 ；<a href={codeUrl}>查看</a></p>
       <CodeText>
         <>

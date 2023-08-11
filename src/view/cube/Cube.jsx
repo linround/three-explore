@@ -2,6 +2,7 @@ import { Component, createRef } from 'react'
 import css from './css.module.less'
 import { CanvasComponent } from '../../component/canvas.jsx'
 import { Text } from './Text.jsx'
+import { Plane } from './Plane.jsx'
 import * as THREE from 'three'
 import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
@@ -9,6 +10,7 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 
 import cubeShader from './cubeShader.glsl?raw'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
+import cubePlaneShader from './cubePlaneShader.glsl?raw'
 
 export class Cube extends Component {
   constructor(props) {
@@ -16,9 +18,14 @@ export class Cube extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderCube = this.renderCube.bind(this)
+    this.renderCubePlane = this.renderCubePlane.bind(this)
   }
   componentDidMount() {
-    this.renderCube()
+    // this.renderCube()
+    this.renderCubePlane()
+  }
+  renderCubePlane() {
+    this.renderScene(cubePlaneShader, commonVertexShader)
   }
   renderCube() {
     this.renderScene(cubeShader, commonVertexShader)
@@ -79,9 +86,11 @@ export class Cube extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button onClick={this.renderTranslate}>Cube</button>
+            <button onClick={this.renderCube}>Cube</button>
+            <button onClick={this.renderCubePlane}>CubePlane</button>
           </div>
         </CanvasComponent>
+        <Plane />
         <Text />
       </div>
     )
