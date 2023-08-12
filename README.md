@@ -1,5 +1,8 @@
 # 3D Explore
 Explore th 3D world
+
+https://www.shadertoy.com/user/linround
+
 ## commit规范
 - `feat`：新功能（feature）
 - `fix`：修补bug
