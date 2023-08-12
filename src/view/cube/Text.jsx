@@ -13,6 +13,9 @@ export function Text() {
     <main>
       <h1>立方体点的2D投影</h1>
       <p>实现将立方体投影线在2D平面上，并进行显示 ；<a href={codeUrl}>查看</a></p>
+      <iframe width="640" height="360" frameBorder="0"
+        src="https://www.shadertoy.com/embed/DlSyDW?gui=true&t=10&paused=true&muted=false"
+        allowFullScreen></iframe>
       <CodeText>
         <>
           <p>在shader中的旋转、平移、缩放时，矩阵运算方式与书本中常用的方式不一样</p>
