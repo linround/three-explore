@@ -3,7 +3,7 @@ import { Selector } from '../utils.js'
 
 export function Drag(props) {
   const selector = new Selector()
-  const [offsetX, setOffsetX] = useState(0)
+  const [offsetX, setOffsetX] = useState(600)
   const [offsetY, setOffsetY] = useState(0)
 
   const initInfo = {

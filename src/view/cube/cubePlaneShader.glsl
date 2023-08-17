@@ -6,7 +6,7 @@ uniform sampler2D iChannel0;
 #define LINE
 
 #define DISTCAMERA 10.
-#define SIZE 1.
+#define SIZE 0.5
 
 
 //permet de fixer un point sur la surface d'un triangle (utile pour le zBuffer)
@@ -69,28 +69,28 @@ float line(vec2 uv, vec2 A,vec2 B, float width)
     return mysegment = smoothstep(width,0.,mysegment);
 }
 
-//======================== MATRIX ========================
+//======================== 旋转矩阵  注意是 列向量组成的 ========================
 mat3 rotateX(float angle){
     float cosPhi = cos(angle);
     float sinPhi = sin(angle);
     return mat3(1.,0.,0.,
-    0.,cosPhi,-sinPhi,
-    0.,sinPhi,cosPhi);
+    0.,cosPhi,sinPhi,
+    0.,-sinPhi,cosPhi);
 }
 
 mat3 rotateY(float angle){
     float cosPhi = cos(angle);
     float sinPhi = sin(angle);
-    return mat3(cosPhi,0.,sinPhi,
+    return mat3(cosPhi,0.,-sinPhi,
     0.,1.,0.,
-    -sinPhi,0.,cosPhi);
+    sinPhi,0.,cosPhi);
 }
 
 mat3 rotateZ(float angle){
     float cosPhi = cos(angle);
     float sinPhi = sin(angle);
-    return mat3(cosPhi,-sinPhi,0.,
-    sinPhi,cosPhi,0.,
+    return mat3(cosPhi,sinPhi,0.,
+    -sinPhi,cosPhi,0.,
     0.,0.,1.);
 }
 
@@ -139,22 +139,25 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // normalisation des pixel (from 0 to 1)
     vec2 uv = (2.* fragCoord - iResolution.xy)/iResolution.y;
-    float px_size = 2. / iResolution.y;
     vec3 col = vec3(0.);
 
     vec3 verticesCube[8];
     for(int i=0;i<8;i++)
     {
 
+//      设置顶点坐标
         verticesCube[i] =  vertices[i] * rotateX(iTime) * rotateY(iTime) *rotateZ(iTime);
+//        verticesCube[i] =  vertices[i] * rotateX(iTime) ;
+//        verticesCube[i] =  vertices[i] * rotateY(iTime) ;
+//        verticesCube[i] =  vertices[i] * rotateZ(iTime) ;
         verticesCube[i] = verticesCube[i] *  scaleXYZ(vec3(SIZE,SIZE,SIZE));
         verticesCube[i].z += DISTCAMERA;
 
         //perspective pour la profondeur
-        float ooz = 1. / verticesCube[i].z;
+//        float ooz = 1. / verticesCube[i].z;
 
-        verticesCube[i].x = ooz* verticesCube[i].x*2.;
-        verticesCube[i].y =  ooz * verticesCube[i].y*2.;
+//        verticesCube[i].x = ooz* verticesCube[i].x*2.;
+//        verticesCube[i].y =  ooz * verticesCube[i].y*2.;
 
     }
 
@@ -167,7 +170,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         coordTri[2]= vec3(verticesCube[triOrderC[i]].xy,0.);
 
         //ZBUFFER
-        vec3 moypos = zFix(vec3(uv,0.),verticesCube[triOrderA[i]],verticesCube[triOrderB[i]],verticesCube[triOrderC[i]]);
+        vec3 moypos = zFix(
+        vec3(uv,0.),
+        verticesCube[triOrderA[i]],
+        verticesCube[triOrderB[i]],
+        verticesCube[triOrderC[i]]);
         float dist = dist(vec3(0.,0.,0.),moypos);
         if(inTriangle(uv,coordTri)){
             if(dist <= zBuffer){

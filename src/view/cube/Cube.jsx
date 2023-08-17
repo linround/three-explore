@@ -88,6 +88,7 @@ export class Cube extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderCube}>Cube</button>
             <button onClick={this.renderCubePlane}>CubePlane</button>
+
           </div>
         </CanvasComponent>
         <Plane />

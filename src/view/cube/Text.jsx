@@ -106,7 +106,6 @@ export function Text() {
           <li>视口变换</li>
           <li>视口坐标 DC</li>
         </ul>
-        模型坐标
         <></>
       </ul>
     </main>
