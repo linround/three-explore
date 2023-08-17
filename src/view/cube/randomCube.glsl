@@ -22,11 +22,41 @@ mat4 roateMat(in vec3 u,in float theta){
 
 
 
-// 从z轴 进行平行正交投影
-float projectOrthographicLine(in vec3 p0,in vec3 p1,in vec2 uv){
-    float pct = 0.0;
-    vec2 dir = normalize(p1.xy-p0.xy); // 计算方向向量
-    float len = distance(p1.xy,p0.xy); // 计算向量长度
+
+// 点的正交投影
+vec2 pointOrthographic(in vec3 point){
+    return vec2(point.x,point.y);
+}
+
+// 点的透视投影
+vec2 pointPerspective(vec3 point){
+    vec3 projectPoint = vec3(0.,0.,10.);
+    vec3 viewPlane = vec3(0.,0.,7.);
+
+    // 利用相似三角形原理
+    float aspect = (viewPlane.z - projectPoint.z)/(point.z-projectPoint.z);
+    float x = aspect * (point.x-projectPoint.x)+projectPoint.x;
+    float y = aspect * (point.y-projectPoint.y)+projectPoint.y;
+    return vec2(x,y);
+}
+
+float project(in vec3 p0,in vec3 p1,in vec2 uv){
+
+    vec2 pp0;
+    vec2 pp1;
+
+    // 点的正交投影
+    pp0 = pointOrthographic(p0);
+    pp1 = pointOrthographic(p1);
+    // 点的透视投影
+    pp0 = pointPerspective(p0);
+    pp1 = pointPerspective(p1);
+
+
+
+
+    vec2 dir = normalize(pp1.xy-pp0.xy); // 计算方向向量
+    float len = distance(pp1.xy,pp0.xy); // 计算向量长度
     float cosTheta = dir.x;
     float sinTheta = dir.y;
 
@@ -36,17 +66,10 @@ float projectOrthographicLine(in vec3 p0,in vec3 p1,in vec2 uv){
     vec2(-sinTheta,cosTheta)
     );
 
-    uv = (uv-p0.xy)*roate2D; // 旋转 -Θ 度。，然后比较在x轴上的距离;此时注意起点要以p0为起点。
-    float minx = clamp(uv.x,0.0,len); // 在线段内部
-    float d = distance(vec2(minx,0.0),uv);// 直接比较内部垂直点的距离
-    pct = smoothstep(0.01,0.0,d);
-    return pct;
-}
-
-float projectPerspectiveLine(in vec3 p0,in vec3 p1,in vec2 uv){
-    vec3 projectPoint = vec3(0,0,5);
-    vec3 viewPlane = vec3(0,0,2);
-    return 0.0;
+    vec2 roateVector = (uv-p0.xy)*roate2D; // 旋转 -Θ 度。，然后比较在x轴上的距离;此时注意起点要以p0为起点。
+    float minx = clamp(roateVector.x,0.0,len); // 在线段内部
+    float d = distance(vec2(minx,0.0),roateVector);// 直接比较内部垂直点的距离
+    return smoothstep(0.1,0.0,d);
 }
 
 
@@ -58,14 +81,14 @@ float projectPerspectiveLine(in vec3 p0,in vec3 p1,in vec2 uv){
 
 
 
-float project(in vec3 p0,in vec3 p1,in vec2 uv){
-    return projectOrthographicLine(p0,p1,uv);
-}
+
+
+
 
 
 
 void renderLineCube(in vec2 st){
-    float size = 1.0;
+    float size = 2.0;
     // 定义立方体的八个顶点
     vec3 vertexCubes[8] = vec3[](
     vec3(1.,1.,1.),
@@ -97,7 +120,7 @@ void renderLineCube(in vec2 st){
     pct+=project(vertexCubes[0],vertexCubes[5],st);
     pct+=project(vertexCubes[1],vertexCubes[6],st);
     pct+=project(vertexCubes[2],vertexCubes[7],st);
-    pct+=projectOrthographicLine(vertexCubes[3],vertexCubes[4],st);
+    pct+=project(vertexCubes[3],vertexCubes[4],st);
 //
 //
     pct+=project(vertexCubes[5],vertexCubes[6],st);
@@ -118,7 +141,7 @@ void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     // 将范围转换为[-1,1]
     st = (st*2.0)-1.0;
-    // 将范围转换为[-3,3]
-    st*=3.0;
+    // 将范围转换为[-10,10]
+    st*=10.0;
     renderLineCube(st);
 }
