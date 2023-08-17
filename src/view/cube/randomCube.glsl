@@ -13,6 +13,7 @@ mat4 roateMat(in vec3 u,in float theta){
     float c = cos(theta);
     float s = sin(theta);
     u = normalize(u);
+    // 以下是构建一个三维旋转矩阵的列
     vec4 c0 = vec4(u.x*u.x*(1.0-c)+c,u.x*u.y*(1.-c)+u.z*s,u.x*u.z*(1.-c)-u.y*s,0.0);
     vec4 c1 = vec4(u.x*u.y*(1.-c)-u.z*s,u.y*u.y*(1.-c)+c,u.y*u.z*(1.-c)+u.x*s,0.0);
     vec4 c2 = vec4(u.z*u.x*(1.-c)+u.y*s,u.z*u.y*(1.-c)-u.x*s,u.z*u.z*(1.-c)+c,0.0);
@@ -31,7 +32,7 @@ vec2 pointOrthographic(in vec3 point){
 // 点的透视投影
 vec2 pointPerspective(vec3 point){
     vec3 projectPoint = vec3(0.,0.,10.);
-    vec3 viewPlane = vec3(0.,0.,7.);
+    vec3 viewPlane = vec3(0.,0.,2.);
 
     // 利用相似三角形原理
     float aspect = (viewPlane.z - projectPoint.z)/(point.z-projectPoint.z);
@@ -66,7 +67,7 @@ float project(in vec3 p0,in vec3 p1,in vec2 uv){
     vec2(-sinTheta,cosTheta)
     );
 
-    vec2 roateVector = (uv-p0.xy)*roate2D; // 旋转 -Θ 度。，然后比较在x轴上的距离;此时注意起点要以p0为起点。
+    vec2 roateVector = (uv-pp0.xy)*roate2D; // 旋转 -Θ 度。，然后比较在x轴上的距离;此时注意起点要以pp0(投影之后的p0)为起点。
     float minx = clamp(roateVector.x,0.0,len); // 在线段内部
     float d = distance(vec2(minx,0.0),roateVector);// 直接比较内部垂直点的距离
     return smoothstep(0.1,0.0,d);
