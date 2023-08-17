@@ -44,6 +44,8 @@ float projectOrthographicLine(in vec3 p0,in vec3 p1,in vec2 uv){
 }
 
 float projectPerspectiveLine(in vec3 p0,in vec3 p1,in vec2 uv){
+    vec3 projectPoint = vec3(0,0,5);
+    vec3 viewPlane = vec3(0,0,2);
     return 0.0;
 }
 
