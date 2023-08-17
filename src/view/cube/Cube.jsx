@@ -24,8 +24,8 @@ export class Cube extends Component {
   }
   componentDidMount() {
     // this.renderCube()
-    // this.renderCubePlane()
-    this.renderRandomCube()
+    this.renderCubePlane()
+    // this.renderRandomCube()
   }
   renderRandomCube() {
     this.renderScene(randomCube, commonVertexShader)

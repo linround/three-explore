@@ -6,7 +6,7 @@ uniform sampler2D iChannel0;
 #define LINE
 
 #define DISTCAMERA 10.
-#define SIZE 0.5
+#define SIZE 0.25
 
 
 //permet de fixer un point sur la surface d'un triangle (utile pour le zBuffer)
@@ -145,11 +145,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     for(int i=0;i<8;i++)
     {
 
-//      设置顶点坐标
+//      设置顶点坐标.并将顶点坐标沿着x,y,z轴进行旋转
         verticesCube[i] =  vertices[i] * rotateX(iTime) * rotateY(iTime) *rotateZ(iTime);
 //        verticesCube[i] =  vertices[i] * rotateX(iTime) ;
 //        verticesCube[i] =  vertices[i] * rotateY(iTime) ;
 //        verticesCube[i] =  vertices[i] * rotateZ(iTime) ;
+
+//
         verticesCube[i] = verticesCube[i] *  scaleXYZ(vec3(SIZE,SIZE,SIZE));
         verticesCube[i].z += DISTCAMERA;
 
