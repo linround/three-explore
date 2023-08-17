@@ -6,9 +6,6 @@ uniform sampler2D iChannel0;
 #define TWO_PI 6.28318530718
 
 
-
-
-
 mat4 roateMat(in vec3 u,in float theta){
     float c = cos(theta) ;
     float s = sin(theta);
@@ -20,8 +17,6 @@ mat4 roateMat(in vec3 u,in float theta){
     vec4 c3 = vec4(0.,0.,0.,1.);
     return mat4(c0,c1,c2,c3);
 }
-
-
 
 
 // 点的正交投影
@@ -53,9 +48,6 @@ float project(in vec3 p0,in vec3 p1,in vec2 uv){
     pp0 = pointPerspective(p0);
     pp1 = pointPerspective(p1);
 
-
-
-
     vec2 dir = normalize(pp1.xy-pp0.xy); // 计算方向向量
     float len = distance(pp1.xy,pp0.xy); // 计算向量长度
     float cosTheta = dir.x;
@@ -72,20 +64,6 @@ float project(in vec3 p0,in vec3 p1,in vec2 uv){
     float d = distance(vec2(minx,0.0),roateVector);// 直接比较内部垂直点的距离
     return smoothstep(0.1,0.0,d);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void renderLineCube(in vec2 st){
@@ -111,7 +89,6 @@ void renderLineCube(in vec2 st){
     }
 
 
-
     pct+=project(vertexCubes[0],vertexCubes[1],st);
     pct+=project(vertexCubes[1],vertexCubes[2],st);
     pct+=project(vertexCubes[2],vertexCubes[3],st);
@@ -128,11 +105,6 @@ void renderLineCube(in vec2 st){
     pct+=project(vertexCubes[6],vertexCubes[7],st);
     pct+=project(vertexCubes[7],vertexCubes[4],st);
     pct+=project(vertexCubes[4],vertexCubes[5],st);
-
-
-
-
-
 
 
     color = mix(color,lineColor,pct);
