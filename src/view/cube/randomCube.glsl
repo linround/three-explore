@@ -10,7 +10,7 @@ uniform sampler2D iChannel0;
 
 
 mat4 roateMat(in vec3 u,in float theta){
-    float c = cos(theta);
+    float c = cos(theta) ;
     float s = sin(theta);
     u = normalize(u);
     // 以下是构建一个三维旋转矩阵的列
