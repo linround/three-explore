@@ -112,8 +112,6 @@ vec3(-1.,1.,-1.),
 vec3(1.,1.,-1.)
 );
 
-const int orderA[12] = int[](0,2,0,3,4,6,4,7,0,1,2,3);
-const int orderB[12] = int[](1,3,2,1,5,7,6,5,4,5,6,7);
 
 const int triOrderA[12] = int[](0,1,4,5,0,1,2,3,0,2,1,3);
 const int triOrderB[12] = int[](1,2,5,6,1,4,3,6,2,4,3,5);
