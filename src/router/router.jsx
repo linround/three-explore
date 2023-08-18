@@ -10,6 +10,8 @@ import { Color } from '../view/color/Color.jsx'
 import { Variety } from '../view/variety/Variety.jsx'
 import { Cube } from '../view/cube/Cube.jsx'
 import { Image } from '../view/image/image.jsx'
+import { CurvedSurface } from '../view/curvedSurface/curvedSurface.jsx'
+
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: 'image',
         element: <Image />,
+      },
+      {
+        path: 'curvedSurface',
+        element: <CurvedSurface />,
       }
     ],
   },

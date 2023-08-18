@@ -119,7 +119,7 @@ vec3 renderTriangle(in vec2 st ){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
     }
 
-    for(int i=0;i<12;i++){
+    for(int i=0;i<6;i++){
         // 获取三角形的三个顶点
 
         triangle[0] = vertexCubes[triangleVertexA[i]];
