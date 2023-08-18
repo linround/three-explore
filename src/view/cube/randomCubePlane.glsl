@@ -51,23 +51,25 @@ vec3 vertexCubes[8] = vec3[](
 
 // 定义三角形顶点
 // 依次定义 前后 上下 左右
-int triangleVertexA[12] = int[](2,3,0,0,0,1,4,4,1,1,0,0);
-int triangleVertexB[12] = int[](3,7,1,6,1,2,5,6,2,7,3,5);
-int triangleVertexC[12] = int[](7,4,6,5,2,3,6,7,7,6,4,4);
+int triangleVertexA[12] = int[](2,3,0,0,   0,0,4,4,   1,1,0,0);
+int triangleVertexB[12] = int[](3,7,1,6,   1,2,5,6,   2,7,3,5);
+int triangleVertexC[12] = int[](7,4,6,5,   2,3,6,7,   7,6,4,4);
 // 定义每个三角形的颜色
 vec3 triangleColor[12] = vec3[](
-    vec3(1,1,1),
-    vec3(0,1,0),
-    vec3(0,0,1),
-    vec3(1,0,1),
-    vec3(0,1,0),
-    vec3(0,1,0),
-    vec3(0,1,1),
-    vec3(0,1,1),
-    vec3(1,0,0),
-    vec3(1,0,0),
-    vec3(1,0,1),
-    vec3(1,0,1)
+    vec3(1,1,1), // 前
+    vec3(0,1,0), // 前
+    vec3(0,0,1), // 后
+    vec3(1,0,1), // 后
+
+    vec3(1,0,1), // 上
+    vec3(0,1,0), // 上
+    vec3(0,1,1), // 下
+    vec3(0,1,1), // 下
+
+    vec3(1,0,0), // 左
+    vec3(1,0,0), // 左
+    vec3(1,0,1), // 右
+    vec3(1,0,1)  // 右
 );
 
 
@@ -104,11 +106,11 @@ vec3[3] projectVertex(in vec3 triangle[3]){
 }
 
 
-void renderTriangle(in vec2 st ){
+vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 triangle[3];
 
-    mat4 roate = roateMat(vec3(1,1,0),iTime);
+    mat4 roate = roateMat(vec3(1,0,0),PI/2.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
@@ -117,7 +119,7 @@ void renderTriangle(in vec2 st ){
 
 
 
-    for(int i=0;i<4;i++){
+    for(int i=0;i<6;i++){
         // 获取三角形的三个顶点
 
         triangle[0] = vertexCubes[triangleVertexA[i]];
@@ -131,7 +133,7 @@ void renderTriangle(in vec2 st ){
         }
     }
 
-    gl_FragColor = vec4(color,1.0);
+    return color;
 }
 
 void main() {
@@ -139,6 +141,7 @@ void main() {
     // 将范围转换为[-1,1]
     st = (st*2.0)-1.0;
     // 将范围转换为[-10,10]
-    st*=10.0;
-    renderTriangle(st);
+    st*=2.0;
+    vec3 color = renderTriangle(st);
+    gl_FragColor = vec4(color,1.0);
 }
