@@ -63,8 +63,8 @@ vec3 triangleColor[12] = vec3[](
 
     vec3(1,0,1), // 上
     vec3(0,1,0), // 上
-    vec3(0,1,1), // 下
-    vec3(0,1,1), // 下
+    vec3(1,1,0), // 下
+    vec3(1,0,0), // 下
 
     vec3(1,0,0), // 左
     vec3(1,0,0), // 左
@@ -110,7 +110,7 @@ vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 triangle[3];
 
-    mat4 roate = roateMat(vec3(1,0,0),PI/2.0);
+    mat4 roate = roateMat(vec3(1,0,0),iTime*PI/2.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
