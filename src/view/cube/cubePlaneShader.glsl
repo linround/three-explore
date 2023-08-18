@@ -66,7 +66,8 @@ float segment(vec2 u, vec2 a, vec2 b)  {
 float line(vec2 uv, vec2 A,vec2 B, float width)
 {
     float mysegment = segment(uv,A,B);
-    return mysegment = smoothstep(width,0.,mysegment);
+    mysegment = smoothstep(width,0.,mysegment);
+    return mysegment;
 }
 
 //======================== 旋转矩阵  注意是 列向量组成的 ========================
