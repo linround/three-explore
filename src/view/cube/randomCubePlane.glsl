@@ -75,6 +75,9 @@ vec3 triangleColor[12] = vec3[](
 
 bool sameSide(in vec2 uv,in vec3 A,in vec3 B,in vec3 C){
     vec3 p = vec3(uv,0.0);
+    // 以A为起点 AB为某一边
+    // AC和Ap 分别与AB 边进行叉乘
+    // 最终根据两者的叉乘结果 来判断 点p 和 点C 是否在AB边的同一侧
     vec3 side = B-A;
     vec3 n1 = cross(side,C-A);
     vec3 n2 = cross(side,p-A);
