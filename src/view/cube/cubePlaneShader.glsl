@@ -6,12 +6,13 @@ uniform sampler2D iChannel0;
 #define LINE
 
 #define DISTCAMERA 10.
-#define SIZE 0.25
+#define SIZE 1.0
 
 
 //permet de fixer un point sur la surface d'un triangle (utile pour le zBuffer)
 vec3 zFix(vec3 point, vec3 A, vec3 B,vec3 C)
 {
+    // AA BB CC point 都是在z=0 的同一个平面上
     vec3 AA = vec3(A.xy,0.);
     vec3 BB = vec3(B.xy,0.);
     vec3 CC = vec3(C.xy,0.);
@@ -34,14 +35,9 @@ vec3 zFix(vec3 point, vec3 A, vec3 B,vec3 C)
 
 }
 
-float dist(vec3 A, vec3 B)
-{
-    vec3 pos = A-B;
-    return sqrt(pos.x*pos.x+pos.y*pos.y+pos.z*pos.z);
-}
 
-//======================== POLYGONE ========================
-bool sameside(vec2 uv, vec3 A, vec3 B, vec3 C) //permet d'indiquer de quel coté d'une ligne on se trouve (0 ou 1)
+
+bool sameside(vec2 uv, vec3 A, vec3 B, vec3 C)
 {
     vec3 u = vec3(uv.x,uv.y,0.0);
     vec3 valuexy = cross(B-A,C-A);
@@ -51,10 +47,14 @@ bool sameside(vec2 uv, vec3 A, vec3 B, vec3 C) //permet d'indiquer de quel coté
     else{return false;}
 }
 
-bool inTriangle(vec2 uv,vec3 v[3]) // permet d'indiquer si on se trouve bien a l'intérieur d'un triangle (3 ligne)
+bool inTriangle(vec2 uv,vec3 v[3])
+// permet d'indiquer si on se trouve bien a l'intérieur d'un triangle (3 ligne)
 {
-    if(sameside(uv,v[0],v[1],v[2]) && sameside(uv,v[1],v[2],v[0]) && sameside(uv,v[2],v[0],v[1])){return true;}
-    else{return false;}
+    if(sameside(uv,v[0],v[1],v[2]) && sameside(uv,v[1],v[2],v[0]) && sameside(uv,v[2],v[0],v[1])){
+        return true;
+    } else {
+        return false;
+    }
 
 }
 //======================== LINE ========================
@@ -100,7 +100,6 @@ mat3 scaleXYZ(vec3 scale){
     0.,scale.y,0.,
     0.,0.,scale.z);
 }
-//======================== COORD CUBE ========================
 
 // 立方体的八个顶点
 const vec3 vertices[8] = vec3[](
@@ -114,55 +113,51 @@ const vec3 vertices[8] = vec3[](
     vec3(1.,1.,-1.)
 );
 
-
+// 每个立方体面 的三角形三个顶点
+// 共十二个三角形面组成
+// 每个三角形面由三个顶点构成
 const int triOrderA[12] = int[](0,1,4,5,0,1,2,3,0,2,1,3);
 const int triOrderB[12] = int[](1,2,5,6,1,4,3,6,2,4,3,5);
 const int triOrderC[12] = int[](2,3,6,7,4,5,6,7,4,6,5,7);
 
 
 
+// 定义了每个面上三角形的颜色
 const vec3 triCol[12] = vec3[](
-vec3(1.,0.,0.),
-vec3(1.,0.,0.),
-vec3(0.,1.,0.),
-vec3(0.,1.,0.),
-vec3(0.,0.,1.),
-vec3(0.,0.,1.),
-vec3(1.,1.,0.),
-vec3(1.,1.,0.),
-vec3(1.,0.,1.),
-vec3(1.,0.,1.),
-vec3(0.,1.,1.),
-vec3(0.,1.,1.)
+vec3(1.,0.,0.), // 前面
+vec3(1.,0.,0.), // 前面
+vec3(0.,1.,0.), // 后面
+vec3(0.,1.,0.), // 后面
+vec3(0.,0.,1.), // 下面
+vec3(0.,0.,1.), // 下面
+vec3(1.,1.,0.), // 上面
+vec3(1.,1.,0.), // 上面
+vec3(1.,0.,1.), // 左面
+vec3(1.,0.,1.), // 左面
+vec3(0.,1.,1.), // 右面
+vec3(0.,1.,1.)  // 右面
 );
 
-float zBuffer = 300000.;
+float zBuffer = 90.;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    // normalisation des pixel (from 0 to 1)
-    vec2 uv = (2.* fragCoord - iResolution.xy)/iResolution.y;
+    vec2 uv = (2.* fragCoord - iResolution.xy)/iResolution.y; // 坐标点变换到[-1,1]
+    uv*=5.0; // 坐标点变换到 [-5,5]
     vec3 color = vec3(0.);
 
     vec3 verticesCube[8];
+    float angle = TWO_PI/32.;
     for(int i=0;i<8;i++)
     {
+        //设置顶点坐标.并将顶点坐标沿着x,y,z轴进行旋转
+        verticesCube[i] =  vertices[i] * rotateX(angle) * rotateY(angle) *rotateZ(angle);
 
-//      设置顶点坐标.并将顶点坐标沿着x,y,z轴进行旋转
-        verticesCube[i] =  vertices[i] * rotateX(iTime) * rotateY(iTime) *rotateZ(iTime);
-//        verticesCube[i] =  vertices[i] * rotateX(iTime) ;
-//        verticesCube[i] =  vertices[i] * rotateY(iTime) ;
-//        verticesCube[i] =  vertices[i] * rotateZ(iTime) ;
+        float size = 1.0;
+        verticesCube[i] = verticesCube[i] *  scaleXYZ(vec3(size)); // 对顶点进行缩放
+        // 这里为何会需要将z轴 加或减 某个值呢
+        verticesCube[i].z -= DISTCAMERA;
 
-//
-        verticesCube[i] = verticesCube[i] *  scaleXYZ(vec3(SIZE,SIZE,SIZE));
-        verticesCube[i].z += DISTCAMERA;
-
-        //perspective pour la profondeur
-//        float ooz = 1. / verticesCube[i].z;
-
-//        verticesCube[i].x = ooz* verticesCube[i].x*2.;
-//        verticesCube[i].y =  ooz * verticesCube[i].y*2.;
 
     }
 
@@ -180,7 +175,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         verticesCube[triOrderA[i]],
         verticesCube[triOrderB[i]],
         verticesCube[triOrderC[i]]);
-        float dist = dist(vec3(0.,0.,0.),moypos);
+        float dist = distance(vec3(0.,0.,0.),moypos);
         if(inTriangle(uv,coordTri)){
             if(dist <= zBuffer){
                 zBuffer = dist;
