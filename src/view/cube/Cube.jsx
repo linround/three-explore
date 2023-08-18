@@ -12,6 +12,7 @@ import cubeShader from './cubeShader.glsl?raw'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import cubePlaneShader from './cubePlaneShader.glsl?raw'
 import randomCube from './randomCube.glsl?raw'
+import randomCubePlane from './randomCubePlane.glsl?raw'
 
 export class Cube extends Component {
   constructor(props) {
@@ -21,11 +22,16 @@ export class Cube extends Component {
     this.renderCube = this.renderCube.bind(this)
     this.renderCubePlane = this.renderCubePlane.bind(this)
     this.renderRandomCube = this.renderRandomCube.bind(this)
+    this.renderRandomCubePlane = this.renderRandomCubePlane.bind(this)
   }
   componentDidMount() {
     // this.renderCube()
-    this.renderCubePlane()
+    // this.renderCubePlane()
     // this.renderRandomCube()
+    this.renderRandomCubePlane()
+  }
+  renderRandomCubePlane() {
+    this.renderScene(randomCubePlane, commonVertexShader)
   }
   renderRandomCube() {
     this.renderScene(randomCube, commonVertexShader)
@@ -94,6 +100,7 @@ export class Cube extends Component {
           <div className={css.buttons}>
             <button onClick={this.renderCubePlane}>CubePlane</button>
             <button onClick={this.renderRandomCube}>RandomCube</button>
+            <button onClick={this.renderRandomCubePlane}>RandomCubePlane</button>
           </div>
         </CanvasComponent>
         <Plane />

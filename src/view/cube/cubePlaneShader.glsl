@@ -40,6 +40,9 @@ vec3 zFix(vec3 point, vec3 A, vec3 B,vec3 C)
 bool sameside(vec2 uv, vec3 A, vec3 B, vec3 C)
 {
     vec3 u = vec3(uv.x,uv.y,0.0);
+
+    // 以AB为某条边
+    // 判断点 C 和 uv 是否在 AB变得同一侧
     vec3 valuexy = cross(B-A,C-A);
     vec3 valuexz = cross(B-A,u-A);
 
@@ -180,6 +183,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         verticesCube[triOrderA[i]],
         verticesCube[triOrderB[i]],
         verticesCube[triOrderC[i]]);
+
+
         float dist = distance(vec3(0.,0.,0.),moypos);
 
 
