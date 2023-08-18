@@ -113,13 +113,13 @@ vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 triangle[3];
 
-    mat4 roate = roateMat(vec3(1,1,1),PI/4.0);
+    mat4 roate = roateMat(vec3(1,1,1),iTime*PI/4.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
     }
 
-    for(int i=0;i<6;i++){
+    for(int i=0;i<12;i++){
         // 获取三角形的三个顶点
 
         triangle[0] = vertexCubes[triangleVertexA[i]];
