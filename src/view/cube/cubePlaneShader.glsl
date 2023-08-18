@@ -43,12 +43,17 @@ bool sameside(vec2 uv, vec3 A, vec3 B, vec3 C)
     vec3 valuexy = cross(B-A,C-A);
     vec3 valuexz = cross(B-A,u-A);
 
-    if(dot(valuexy,valuexz)>=0.){return true;}
-    else{return false;}
+    if(dot(valuexy,valuexz)>=0.){
+        return true;
+    } else {
+        return false;
+    }
 }
 
+// v 是 三角形三个 z固定且一致的 三维顶点坐标
+// uv 的z轴可以默认与三角形顶点坐标位的z值一样
+// 以上可以认为uv 和 三角形三个顶点在同一个z固定的平面上
 bool inTriangle(vec2 uv,vec3 v[3])
-// permet d'indiquer si on se trouve bien a l'intérieur d'un triangle (3 ligne)
 {
     if(sameside(uv,v[0],v[1],v[2]) && sameside(uv,v[1],v[2],v[0]) && sameside(uv,v[2],v[0],v[1])){
         return true;
@@ -176,6 +181,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         verticesCube[triOrderB[i]],
         verticesCube[triOrderC[i]]);
         float dist = distance(vec3(0.,0.,0.),moypos);
+
+
         if(inTriangle(uv,coordTri)){
             if(dist <= zBuffer){
                 zBuffer = dist;
