@@ -3,6 +3,9 @@ Explore th 3D world
 
 https://www.shadertoy.com/user/linround
 
+## 相关课程
+- [计算几何-邓俊辉](https://www.xuetangx.com/course/THU08091000327/16906681)
+
 ## commit规范
 - `feat`：新功能（feature）
 - `fix`：修补bug
