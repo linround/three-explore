@@ -142,7 +142,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // normalisation des pixel (from 0 to 1)
     vec2 uv = (2.* fragCoord - iResolution.xy)/iResolution.y;
-    vec3 col = vec3(0.);
+    vec3 color = vec3(0.);
 
     vec3 verticesCube[8];
     for(int i=0;i<8;i++)
@@ -184,12 +184,12 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         if(inTriangle(uv,coordTri)){
             if(dist <= zBuffer){
                 zBuffer = dist;
-                col = triCol[i];
+                color = triCol[i];
             }
         }
     }
 
-    fragColor = vec4(col,1.0);
+    fragColor = vec4(color,1.0);
 
 }
 
