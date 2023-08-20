@@ -109,27 +109,43 @@ vec3[3] projectVertex(in vec3 triangle[3]){
 }
 
 
+float getTrangleDeepth(vec3[3] triangle){
+    float deepth = triangle[0].z;
+    for(int i=0;i<3;i++){
+        if(triangle[i].z<deepth){
+            deepth = triangle[i].z;
+        }
+    }
+    return deepth;
+}
+
 vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 triangle[3];
 
-    mat4 roate = roateMat(vec3(1,1,1),PI/4.0);
+    mat4 roate = roateMat(vec3(0,1,1),iTime*PI/4.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
     }
 
-    for(int i=0;i<6;i++){
+    float deepth = -1000.;
+    for(int i=0;i<12;i++){
         // 获取三角形的三个顶点
 
         triangle[0] = vertexCubes[triangleVertexA[i]];
         triangle[1] = vertexCubes[triangleVertexB[i]];
         triangle[2] = vertexCubes[triangleVertexC[i]];
+        float z = getTrangleDeepth(triangle);
         triangle = projectVertex(triangle); // 对坐标点进行投影
 
         // 投影后判断坐标点是否在当前三角形内部
         if(inSide(triangle,st)){
-            color = triangleColor[i];
+
+            if(z>deepth){
+                color = triangleColor[i];
+                deepth = z;
+            }
         }
     }
 
