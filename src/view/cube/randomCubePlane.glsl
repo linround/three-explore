@@ -165,9 +165,9 @@ vec3 renderTriangle(in vec2 st ){
                 sourceTriangle[2],
                 aspect
             );
-            float length = point.z;
-            if(length>deepth){
-                deepth = length;
+            float z = point.z;
+            if(z>deepth){
+                deepth = z;
                 color = triangleColor[i];
             }
         }
