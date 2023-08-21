@@ -47,7 +47,7 @@ vec3 zFix(in vec3 point,in vec3 A,in vec3 B,in vec3 C,in float aspect){
     float d = -normal.x*A.x-normal.y*A.y-normal.z*A.z;
     float x = projectPoint.x + (point.x-projectPoint.x)*aspect;
     float y = projectPoint.y + (point.y-projectPoint.y)*aspect;
-    float z = (normal.x*x+normal.y*y+d)/normal.z;
+    float z = -(normal.x*x+normal.y*y+d)/normal.z;
 
     return vec3(x,y,z);
 }
@@ -141,7 +141,7 @@ vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 sourceTriangle[3];
 
-    mat4 roate = roateMat(vec3(1,1,0),iTime*PI/4.0);
+    mat4 roate = roateMat(vec3(1,1,0),1.*PI/4.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
