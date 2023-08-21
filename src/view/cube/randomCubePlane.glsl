@@ -5,6 +5,9 @@ uniform sampler2D iChannel0;
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
 
+const vec3 projectPoint = vec3(0.,0.,10.);
+const vec3 viewPlane = vec3(0.,0.,2.);
+
 
 mat4 roateMat(in vec3 u,in float theta){
     float c = cos(theta) ;
@@ -24,10 +27,49 @@ vec2 pointOrthographic(in vec3 point){
     return vec2(point.x,point.y);
 }
 
+
+// source 是3维空间中的坐标点
+// target 是2维平面中的投影后的坐标点
+vec3 zFix(vec3 point, vec3 A, vec3 B,vec3 C){
+    vec3 AA = vec3(A.xy,0.);
+    vec3 BB = vec3(B.xy,0.);
+    vec3 CC = vec3(C.xy,0.);
+
+    vec3 v0 = CC - AA;
+    vec3 v1 = BB - AA;
+    vec3 v2 = point - AA;
+
+    float dot00 = dot(v0,v0);
+    float dot01 = dot(v0,v1);
+    float dot02 = dot(v0,v2);
+    float dot11 = dot(v1,v1);
+    float dot12 = dot(v1,v2);
+
+    float inv = 1. / (dot00 * dot11 - dot01 * dot01);
+    float u = (dot11 * dot02 - dot01 * dot12)*inv;
+    float v = (dot00 * dot12 - dot01 * dot02)*inv;
+
+    return A+u*(C-A)+v*(B-A);
+
+
+//    vec3 sV0 = source[1]-source[0];
+//    vec3 sV1 = source[2]-source[0];
+//
+//
+//    vec3 tV0 = target[1]-target[0];
+//    vec3 tV1 = target[2]-target[0];
+//    vec3 tV2 = vec3(point,target[0].z)-target[0];
+//
+//    float u = length(tV0)/length(sV0);
+//    float v = length(tV1)/length(sV1);
+//
+//
+//    return (source[0]+u*sV0 + v*sV1);
+}
+
+
 // 点的透视投影
 vec2 pointPerspective(vec3 point){
-    vec3 projectPoint = vec3(0.,0.,10.);
-    vec3 viewPlane = vec3(0.,0.,2.);
 
     // 利用相似三角形原理
     float aspect = (viewPlane.z - projectPoint.z)/(point.z-projectPoint.z);
@@ -109,42 +151,37 @@ vec3[3] projectVertex(in vec3 triangle[3]){
 }
 
 
-float getTrangleDeepth(vec3[3] triangle){
-    float deepth = triangle[0].z;
-    for(int i=0;i<3;i++){
-        if(triangle[i].z<deepth){
-            deepth = triangle[i].z;
-        }
-    }
-    return deepth;
-}
-
 vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
-    vec3 triangle[3];
+    vec3 sourceTriangle[3];
 
-    mat4 roate = roateMat(vec3(0,1,1),iTime*PI/4.0);
+    mat4 roate = roateMat(vec3(0,1,1),iTime*PI/2.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
+        vertexCubes[i].z -=1.;
     }
-
-    float deepth = -1000.;
+    float deepth = 100.;
     for(int i=0;i<12;i++){
         // 获取三角形的三个顶点
 
-        triangle[0] = vertexCubes[triangleVertexA[i]];
-        triangle[1] = vertexCubes[triangleVertexB[i]];
-        triangle[2] = vertexCubes[triangleVertexC[i]];
-        float z = getTrangleDeepth(triangle);
-        triangle = projectVertex(triangle); // 对坐标点进行投影
+        sourceTriangle[0] = vertexCubes[triangleVertexA[i]];
+        sourceTriangle[1] = vertexCubes[triangleVertexB[i]];
+        sourceTriangle[2] = vertexCubes[triangleVertexC[i]];
+        vec3[3] targetTriangle = projectVertex(sourceTriangle); // 对坐标点进行投影
 
         // 投影后判断坐标点是否在当前三角形内部
-        if(inSide(triangle,st)){
-
-            if(z>deepth){
+        if(inSide(targetTriangle,st)){
+            vec3 point = zFix(
+                vec3(st,0.),
+                sourceTriangle[0],
+                sourceTriangle[1],
+                sourceTriangle[2]
+            );
+            float length = length(point);
+            if(length<=deepth){
+                deepth = length;
                 color = triangleColor[i];
-                deepth = z;
             }
         }
     }

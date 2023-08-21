@@ -2,6 +2,7 @@ uniform vec3 iResolution;
 uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
+#define PI 3.1415926
 #define TWO_PI 6.28318530718
 #define LINE
 
@@ -65,18 +66,6 @@ bool inTriangle(vec2 uv,vec3 v[3])
     }
 
 }
-//======================== LINE ========================
-float segment(vec2 u, vec2 a, vec2 b)  {
-    b -= a, u -= a;
-    return length( u - b * clamp(dot(b, u) / dot(b, b), 0., 1.));
-}
-
-float line(vec2 uv, vec2 A,vec2 B, float width)
-{
-    float mysegment = segment(uv,A,B);
-    mysegment = smoothstep(width,0.,mysegment);
-    return mysegment;
-}
 
 //======================== 旋转矩阵  注意是 列向量组成的 ========================
 mat3 rotateX(float angle){
@@ -111,39 +100,41 @@ mat3 scaleXYZ(vec3 scale){
 
 // 立方体的八个顶点
 const vec3 vertices[8] = vec3[](
-    vec3(-1.,-1.,1.),
-    vec3(1.,-1.,1.),
-    vec3(-1.,1.,1.),
     vec3(1.,1.,1.),
-    vec3(-1.,-1.,-1.),
-    vec3(1.,-1.,-1.),
+    vec3(-1.,1.,1.),
     vec3(-1.,1.,-1.),
-    vec3(1.,1.,-1.)
+    vec3(1.,1.,-1.),
+    vec3(1.,-1.,-1.),
+    vec3(1.,-1.,1.),
+    vec3(-1.,-1.,1.),
+    vec3(-1.,-1.,-1.)
 );
 
 // 每个立方体面 的三角形三个顶点
 // 共十二个三角形面组成
 // 每个三角形面由三个顶点构成
-const int triOrderA[12] = int[](0,1,4,5,0,1,2,3,0,2,1,3);
-const int triOrderB[12] = int[](1,2,5,6,1,4,3,6,2,4,3,5);
-const int triOrderC[12] = int[](2,3,6,7,4,5,6,7,4,6,5,7);
+const int triOrderA[12] = int[](2,3,0,0,   0,0,4,4,   1,1,0,0);
+const int triOrderB[12] = int[](3,7,1,6,   1,2,5,6,   2,7,3,5);
+const int triOrderC[12] = int[](7,4,6,5,   2,3,6,7,   7,6,4,4);
 
 
 
 // 定义了每个面上三角形的颜色
 const vec3 triCol[12] = vec3[](
-vec3(1.,0.,0.), // 前面
-vec3(1.,0.,0.), // 前面
-vec3(0.,1.,0.), // 后面
-vec3(0.,1.,0.), // 后面
-vec3(0.,0.,1.), // 下面
-vec3(0.,0.,1.), // 下面
-vec3(1.,1.,0.), // 上面
-vec3(1.,1.,0.), // 上面
-vec3(1.,0.,1.), // 左面
-vec3(1.,0.,1.), // 左面
-vec3(0.,1.,1.), // 右面
-vec3(0.,1.,1.)  // 右面
+vec3(1,1,1), // 前
+vec3(0,1,0), // 前
+vec3(0,0,1), // 后
+vec3(1,0,1), // 后
+
+vec3(1,0,1), // 上
+vec3(0,1,0), // 上
+vec3(1,1,0), // 下
+vec3(1,0,0), // 下
+
+vec3(1,0,0), // 左
+vec3(1,1,0), // 左
+vec3(1,0,1), // 右
+vec3(0,0,1)  // 右
 );
 
 float zBuffer = 90.;
@@ -155,7 +146,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 color = vec3(0.);
 
     vec3 verticesCube[8];
-    float angle = TWO_PI/32.;
+    float angle = iTime*PI/8.;
     for(int i=0;i<8;i++)
     {
         //设置顶点坐标.并将顶点坐标沿着x,y,z轴进行旋转
@@ -164,6 +155,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         float size = 1.0;
         verticesCube[i] = verticesCube[i] *  scaleXYZ(vec3(size)); // 对顶点进行缩放
         // 这里为何会需要将z轴 加或减 某个值呢
+        // 这里似乎与zBuffer 的值有关
+        // 将整个立方体拉远
         verticesCube[i].z -= DISTCAMERA;
 
 
@@ -173,6 +166,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     for(int i=0;i<12;i++)
     {
         vec3 coordTri[3];
+        // 以正交的方式 构成在z=0平面上的三个顶点
         coordTri[0]= vec3(verticesCube[triOrderA[i]].xy,0.);
         coordTri[1]= vec3(verticesCube[triOrderB[i]].xy,0.);
         coordTri[2]= vec3(verticesCube[triOrderC[i]].xy,0.);
