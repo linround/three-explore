@@ -27,48 +27,34 @@ vec2 pointOrthographic(in vec3 point){
     return vec2(point.x,point.y);
 }
 
+// 计算投影缩放后的比例
+// s 是投影前的三维空间坐标
+// t 是投影后的三维空间坐标
+// 计算得到 投影后/投影前 的比例
+float getAspect(in vec3 s,in vec3 t){
+    float aspect = (t.x-projectPoint.x)/(s.x/projectPoint.x);
+    return aspect;
+}
 
-// source 是3维空间中的坐标点
-// target 是2维平面中的投影后的坐标点
-vec3 zFix(vec3 point, vec3 A, vec3 B,vec3 C){
-    vec3 AA = vec3(A.xy,0.);
-    vec3 BB = vec3(B.xy,0.);
-    vec3 CC = vec3(C.xy,0.);
+// A B C 是未投影平面中不共线的三个顶点
+// 求一个面上某个点的坐标
+vec3 zFix(in vec3 point,in vec3 A,in vec3 B,in vec3 C,in float aspect){
+    // 平面中的两个向量
+    vec3 v0 = B-A;
+    vec3 v1 = C-A;
+    // 求两个向量构成的平面的法向量
+    vec3 normal = cross(v1,v0);
+    float d = -normal.x*A.x-normal.y*A.y-normal.z*A.z;
+    float x = projectPoint.x + (point.x-projectPoint.x)*aspect;
+    float y = projectPoint.y + (point.y-projectPoint.y)*aspect;
+    float z = (normal.x*x+normal.y*y+d)/normal.z;
 
-    vec3 v0 = CC - AA;
-    vec3 v1 = BB - AA;
-    vec3 v2 = point - AA;
-
-    float dot00 = dot(v0,v0);
-    float dot01 = dot(v0,v1);
-    float dot02 = dot(v0,v2);
-    float dot11 = dot(v1,v1);
-    float dot12 = dot(v1,v2);
-
-    float inv = 1. / (dot00 * dot11 - dot01 * dot01);
-    float u = (dot11 * dot02 - dot01 * dot12)*inv;
-    float v = (dot00 * dot12 - dot01 * dot02)*inv;
-
-    return A+u*(C-A)+v*(B-A);
-
-
-//    vec3 sV0 = source[1]-source[0];
-//    vec3 sV1 = source[2]-source[0];
-//
-//
-//    vec3 tV0 = target[1]-target[0];
-//    vec3 tV1 = target[2]-target[0];
-//    vec3 tV2 = vec3(point,target[0].z)-target[0];
-//
-//    float u = length(tV0)/length(sV0);
-//    float v = length(tV1)/length(sV1);
-//
-//
-//    return (source[0]+u*sV0 + v*sV1);
+    return vec3(x,y,z);
 }
 
 
 // 点的透视投影
+// 这里不考虑斜切的情况
 vec2 pointPerspective(vec3 point){
 
     // 利用相似三角形原理
@@ -155,13 +141,12 @@ vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 sourceTriangle[3];
 
-    mat4 roate = roateMat(vec3(0,1,1),iTime*PI/2.0);
+    mat4 roate = roateMat(vec3(1,1,0),iTime*PI/4.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
-        vertexCubes[i].z -=10.;
     }
-    float deepth = 100.;
+    float deepth = -100.;
     for(int i=0;i<12;i++){
         // 获取三角形的三个顶点
 
@@ -172,14 +157,16 @@ vec3 renderTriangle(in vec2 st ){
 
         // 投影后判断坐标点是否在当前三角形内部
         if(inSide(targetTriangle,st)){
+            float aspect = getAspect(sourceTriangle[0],targetTriangle[0]);
             vec3 point = zFix(
-                vec3(st,0.),
+                vec3(st,viewPlane.z),
                 sourceTriangle[0],
                 sourceTriangle[1],
-                sourceTriangle[2]
+                sourceTriangle[2],
+                aspect
             );
-            float length = length(point);
-            if(length<=deepth){
+            float length = point.z;
+            if(length>deepth){
                 deepth = length;
                 color = triangleColor[i];
             }

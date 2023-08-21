@@ -1,8 +1,14 @@
+import img7 from './img/img_7.png?url'
 export function Plane() {
   return (
     <>
       <main>
         <h1>立方体面的2D投影</h1>
+
+        <p>附录：</p>
+        <p> <a href={'https://zhuanlan.zhihu.com/p/267722955'} target={'_blank'} rel="noreferrer">平面方程的求解公式；</a></p>
+        <p><img src={img7}/></p>
+
         <p>对于大立方体的透视投影</p>
         <ul>
           <li>将投影点变换到z轴；(在这里是为了后续方便使用常规的投影矩阵进行投影运算)</li>
