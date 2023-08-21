@@ -98,7 +98,6 @@ export class Cube extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button onClick={this.renderCubePlane}>CubePlane</button>
             <button onClick={this.renderRandomCube}>RandomCube</button>
             <button onClick={this.renderRandomCubePlane}>RandomCubePlane</button>
           </div>
