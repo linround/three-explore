@@ -8,7 +8,9 @@ export function Plane() {
         <p>附录：</p>
         <p> <a href={'https://zhuanlan.zhihu.com/p/267722955'} target={'_blank'} rel="noreferrer">平面方程的求解公式；</a></p>
         <p><img src={img7}/></p>
-
+        <iframe width="640" height="360" frameBorder="0"
+          src="https://www.shadertoy.com/embed/mtByWc?gui=true&t=10&paused=true&muted=false"
+          allowFullScreen></iframe>
         <p>对于大立方体的透视投影</p>
         <ul>
           <li>将投影点变换到z轴；(在这里是为了后续方便使用常规的投影矩阵进行投影运算)</li>
