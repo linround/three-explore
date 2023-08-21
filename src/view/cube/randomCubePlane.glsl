@@ -5,8 +5,8 @@ uniform sampler2D iChannel0;
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
 
-const vec3 projectPoint = vec3(0.,0.,10.);
-const vec3 viewPlane = vec3(0.,0.,2.);
+const vec3 projectPoint = vec3(0.,0.,100.);
+const vec3 viewPlane = vec3(0.,0.,5.);
 
 
 mat4 roateMat(in vec3 u,in float theta){
@@ -159,7 +159,7 @@ vec3 renderTriangle(in vec2 st ){
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
-        vertexCubes[i].z -=1.;
+        vertexCubes[i].z -=10.;
     }
     float deepth = 100.;
     for(int i=0;i<12;i++){
