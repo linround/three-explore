@@ -32,7 +32,7 @@ vec2 pointOrthographic(in vec3 point){
 // t 是投影后的三维空间坐标
 // 计算得到 投影后/投影前 的比例
 float getAspect(in vec3 s,in vec3 t){
-    float aspect = (t.x-projectPoint.x)/(s.x/projectPoint.x);
+    float aspect = (t.x-projectPoint.x)/(s.x-projectPoint.x);
     return aspect;
 }
 
