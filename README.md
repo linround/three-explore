@@ -2,6 +2,7 @@
 Explore th 3D world
 
 https://www.shadertoy.com/user/linround
+https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J
 
 ## 相关课程
 - [计算几何-邓俊辉](https://www.xuetangx.com/course/THU08091000327/16906681)

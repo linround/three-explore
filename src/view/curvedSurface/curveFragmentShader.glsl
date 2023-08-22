@@ -14,5 +14,6 @@ void renderCurve(in vec2 st){
 
 void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
+    st = (st*2.0)-1.0;
     renderCurve(st);
 }
