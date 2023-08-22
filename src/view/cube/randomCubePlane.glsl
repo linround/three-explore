@@ -83,21 +83,22 @@ int triangleVertexA[12] = int[](2,3,0,0,   0,0,4,4,   1,1,0,0);
 int triangleVertexB[12] = int[](3,7,1,6,   1,2,5,6,   2,7,3,5);
 int triangleVertexC[12] = int[](7,4,6,5,   2,3,6,7,   7,6,4,4);
 // 定义每个三角形的颜色
-vec3 triangleColor[12] = vec3[](
-    vec3(1,1,1), // 前
-    vec3(0,1,0), // 前
-    vec3(0,0,1), // 后
-    vec3(1,0,1), // 后
+const float transparency = 0.5;
+vec4 triangleColor[12] = vec4[](
+    vec4(0.5,0.5,0.5,transparency), // 前
+    vec4(0,1,0,transparency), // 前
+    vec4(1,1,1,transparency), // 后
+    vec4(0,0,1,transparency), // 后
 
-    vec3(1,0,1), // 上
-    vec3(0,1,0), // 上
-    vec3(1,1,0), // 下
-    vec3(1,0,0), // 下
+    vec4(1,0,1,transparency), // 上
+    vec4(0,1,0,transparency), // 上
+    vec4(1,1,0,transparency), // 下
+    vec4(1,0,0,transparency), // 下
 
-    vec3(1,0,0), // 左
-    vec3(1,1,0), // 左
-    vec3(1,0,1), // 右
-    vec3(0,0,1)  // 右
+    vec4(1,0,0,transparency), // 左
+    vec4(1,1,0,transparency), // 左
+    vec4(1,0,1,transparency), // 右
+    vec4(0,0,1,transparency)  // 右
 );
 
 
@@ -141,7 +142,7 @@ vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
     vec3 sourceTriangle[3];
 
-    mat4 roate = roateMat(vec3(1,1,0),iTime*PI/4.0);
+    mat4 roate = roateMat(vec3(sin(iTime)*2.,1,0),iTime*PI/4.0);
     float size = 2.0;
     for(int i=0;i<8;i++){
         vertexCubes[i] =(roate*vec4(vertexCubes[i],0.0)).xyz;
@@ -166,9 +167,9 @@ vec3 renderTriangle(in vec2 st ){
                 aspect
             );
             float z = point.z;
-            if(z>deepth){
+            if(z>=deepth){
                 deepth = z;
-                color = triangleColor[i];
+                color = mix(color,triangleColor[i].xyz,triangleColor[i].w);
             }
         }
     }
