@@ -37,10 +37,6 @@ export function Text() {
           <p>转换后的坐标，重要的一点在于能够更加方便的按照比例去计算投影点在投影品面上的坐标</p>
           <li>通过投影将三维空间坐标映射到平行于xoy平面的画布上</li>
         </ul>
-        <li><a href={'https://www.shadertoy.com/view/4dG3RK'}>立方体示例1</a></li>
-        <li>四元数的可视化；<a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>（视频）</a></li>
-        <li>四元数与三维旋转；<a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >（pdf）29/73</a></li>
-
         <p>图形学基础中与pdf中关于旋转矩阵的最终化简结果如下：</p>
         <div />
         <img src={img6}/>

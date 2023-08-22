@@ -6,7 +6,11 @@ export function Plane() {
         <h1>立方体面的2D投影</h1>
 
         <p>附录：</p>
+
+        <p><a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>四元数的可视化（视频）；</a></p>
+        <p><a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >四元数与三维旋转（pdf）；</a></p>
         <p> <a href={'https://zhuanlan.zhihu.com/p/267722955'} target={'_blank'} rel="noreferrer">平面方程的求解公式；</a></p>
+        <p><a href={'https://www.shadertoy.com/view/4dG3RK'}>立方体示例1；</a></p>
         <p><img src={img7}/></p>
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/mtByWc?gui=true&t=10&paused=true&muted=false"
