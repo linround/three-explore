@@ -2,7 +2,11 @@
 Explore th 3D world
 
 https://www.shadertoy.com/user/linround
-https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J
+https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J 
+
+## rust强大的
+https://www.egui.rs/   
+https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 
 ## 相关课程
 - [计算几何-邓俊辉](https://www.xuetangx.com/course/THU08091000327/16906681)

@@ -58,17 +58,25 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         }
 
         // 环境光
-        // m表示物体表面环境光反射系数，用于调整环境光对物体表面的影响
-        // AMBIENT_COL 表示环境光的强度，通常是一个常数
+        // m 表示物体表面环境光反射系数，用于调整环境光对物体表面的影响
+        // AMBIENT_COL 表示环境光的强度，即颜色值，通常是一个常数
         vec3 ambient = m*AMBIENT_COL;
 
         // 漫反射
+        // m 表示物体表面的漫反射系数,用于调整漫反射光对物体表面的影响（如果是使用贴图，就用贴图颜色作为漫反射系数）
+
+        // LIGHT_COL 表示定向光源的强度，即颜色数值
         // dot(normal,lightDir) 表示物体表面法向量normal和光线入射方向向量lightDir的点积
-        // LIGHT_COL 表示定向光源的强度
-        // m表示物体表面的漫反射系数,用于调整漫反射光对物体表面的影响
+        // normal 法线方向
+        // lightDir 光线方向
         vec3 diffuse = m *LIGHT_COL * max(dot(normal, lightDir),0.0);
 
-        // 镜面反射
+
+
+
+
+        // 镜面反射 （高光）
+        //
         vec3 view = normalize(cameraPos - p);
         vec3 reflectDir = normalize(reflect(-lightDir, normal));
         float specStrength = max(dot(reflectDir, view), 0.0);
