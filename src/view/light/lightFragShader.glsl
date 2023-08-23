@@ -29,18 +29,18 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     uv.x *= iResolution.x/iResolution.y;
 
     // Light Colors
-    vec3 AMBIENT_COL = 0.8*vec3(1.0); // White
-    vec3 LIGHT_COL = vec3(0.2, 1.0, 0.2); // Green
+    vec3 AMBIENT_COL = vec3(0.0); // White
+    vec3 LIGHT_COL = vec3(1.); // Green
 
     // Material
     float MAT_SPEC = 80.0; // Shininess
-    vec3 MAT_COL = vec3(0.2, 0.25, 1.0); // Blue #333fff
-    vec3 MAT_COL_2 = vec3(0.2, 0.6, 0.6); // Aqua #339999
+    vec3 MAT_COL = vec3(1.0, 0.0, 0.0); // Blue #333fff
+    vec3 MAT_COL_2 = vec3(1.0, 1.0, 1.0); // Aqua #339999
 
-    float RADIUS = 0.8;
+    float RADIUS = 0.5;
 
-    vec3 cameraPos = vec3(0.0, 0.0, 2.0);
-    vec3 lightPos = vec3(3.0*sin(2.0*iTime), cos(2.0*iTime), RADIUS+0.3);
+    vec3 cameraPos = vec3(0.0, 0.0, 5.0);
+    vec3 lightPos = vec3(0.0, 0., RADIUS+1.9);
 
     if (length(uv) <= RADIUS) {
         // Equation of a sphere:
@@ -51,26 +51,31 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         vec3 normal = normalize(p);
         vec3 lightDir = normalize(lightPos - p);
 
-        // Material
+        // 材质
         vec3 m = MAT_COL;
-        if (p.y <= 0.0 && p.y >= -0.4) {
+        if (p.y <= 0.0 && p.y >= -RADIUS) {
             m = MAT_COL_2;
         }
 
-        // Ambient
-        vec3 ambient = AMBIENT_COL;
+        // 环境光
+        // m表示物体表面环境光反射系数，用于调整环境光对物体表面的影响
+        // AMBIENT_COL 表示环境光的强度，通常是一个常数
+        vec3 ambient = m*AMBIENT_COL;
 
-        // Diffuse
-        vec3 diffuse = max(dot(normal, lightDir),0.0)*LIGHT_COL;
+        // 漫反射
+        // dot(normal,lightDir) 表示物体表面法向量normal和光线入射方向向量lightDir的点积
+        // LIGHT_COL 表示定向光源的强度
+        // m表示物体表面的漫反射系数,用于调整漫反射光对物体表面的影响
+        vec3 diffuse = m *LIGHT_COL * max(dot(normal, lightDir),0.0);
 
-        // Specular
+        // 镜面反射
         vec3 view = normalize(cameraPos - p);
         vec3 reflectDir = normalize(reflect(-lightDir, normal));
         float specStrength = max(dot(reflectDir, view), 0.0);
         vec3 specular = 0.3*pow(specStrength, MAT_SPEC)*LIGHT_COL;
 
         // Output to screen
-        fragColor = vec4(m*(ambient + diffuse) + specular, 1.0);
+        fragColor = vec4(m*(ambient) + diffuse + specular, 1.0);
     } else {
         fragColor = vec4(0.7,0.7,0.72,1.0);
     }
