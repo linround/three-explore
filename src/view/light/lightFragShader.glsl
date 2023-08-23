@@ -100,7 +100,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // 光泽度越大，光斑就越小
 
         // 假设光源位置与观察位置的坐标一样；
-        // dot(reflecDir,view)   = |reflectDir||view|*cosΘ；
+        // dot(reflectDir,view)   = |reflectDir||view|*cosΘ；
         // 当越靠近入射点时 反射向量与 观察方向之间的夹角越小；
         // cosθ的值越接近 1 ；此时反射光的值越大，所以越靠近入射点，高光效果越大；
         // 随着 向周围坐标扩散，方向的变化速率也越来越大，所以 高光变小的速率也越来越大；
