@@ -1,13 +1,14 @@
 import { CodeText } from '../../component/codeText.jsx'
 
 export function Text() {
+  const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
   return (
     <>
       <main>
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
-          <li><a href={'https://zhuanlan.zhihu.com/p/56265851'}>已知入射光线推反射；</a></li>
+          <li><a href={reflectUrl}>已知入射光线推反射；</a></li>
           <li><a href={'https://zhuanlan.zhihu.com/p/338223153'}>光线投射算法；</a></li>
           <p>深度缓存算法中，每次处理一个表面，并对表面上的每个投影点计算深度值，计算出来的值与之前保存的深度值进行比较，从而确定每个像素所对应的可见表面</p>
           <p>在光线投射算法中，每次处理一个像素，并沿光线的投射路径计算出该像素所对应的所有表面的深度值</p>
@@ -20,7 +21,7 @@ export function Text() {
           <li><a href={'https://www.liaomz.top/2022/03/12/tu-xing-xue-ji-chu-chuan-tong-de-jing-yan-guang-zhao-mo-xing/'}>传统光照模型；</a> </li>
         </ul>
         <li>关于 reflect 函数</li>
-        <p> 计算入射矢量的反射方向，<a href={'https://zhuanlan.zhihu.com/p/56265851'}>查看；</a></p>
+        <p> 计算入射矢量的反射方向，<a href={reflectUrl}>查看；</a></p>
         <CodeText>
           <>
             <p>float reflect(float I, float N)</p>
