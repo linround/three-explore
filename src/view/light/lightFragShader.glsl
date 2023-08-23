@@ -24,30 +24,28 @@ void renderLight(in vec2 st){
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    // Normalized pixel coordinates (from -1 to 1 on y-axis)
-    vec2 uv = 2.0*(fragCoord/iResolution.xy - vec2(0.5, 0.5));
+    vec2 uv = 2.0*(fragCoord/iResolution.xy - vec2(0.5, 0.5)); // [-1,1]
     uv.x *= iResolution.x/iResolution.y;
 
-    // Light Colors
-    vec3 AMBIENT_COL = vec3(0.0); // White
-    vec3 LIGHT_COL = vec3(1.); // Green
+    // 光线颜色
+    vec3 AMBIENT_COL = vec3(0.0);
+    vec3 LIGHT_COL = vec3(1.);
 
-    // Material
-    float MAT_SPEC = 80.0; // Shininess
+    // 材质
+    float MAT_SPEC = 10.; // 高光的平滑度(光泽度) 缩小光斑范围
     vec3 MAT_COL = vec3(1.0, 0.0, 0.0); // Blue #333fff
     vec3 MAT_COL_2 = vec3(1.0, 1.0, 1.0); // Aqua #339999
 
     float RADIUS = 0.5;
 
     vec3 cameraPos = vec3(0.0, 0.0, 5.0);
-    vec3 lightPos = vec3(0.0, 0., RADIUS+1.9);
+    vec3 lightPos = vec3(0.0, 0.0, 5.0);
 
     if (length(uv) <= RADIUS) {
-        // Equation of a sphere:
         // x^2 + y^2 + z^2 = R^2
         float z = sqrt(RADIUS*RADIUS - uv.x*uv.x - uv.y*uv.y);
 
-        vec3 p = vec3(uv, z); // Current position on sphere
+        vec3 p = vec3(uv, z);
         vec3 normal = normalize(p);
         vec3 lightDir = normalize(lightPos - p);
 
@@ -76,13 +74,40 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
         // 镜面反射 （高光）
-        //
+        // 产生的原因
+        // 物体表面过于光滑，对光的反射很强
+        // 当光线照射到物体表面后会被反射出来。
+        // 如果此时看向的方向正好与反射的光线方向很接近，就会看到一个明显的光斑，这个光斑就是我们所说的高光。
         vec3 view = normalize(cameraPos - p);
+        // 计算反射矢量
         vec3 reflectDir = normalize(reflect(-lightDir, normal));
-        float specStrength = max(dot(reflectDir, view), 0.0);
-        vec3 specular = 0.3*pow(specStrength, MAT_SPEC)*LIGHT_COL;
+        // 这里需要理解一个现象
+        // 光泽度越大，光斑就越小
 
-        // Output to screen
+        // 假设光源位置与观察位置的坐标一样；
+        // dot(reflecDir,view)   = |reflectDir||view|*cosΘ；
+        // 当越靠近入射点时 反射向量与 观察方向之间的夹角越小；
+        // cosθ的值越接近 1 ；此时反射光的值越大，所以越靠近入射点，高光效果越大；
+        // 随着 向周围坐标扩散，方向的变化速率也越来越大，所以 高光变小的速率也越来越大；
+        // 所以在较为平缓的 坐标范围中，该区域形成了一个光斑；
+        vec3 specular = 0.3*pow(max(dot(reflectDir, view), 0.0), MAT_SPEC)*LIGHT_COL;
+        // ks 材质高光反射系数 为0.3
+        // LIGHT_COL 高光强度和颜色值
+        float ks = 0.3;
+        specular = ks * LIGHT_COL * max(0.0,dot(view,reflectDir));
+
+        specular = ks*LIGHT_COL * pow(max(0.0,dot(view,reflectDir)),MAT_SPEC);
+
+        // 关于blinn-phong模型
+        // 高光是因为反射的光线与观测方向很接近
+        // 因此计算高光之前需要先计算反射的方向
+        // 前面计算反射的方向比较复杂
+        // 使用blinn-phong模型 只需要计算光线方向与观测方向的半程向量是否与法向量足够接近即可
+
+        // h半程向量
+        vec3 h = normalize(lightDir+view);
+        specular = ks*LIGHT_COL*pow(max(0.0,dot(normal,h)),MAT_SPEC);
+
         fragColor = vec4(m*(ambient) + diffuse + specular, 1.0);
     } else {
         fragColor = vec4(0.7,0.7,0.72,1.0);
