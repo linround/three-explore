@@ -134,7 +134,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         vec3 h = normalize(lightDir+view);
         specular = ks*LIGHT_COL*pow(max(0.0,dot(normal,h)),MAT_SPEC);
 
-        fragColor = vec4(m*(ambient) + diffuse + specular, 1.0);
+        fragColor = vec4((ambient) + diffuse + specular, 1.0);
     } else {
         fragColor = vec4(0.7,0.7,0.72,1.0);
     }

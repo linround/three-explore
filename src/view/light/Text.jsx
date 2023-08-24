@@ -7,18 +7,24 @@ export function Text() {
       <main>
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
-        <ul> <li><a href={'https://yilingui.xyz/attachments/spatial_ds--bsp_tree-octree-kd-tree.pdf'}>
+        <ul>
+          <li><a href={'https://blog.csdn.net/islittlehappy/article/details/81533090'}>求三角形内心，外心，重心，垂心</a></li>
+          <li><a href={'https://yilingui.xyz/attachments/spatial_ds--bsp_tree-octree-kd-tree.pdf'}>
           四叉树、八叉树、bsp树、kd树；
-        </a></li>
-        <li><a href={'https://kirisamer.github.io/2022/11/05/Ch4-COMP37111/'}>渲染方程介绍；</a></li>
-        <li><a href={'https://zhuanlan.zhihu.com/p/636749237'}>Lambert模型；</a></li>
-        <li><a href={'https://www.liaomz.top/2022/03/12/tu-xing-xue-ji-chu-chuan-tong-de-jing-yan-guang-zhao-mo-xing/'}>传统光照模型；</a> </li>
+          </a></li>
+          <li><a href={'https://kirisamer.github.io/2022/11/05/Ch4-COMP37111/'}>渲染方程介绍；</a></li>
+          <li><a href={'https://zhuanlan.zhihu.com/p/636749237'}>Lambert模型；</a></li>
+          <li><a href={'https://www.liaomz.top/2022/03/12/tu-xing-xue-ji-chu-chuan-tong-de-jing-yan-guang-zhao-mo-xing/'}>传统光照模型；</a> </li>
 
-        <li><a href={'https://blog.51cto.com/u_12485075/4801140'}>相机投影；</a></li>
-        <li><a href={'https://zhuanlan.zhihu.com/p/122411512'}>推导投影矩阵；</a></li>
-        <li><a href={reflectUrl}>已知入射光线推反射；</a></li>
-        <li><a href={'https://zhuanlan.zhihu.com/p/338223153'}>光线投射算法；</a></li>
+          <li><a href={'https://blog.51cto.com/u_12485075/4801140'}>相机投影；</a></li>
+          <li><a href={'https://zhuanlan.zhihu.com/p/122411512'}>推导投影矩阵；</a></li>
+          <li><a href={reflectUrl}>已知入射光线推反射；</a></li>
+          <li><a href={'https://zhuanlan.zhihu.com/p/338223153'}>光线投射算法；</a></li>
         </ul>
+        <iframe width="640" height="360" frameBorder="0"
+          src="https://www.shadertoy.com/embed/mtXfDH?gui=true&t=10&paused=true&muted=false"
+          allowFullScreen></iframe>
+
         <li>深度缓存与光线投射有区别吗？</li>
         <p>深度缓存算法中，每次处理一个表面，并对表面上的每个投影点计算深度值，计算出来的值与之前保存的深度值进行比较，从而确定每个像素所对应的可见表面</p>
         <p>在光线投射算法中，每次处理一个像素，并沿光线的投射路径计算出该像素所对应的所有表面的深度值</p>
