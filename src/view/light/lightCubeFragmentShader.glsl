@@ -47,20 +47,20 @@ int triangleVertexB[12] = int[12](1,2,6,7, 5,6,7,3, 2,3,4,0);
 int triangleVertexC[12] = int[12](2,3,5,6, 6,2,4,7, 6,2,5,4);
 // 定义每个三角形的颜色
 vec3[12] triangleColor = vec3[12](
-    vec3(1,1,0),
-    vec3(1,1,0),
-    vec3(1,1,0),
+    vec3(1,1,1),
+    vec3(0,1,1),
+    vec3(1,0,0),
     vec3(1,1,0),
 
+    vec3(1,0,0),
+    vec3(1,1,0),
     vec3(0,1,0),
-    vec3(0,1,0),
-    vec3(0,1,0),
-    vec3(0,1,0),
+    vec3(1,1,0),
 
-    vec3(1,1,1),
-    vec3(1,1,1),
-    vec3(1,1,1),
-    vec3(1,1,1)
+    vec3(1,0,1),
+    vec3(0,0,1),
+    vec3(0,0,1),
+    vec3(0,1,1)
 );
 
 // 对三角形进行投影
@@ -132,6 +132,9 @@ vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
     vec3 light = vec3(1.0); // 点光源颜色（强度）
     vec3 lightPos = vec3(0,0,25);// 点光源的位置
 
+//    mat4 roate = roateMat(vec3(0,1,0),iTime*PI/2.);
+//    lightPos = (roate*vec4(lightPos,0.0)).xyz;
+
     // 材质相关
     float matSpec = 8.0;// 光滑程度（与镜面反射相关）
     vec3 matColor = triangleColor;// 材质本身的颜色
@@ -161,7 +164,7 @@ vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
 vec3 renderTriangle(in vec2 st ){
     vec3 color = vec3(0.0);
 
-    mat4 roate = roateMat(vec3(1,1,1),iTime*PI/2.);
+    mat4 roate = roateMat(vec3(1,1,1),iTime*PI/5.);
     for(int i=0;i<8;i++){
         cube[i] = (roate*vec4(cube[i],0.0)).xyz ;
     }
