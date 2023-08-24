@@ -9,6 +9,7 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import lightFragShader from './lightFragShader.glsl?raw'
+import lightCubeFragmentShader from './lightCubeFragmentShader.glsl?raw'
 
 export class Light extends Component {
   constructor(props) {
@@ -16,12 +17,17 @@ export class Light extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderLight = this.renderLight.bind(this)
+    this.renderCube = this.renderCube.bind(this)
   }
   renderLight() {
     this.renderScene(lightFragShader, commonVertexShader)
   }
+  renderCube() {
+    this.renderScene(lightCubeFragmentShader, commonVertexShader)
+  }
   componentDidMount() {
-    this.renderLight()
+    // this.renderLight()
+    this.renderCube()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -78,7 +84,8 @@ export class Light extends Component {
       <div className={css.container}>
         <CanvasComponent ref={this.canvas}>
           <div className={css.buttons}>
-            <button>button</button>
+            <button onClick={this.renderLight}>Circle</button>
+            <button onClick={this.renderCube}>Cube</button>
           </div>
         </CanvasComponent>
         <Text />
