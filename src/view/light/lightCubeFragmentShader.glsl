@@ -128,8 +128,8 @@ vec3 getTriangleGravity(in vec3[3] triangle){
     return vec3(x,y,z);
 }
 vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
-    vec3 ambientLight = vec3(0.2); // 环境光颜色（强度）
-    vec3 light = vec3(1.0); // 点光源颜色（强度）
+    vec3 ambientLight = vec3(0.5); // 环境光颜色（强度）
+    vec3 light = vec3(600.0); // 点光源颜色（强度）
     vec3 lightPos = vec3(0,0,25);// 点光源的位置
 
 //    mat4 roate = roateMat(vec3(0,1,0),iTime*PI/2.);
@@ -143,10 +143,15 @@ vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
     vec3 A = triangle[0];
     vec3 B = triangle[1];
     vec3 C = triangle[2];
-    vec3 normal = cross(C-A,B-A);// 三角形表面的法向量
+    vec3 normal = normalize(cross(C-A,B-A));// 三角形表面的法向量
     vec3 point = getTriangleGravity(triangle);// 使用三角形的重心代表点，便于表示该三角形与点光源的方向
 
     vec3 lightDir = normalize(lightPos-point);
+
+
+    float dist = distance(point,lightPos);
+    light = light/(1.0+2.0*dist+pow(dist,2.0));//距离衰减
+    light = light * dot(normal,lightDir);// 角度衰减
 
     // 计算环境光 材质*光线颜色
     vec3 ambient = matColor*ambientLight;
