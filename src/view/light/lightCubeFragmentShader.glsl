@@ -143,7 +143,7 @@ vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
     vec3 A = triangle[0];
     vec3 B = triangle[1];
     vec3 C = triangle[2];
-    vec3 normal = cross(B-A,C-A);// 三角形表面的法向量
+    vec3 normal = cross(C-A,B-A);// 三角形表面的法向量
     vec3 point = getTriangleGravity(triangle);// 使用三角形的重心代表点，便于表示该三角形与点光源的方向
 
     vec3 lightDir = normalize(lightPos-point);
