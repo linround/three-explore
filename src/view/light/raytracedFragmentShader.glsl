@@ -12,44 +12,33 @@ const float fov_ctg = 1.0 / tan(fov_rad);
 const float distance = 10.0;
 
 const float phi = 1.4;
-const vec3 icosahedron_vertices[12] = vec3[](
-vec3(-phi, 0, -1),
-vec3(phi, 0, -1),
-vec3(phi, 0, 1),
-vec3(-phi, 0, 1),
-
-vec3(-1, -phi, 0),
-vec3(-1, phi, 0),
-vec3(1, phi, 0),
-vec3(1, -phi, 0),
-
-vec3(0, -1, -phi),
-vec3(0, -1, phi),
-vec3(0, 1, phi),
-vec3(0, 1, -phi)
+const vec3 icosahedron_vertices[8] = vec3[](
+vec3(1,-1,1),
+vec3(-1,-1,1),
+vec3(-1,1,1),
+vec3(1,1,1),
+vec3(1,-1,-1),
+vec3(-1,-1,-1),
+vec3(-1,1,-1),
+vec3(1,1,-1)
 );
 
-const uvec3 icosahedron_triangles[20] = uvec3[](
-uvec3(0, 5, 3),
-uvec3(0, 3, 4),
-uvec3(0, 4, 8),
-uvec3(0, 8, 11),
-uvec3(0, 11, 5),
-uvec3(1, 11, 8),
-uvec3(1, 8, 7),
-uvec3(1, 7, 2),
-uvec3(1, 2, 6),
-uvec3(1, 6, 11),
-uvec3(2, 10, 6),
-uvec3(2, 9, 10),
-uvec3(2, 7, 9),
-uvec3(3, 10, 9),
-uvec3(3, 9, 4),
-uvec3(3, 5, 10),
-uvec3(4, 7, 8),
-uvec3(4, 9, 7),
-uvec3(5, 11, 6),
-uvec3(5, 6, 10)
+const uvec3 icosahedron_triangles[12] = uvec3[](
+uvec3(0, 1, 2),
+uvec3(0, 2, 3),
+uvec3(4, 6, 5),
+uvec3(4, 7, 6),
+
+uvec3(1, 5, 6),
+uvec3(1, 6, 2),
+uvec3(0, 7, 4),
+uvec3(0, 3, 7),
+
+uvec3(7, 2, 6),
+uvec3(7, 3, 2),
+uvec3(1, 4, 5),
+uvec3(1, 0, 4)
+
 );
 
 vec4 triangle_intersection(mat3 triangle, vec3 pr, vec3 r)
