@@ -8,6 +8,10 @@ export function Text() {
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li><a href={'https://zhuanlan.zhihu.com/p/41269520'}>一篇光线追踪入门</a> </li>
+          <li><a href={'https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm.html'}>
+            光线追踪的实现
+          </a></li>
           <li><a href={'https://blog.csdn.net/islittlehappy/article/details/81533090'}>求三角形内心，外心，重心，垂心</a></li>
           <li><a href={'https://yilingui.xyz/attachments/spatial_ds--bsp_tree-octree-kd-tree.pdf'}>
           四叉树、八叉树、bsp树、kd树；
@@ -24,6 +28,11 @@ export function Text() {
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/mtXfDH?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
+        <li>实现光线追踪</li>
+        <ul>
+          <li>确定对象表面的点对于从某个像素发出的光线是否可见</li>
+          <li>对该点进行着色</li>
+        </ul>
 
         <li>可见对象的颜色和光照模型建模</li>
         <p>即用一个表示场景对象表面电磁能量相互作用的模型来描述光照效果；</p>
@@ -44,10 +53,20 @@ export function Text() {
           <p>提供了一种模拟立体光照效果的方法，它通过使用一组多参数的点发光器模拟挡光板、快门和照相用聚光灯控制；</p>
           <p>聚光灯用圆锥体实现，而快门和挡光板提供了另外的方向控制，例如为x，y，z方向中的每一个建立两个快门来进一步限制发射光线</p>
         </ul>
-        <li>深度缓存与光线投射有区别吗？</li>
-        <p>深度缓存算法中，每次处理一个表面，并对表面上的每个投影点计算深度值，计算出来的值与之前保存的深度值进行比较，从而确定每个像素所对应的可见表面</p>
-        <p>在光线投射算法中，每次处理一个像素，并沿光线的投射路径计算出该像素所对应的所有表面的深度值</p>
-        <p>深度缓存首先进行了顶点投影，然后计算投影区域内的像素的深度值；光线投射是直接处理每一个像素，并计算该像素在所有表面的深度值；</p>
+        <li>深度缓存与光线投射有区别吗？以立方体为例：</li>
+        <ul>
+          <li>
+            <p>首先会得到所有的的二维坐标像素段；</p>
+            <p>然后遍历立方体的所有三角形面，从投影点连接三角形面的顶点，该连接线穿过观察面，并将其该三角形面进行投影；</p>
+            <p>判断三角形面投影后是否会包含该坐标点；对于包含该二维像素点的三角形面，需要计算出对应的二维坐标点深度值；</p>
+            <p>如果下一个三角形投影也包含了该像素点，就需要比较该像素点在两个三角形面中的深度值；</p>
+            <p>如果深度值在前面，那么就以前面的三角形颜色代表该二维像素点的颜色值；</p>
+          </li>
+          <li>
+            <p>光线追踪的渲染方程中，某个点的颜色包含了：自发光；其他光线（光源，别平面的反射光）与材质综合作用的结果；</p>
+            <p>在光线追踪算法中，会从投影点（相机位置）连接观察平面上的像素点，从而形成一个光线；</p>
+          </li>
+        </ul>
         <li>关于 reflect 函数</li>
         <p> 计算入射矢量的反射方向，<a href={reflectUrl}>查看；</a></p>
         <CodeText>

@@ -13,32 +13,31 @@ const float distance = 10.0;
 
 const float phi = 1.4;
 const vec3 icosahedron_vertices[8] = vec3[](
-vec3(1,-1,1),
-vec3(-1,-1,1),
-vec3(-1,1,1),
-vec3(1,1,1),
-vec3(1,-1,-1),
-vec3(-1,-1,-1),
-vec3(-1,1,-1),
-vec3(1,1,-1)
+    vec3(1,-1,1),
+    vec3(-1,-1,1),
+    vec3(-1,1,1),
+    vec3(1,1,1),
+    vec3(1,-1,-1),
+    vec3(-1,-1,-1),
+    vec3(-1,1,-1),
+    vec3(1,1,-1)
 );
 
 const uvec3 icosahedron_triangles[12] = uvec3[](
-uvec3(0, 1, 2),
-uvec3(0, 2, 3),
-uvec3(4, 6, 5),
-uvec3(4, 7, 6),
+    uvec3(0, 1, 2),
+    uvec3(0, 2, 3),
+    uvec3(4, 6, 5),
+    uvec3(4, 7, 6),
 
-uvec3(1, 5, 6),
-uvec3(1, 6, 2),
-uvec3(0, 7, 4),
-uvec3(0, 3, 7),
+    uvec3(1, 5, 6),
+    uvec3(1, 6, 2),
+    uvec3(0, 7, 4),
+    uvec3(0, 3, 7),
 
-uvec3(7, 2, 6),
-uvec3(7, 3, 2),
-uvec3(1, 4, 5),
-uvec3(1, 0, 4)
-
+    uvec3(7, 2, 6),
+    uvec3(7, 3, 2),
+    uvec3(1, 4, 5),
+    uvec3(1, 0, 4)
 );
 
 vec4 triangle_intersection(mat3 triangle, vec3 pr, vec3 r)
@@ -63,8 +62,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = fragCoord/iResolution.xy;
     vec2 normalized = uv * 2.0 - 1.0;
     vec3 cam_dir = vec3(-sin(iTime), 0, cos(iTime));
-    vec3 cam_right = vec3(cos(iTime), 0, sin(iTime));
     vec3 cam_up = vec3(0, 1, 0);
+    vec3 cam_right = cross(cam_up,cam_dir);
     float ratio = iResolution.x / iResolution.y;
     vec3 r = normalize(vec3(normalized.x, normalized.y / ratio, fov_ctg));
     r = cam_right * r.x + cam_up * r.y + cam_dir * r.z;
@@ -95,7 +94,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     }
     else
     {
-        fragColor = vec4(0);
+        fragColor = vec4(vec3(0.),1.0);
     }
 }
 
