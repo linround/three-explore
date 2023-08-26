@@ -20,6 +20,14 @@ float cosS(in vec2 st){
     return smoothstep(v+0.1,v,st.y) - smoothstep(v,v-0.1,st.y);
 }
 
+
+float cosV(in vec2 st,float n){
+    float x = st.x;
+    float angle = x*PI/2.;
+    float v = pow(cos(angle),n);
+    return smoothstep(v+0.01,v,st.y) - smoothstep(v,v-0.01,st.y);
+}
+
 void main() {
 
     vec2 st = gl_FragCoord.xy/iResolution.xy;
@@ -43,6 +51,10 @@ void main() {
     // 随着次方的增大 要想变化率 都大于1/2
     // 次方数越大， 需要的x变化范围越小
     // 说明了 次方数越大，光斑会更加的集中
+
+
+    float v = cosV(st,8.);
+    color = mix(color,lineColor,v);
 
 
     gl_FragColor =vec4(color,1.0);
