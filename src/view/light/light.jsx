@@ -10,7 +10,8 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import lightFragShader from './lightFragShader.glsl?raw'
 import lightCubeFragmentShader from './lightCubeFragmentShader.glsl?raw'
-import raytracedFragmentShader from './raytracedFragmentShader.glsl?raw'
+import raytraceFragmentShader from './raytraceFragmentShader.glsl?raw'
+import lightPointAspect from './lightPointAspect.glsl?raw'
 
 export class Light extends Component {
   constructor(props) {
@@ -20,9 +21,13 @@ export class Light extends Component {
     this.renderLight = this.renderLight.bind(this)
     this.renderCube = this.renderCube.bind(this)
     this.renderRay = this.renderRay.bind(this)
+    this.renderCos = this.renderCos.bind(this)
+  }
+  renderCos() {
+    this.renderScene(lightPointAspect, commonVertexShader)
   }
   renderRay() {
-    this.renderScene(raytracedFragmentShader, commonVertexShader)
+    this.renderScene(raytraceFragmentShader, commonVertexShader)
   }
   renderLight() {
     this.renderScene(lightFragShader, commonVertexShader)
@@ -32,8 +37,9 @@ export class Light extends Component {
   }
   componentDidMount() {
     // this.renderLight()
-    this.renderCube()
+    // this.renderCube()
     // this.renderRay()
+    this.renderCos()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -93,6 +99,7 @@ export class Light extends Component {
             <button onClick={this.renderLight}>Circle</button>
             <button onClick={this.renderCube}>Cube</button>
             <button onClick={this.renderRay}>Ray</button>
+            <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
           </div>
         </CanvasComponent>
         <Text />
