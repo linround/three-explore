@@ -153,10 +153,11 @@ vec3 getPointLightColor(in vec3[3] triangle,in vec3 triangleColor){
     light = light/(1.0+2.0*dist+pow(dist,2.0));//距离衰减
     light = light * dot(normal,lightDir);// 角度衰减
 
+    float kd = 0.4;// 漫反射系数
     // 计算环境光 材质*光线颜色
-    vec3 ambient = matColor*ambientLight;
+    vec3 ambient = matColor*kd*ambientLight;
     // 计算漫反射
-    vec3 diffuse = matColor*light*max(dot(normal,lightDir),0.0);
+    vec3 diffuse = matColor*kd*light*max(dot(normal,lightDir),0.0);
     // 计算镜面反射
     vec3 view = normalize(projectPoint - point);// 观察方向
     vec3 reflectDir = normalize(reflect(-lightDir,normal));// 反射矢量
