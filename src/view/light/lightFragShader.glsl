@@ -122,7 +122,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         float ks = 0.3;
         specular = ks * LIGHT_COL * max(0.0,dot(view,reflectDir));
 
-        specular = ks*LIGHT_COL * pow(max(0.0,dot(view,reflectDir)),MAT_SPEC);
+        specular = ks* pow(max(0.0,dot(view,reflectDir)),MAT_SPEC)*LIGHT_COL ;
 
         // 关于blinn-phong模型
         // 高光是因为反射的光线与观测方向很接近
