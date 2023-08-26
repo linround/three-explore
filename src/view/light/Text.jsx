@@ -2,12 +2,14 @@ import { CodeText } from '../../component/codeText.jsx'
 
 export function Text() {
   const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
+  const blinnPhongUrl = 'https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model'
   return (
     <>
       <main>
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li><a href={blinnPhongUrl}>Blinn–Phong reflection model</a></li>
           <li><a href={'https://zhuanlan.zhihu.com/p/41269520'}>一篇光线追踪入门</a> </li>
           <li><a href={'https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm.html'}>
             光线追踪的实现
@@ -42,7 +44,11 @@ export function Text() {
         <p>环境光反射系数是一个常数；对于漫反射，类似一个统计均值来表示一个漫反射系数；</p>
         <p>对于镜面反射，镜面反射的结果除了与材质的镜面反射系数有关，还和（观察方向与反射方向的夹角）有关;
           （需要考虑）特殊情况，观察方向与光源方向位于法向量同一侧或者光源在表面的后面时，没有镜面反射；
-
+        </p>
+        <p>
+          <a>在Blinn–Phong reflection model反射模型中，观察方向与反射方向的夹角使用了半角向量与法线的夹角来替代；
+            这里的替代可以消除计算反射方向向量的计算量
+          </a>
         </p>
         <ul>
           <li>点光源；</li>
