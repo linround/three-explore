@@ -3,6 +3,7 @@ import { CodeText } from '../../component/codeText.jsx'
 export function Text() {
   const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
   const blinnPhongUrl = 'https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model'
+  const whisperUrl = 'https://www.cnblogs.com/theWhisper/p/10269574.html'
   return (
     <>
       <main>
@@ -10,6 +11,7 @@ export function Text() {
         <p>附录：</p>
         <ul>
           <li><a href={blinnPhongUrl}>Blinn–Phong reflection model</a></li>
+          <li><a href={whisperUrl}>折射方向的推导</a></li>
           <li><a href={'https://zhuanlan.zhihu.com/p/41269520'}>一篇光线追踪入门</a> </li>
           <li><a href={'https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm.html'}>
             光线追踪的实现
