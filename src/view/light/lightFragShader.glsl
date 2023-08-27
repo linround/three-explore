@@ -119,7 +119,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         vec3 specular = 0.3*pow(max(dot(reflectDir, view), 0.0), MAT_SPEC)*LIGHT_COL;
         // ks 材质高光反射系数 为0.3
         // LIGHT_COL 高光强度和颜色值
-        float ks = 0.3;
+        float ks = 0.4;
         specular = ks * LIGHT_COL * max(0.0,dot(view,reflectDir));
 
         specular = ks* pow(max(0.0,dot(view,reflectDir)),MAT_SPEC)*LIGHT_COL ;
