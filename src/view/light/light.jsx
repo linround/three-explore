@@ -102,9 +102,9 @@ export class Light extends Component {
       <div className={css.container}>
         <CanvasComponent ref={this.canvas}>
           <div className={css.buttons}>
-            <button onClick={this.renderLight}>Circle</button>
-            <button onClick={this.renderCube}>Cube</button>
-            <button onClick={this.renderRay}>Ray</button>
+            {/*<button onClick={this.renderLight}>Circle</button>*/}
+            {/*<button onClick={this.renderCube}>Cube</button>*/}
+            {/*<button onClick={this.renderRay}>Ray</button>*/}
             <button onClick={this.renderSphere}>Sphere</button>
             <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
           </div>
