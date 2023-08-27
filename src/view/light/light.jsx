@@ -12,6 +12,7 @@ import lightFragShader from './lightFragShader.glsl?raw'
 import lightCubeFragmentShader from './lightCubeFragmentShader.glsl?raw'
 import raytraceFragmentShader from './raytraceFragmentShader.glsl?raw'
 import lightPointAspect from './lightPointAspect.glsl?raw'
+import sphereLightFragmentShader from './sphereLightFragmentShader.glsl?raw'
 
 export class Light extends Component {
   constructor(props) {
@@ -22,6 +23,10 @@ export class Light extends Component {
     this.renderCube = this.renderCube.bind(this)
     this.renderRay = this.renderRay.bind(this)
     this.renderCos = this.renderCos.bind(this)
+    this.renderSphere = this.renderSphere.bind(this)
+  }
+  renderSphere() {
+    this.renderScene(sphereLightFragmentShader, commonVertexShader)
   }
   renderCos() {
     this.renderScene(lightPointAspect, commonVertexShader)
@@ -39,7 +44,8 @@ export class Light extends Component {
     // this.renderLight()
     // this.renderCube()
     // this.renderRay()
-    this.renderCos()
+    // this.renderCos()
+    this.renderSphere()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -99,6 +105,7 @@ export class Light extends Component {
             <button onClick={this.renderLight}>Circle</button>
             <button onClick={this.renderCube}>Cube</button>
             <button onClick={this.renderRay}>Ray</button>
+            <button onClick={this.renderSphere}>Sphere</button>
             <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
           </div>
         </CanvasComponent>

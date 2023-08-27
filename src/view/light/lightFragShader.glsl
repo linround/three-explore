@@ -49,7 +49,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // 材质
     float MAT_SPEC = 40.; // 高光的平滑度(光泽度) 缩小光斑范围
     vec3 MAT_COL = vec3(1.0, 0.0, 0.0); // Blue #333fff
-    vec3 MAT_COL_2 = vec3(1.0, 1.0, 1.0); // Aqua #339999
+    vec3 MAT_COL_2 = vec3(0.5); // Aqua #339999
 
     float RADIUS = 0.5;
 
