@@ -10,14 +10,14 @@ float cosN(in vec2 st){
     float x = st.x;
     float angle = x*PI/2.;
     float v = abs(2.*cos(angle)*sin(angle));
-    return smoothstep(v+0.1,v,st.y) - smoothstep(v,v-0.1,st.y);
+    return smoothstep(v+0.01,v,st.y) - smoothstep(v,v-0.01,st.y);
 }
 
 float cosS(in vec2 st){
     float x = st.x;
     float angle = x*PI/2.;
     float v = abs(4.*pow(cos(angle),3.)*sin(angle));
-    return smoothstep(v+0.1,v,st.y) - smoothstep(v,v-0.1,st.y);
+    return smoothstep(v+0.01,v,st.y) - smoothstep(v,v-0.01,st.y);
 }
 
 
