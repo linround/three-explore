@@ -28,7 +28,7 @@ export function Text() {
           <li><a href={'https://zhuanlan.zhihu.com/p/338223153'}>光线投射算法；</a></li>
         </ul>
         <iframe width="640" height="360" frameBorder="0"
-          src="https://www.shadertoy.com/embed/mtXfDH?gui=true&t=10&paused=true&muted=false"
+          src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
         <li>实现光线追踪</li>
         <ul>
