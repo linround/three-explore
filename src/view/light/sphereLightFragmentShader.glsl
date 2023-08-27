@@ -46,9 +46,14 @@ const vec3 ambientLight = vec3(0.0); // 定义环境光
 const vec3 light = vec3(1.0); // 定义点光源强度
 const vec3 lightPos = vec3(0.,0.,5.); // 定义点光源的位置
 const vec3 viewPos = vec3(0.,0.,5.); // 观察点
-const float ks = 0.6;// 镜面反射参数 根据材质决定反射能量的大小
+
+// 镜面反射主要反射了光的效果
+const vec3 ks = vec3(0.60,0.60,0.20);// 镜面反射参数 根据材质决定反射能量的大小，
 float specularEx = 20.;// 镜面反射参数：光滑表面的值较大，理想反射器的值时无限的（决定镜面光斑的大小，可提高视觉效果）
 
+
+// 漫反射主要是反射材质的颜色
+// 所有使用材质颜色代表了漫反射系数
 vec3  getDiffuse(in vec3 point,in vec3 kd){
     vec3 normal = normalize(point);// 该球表面点的法向量
     vec3 ambientDiffuse = kd*ambientLight;// 环境光对漫反射的贡献
