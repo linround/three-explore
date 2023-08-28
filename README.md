@@ -15,6 +15,7 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - [meshlab](https://www.meshlab.net/#description)
 - [mixamo](https://www.mixamo.com/#/)
 - [nerf](https://www.matthewtancik.com/nerf)
+- [2d渲染器：zRender](https://github.com/ecomfe/zrender)
 
 ## commit规范
 - `feat`：新功能（feature）
