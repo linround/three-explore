@@ -21,8 +21,11 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - [2d渲染器：zRender](https://github.com/ecomfe/zrender)
 - [dota2 hero model](http://pissang.github.io/dota2hero/#/heroes)
 
+
 ## 一些idea
 - 参考小程序**包包认昆虫**（一款利用webgl实现昆虫模型的渲染工具）；
+- 倾斜摄影：无人机+reality capture
+- NeRF：无人机+LUMA AI
 
 ## commit规范
 - `feat`：新功能（feature）
