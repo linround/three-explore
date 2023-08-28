@@ -25,8 +25,7 @@ float getKernelWight(){
 
 
 void imageProcess(in vec2 uv){
-    float n = 20.;
-    vec3 maxV = vec3(n/3.5);
+    vec3 maxV = vec3(1.);
     vec3 minV = vec3(0.);
     vec2 imgSize = vec2(width,height);
 
@@ -34,8 +33,9 @@ void imageProcess(in vec2 uv){
     vec3 I = (texture2D(iChannel0, pos)).rgb;
 
     // 划分能级
+    float n = 2.;
     vec3 I0 = maxV;
-    float r = 1.0/8.0;
+    float r = 1.0/n;
     vec3 level = ceil(n*I/I0);
     float x = I0.x * pow(r,level.x);
     float y = I0.y * pow(r,level.y);
