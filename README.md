@@ -13,6 +13,8 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 
 ## 关于建模的一些库
 - [meshlab](https://www.meshlab.net/#description)
+- [mixamo](https://www.mixamo.com/#/)
+- [nerf](https://www.matthewtancik.com/nerf)
 
 ## commit规范
 - `feat`：新功能（feature）
