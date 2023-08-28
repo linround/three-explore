@@ -11,6 +11,9 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 ## 相关课程
 - [计算几何-邓俊辉](https://www.xuetangx.com/course/THU08091000327/16906681)
 
+## 关于建模的一些库
+- [meshlab](https://www.meshlab.net/#description)
+
 ## commit规范
 - `feat`：新功能（feature）
 - `fix`：修补bug
