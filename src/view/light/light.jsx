@@ -44,8 +44,8 @@ export class Light extends Component {
     // this.renderLight()
     // this.renderCube()
     // this.renderRay()
-    // this.renderCos()
-    this.renderSphere()
+    this.renderCos()
+    // this.renderSphere()
   }
 
   renderScene(fragmentShader, vertexShader) {

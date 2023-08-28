@@ -9,7 +9,8 @@ import { CanvasComponent } from '../../component/canvas.jsx'
 
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import imageShader from './imageShader.glsl?raw'
-import leaves from './img/leaves.png'
+import people from './img/people.jpg'
+import energyFragmentShader from './energyFragmentShader.glsl?raw'
 
 import { kernels } from './kernels.js'
 
@@ -23,10 +24,15 @@ export class Image extends Component {
     this.renderScene = this.renderScene.bind(this)
     this.renderImageScene = this.renderImageScene.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
+    this.renderEnergy = this.renderEnergy.bind(this)
 
   }
+  renderEnergy() {
+    this.renderScene(energyFragmentShader, commonVertexShader)
+  }
   componentDidMount() {
-    this.renderImageScene()
+    // this.renderImageScene()
+    this.renderEnergy()
   }
 
   renderImageScene() {
@@ -44,7 +50,7 @@ export class Image extends Component {
     const scene = new THREE.Scene()
     const plane = new THREE.PlaneGeometry(2, 2)
     const loader = new THREE.TextureLoader()
-    const texture = loader.load(leaves)
+    const texture = loader.load(people)
     texture.minFilter = THREE.NearestFilter
     texture.magFilter = THREE.NearestFilter
     texture.wrapS = THREE.RepeatWrapping
@@ -121,6 +127,7 @@ export class Image extends Component {
               <option value={'emboss'}>emboss</option>
             </select>
             <button onClick={this.renderImageScene}>确认</button>
+            <button onClick={this.renderEnergy}>使用30级能级渲染</button>
           </div>
         </CanvasComponent>
         <Text />
