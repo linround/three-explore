@@ -3,7 +3,7 @@ Explore th 3D world
 
 为了更好的了解3D的应用场景，还需要了解[Python](https://docs.python.org/zh-cn/3/)
 
-https://www.shadertoy.com/user/linround
+https://www.shadertoy.com/user/linround  
 https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J 
 
 ## 强大的rust
