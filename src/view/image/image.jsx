@@ -21,11 +21,21 @@ export class Image extends Component {
       type: 'normal',
     }
     this.canvas = createRef()
+    this.state = {
+      iLevel: 5,
+    }
     this.renderScene = this.renderScene.bind(this)
     this.renderImageScene = this.renderImageScene.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.renderEnergy = this.renderEnergy.bind(this)
+    this.changeValue = this.changeValue.bind(this)
 
+  }
+  changeValue({ target, }) {
+    const { value, } = target
+    this.setState({
+      iLevel: value,
+    }, () => this.renderEnergy())
   }
   renderEnergy() {
     this.renderScene(energyFragmentShader, commonVertexShader)
@@ -55,12 +65,17 @@ export class Image extends Component {
     texture.magFilter = THREE.NearestFilter
     texture.wrapS = THREE.RepeatWrapping
     texture.wrapT = THREE.RepeatWrapping
+
+    const iLevel = this.state.iLevel
     const uniforms = {
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },
       iMouse: { value: new THREE.Vector2(), },
       iChannel0: { value: texture, },
       iKernel: { value: kernels[type], },
+      iLevel: {
+        value: iLevel,
+      },
     }
     const material = new THREE.ShaderMaterial({
       fragmentShader,
@@ -127,7 +142,12 @@ export class Image extends Component {
               <option value={'emboss'}>emboss</option>
             </select>
             <button onClick={this.renderImageScene}>确认</button>
-            <button onClick={this.renderEnergy}>使用能级分割渲染</button>
+            <input
+              max={40}
+              min={2}
+              step={1}
+              type={'range'}
+              onChange={(event) => this.changeValue(event)} />
           </div>
         </CanvasComponent>
         <Text />

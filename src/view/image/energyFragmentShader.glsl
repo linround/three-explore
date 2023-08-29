@@ -3,6 +3,7 @@ uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
 uniform float iKernel[9];
+uniform float iLevel;
 
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
@@ -32,15 +33,30 @@ void imageProcess(in vec2 uv){
     vec2 pos = uv ;
     vec3 I = (texture2D(iChannel0, pos)).rgb;
 
-    // 划分能级
-    float n = 2.;
-    vec3 I0 = maxV;
-    float r = 1.0/n;
-    vec3 level = ceil(n*I/I0);
-    float x = I0.x * pow(r,level.x);
-    float y = I0.y * pow(r,level.y);
-    float z = I0.z * pow(r,level.z);
-    vec3 v =1.- vec3(x,y,z) ;
+    vec3 I0 = vec3(1.);
+    float r = 1.0/2.0;
+
+    float x ;
+    float y ;
+    float z ;
+    for(int i=0;i<int(iLevel);i++){
+        vec3 current = I0 * pow(r,float(i));
+        vec3 next = I0 * pow(r,float(i)+1.);
+
+        if(I.x<=current.x && I.x>next.x){
+            x = current.x;
+        }
+        if(I.y<=current.y && I.y>next.y){
+            y = current.y;
+        }
+        if(I.z<=current.z && I.z>next.z){
+            z = current.z;
+        }
+    }
+
+
+
+    vec3 v = vec3(x,y,z) ;
 
 
 
