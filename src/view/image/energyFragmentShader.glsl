@@ -62,8 +62,6 @@ void imageProcess(in vec2 uv){
 
 
 
-//    vec4 color = texture2D(iChannel0, (uv));
-
     gl_FragColor = vec4(v,1.0);
 }
 
