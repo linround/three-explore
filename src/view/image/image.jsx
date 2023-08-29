@@ -128,7 +128,7 @@ export class Image extends Component {
               <option value={'emboss'}>emboss</option>
             </select>
             <button onClick={this.renderImageScene}>确认</button>
-            <button onChange={ this.renderEnergy}> 能级渲染</button>
+            <button onClick={ this.renderEnergy}> 能级渲染</button>
           </div>
         </CanvasComponent>
         <Text />

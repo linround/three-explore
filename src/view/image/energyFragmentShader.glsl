@@ -29,7 +29,7 @@ void imageProcess(in vec2 uv){
     vec3 minV = vec3(0.);
     vec2 imgSize = vec2(width,height);
 
-    float iLevel = 1.0 + 20. * (sin(iTime)+1.0);
+    float iLevel = 1.0 + 20. * (sin(iTime/1.)+1.0);
     vec2 pos = uv ;
     vec3 I = (texture2D(iChannel0, pos)).rgb;
 
@@ -58,7 +58,7 @@ void imageProcess(in vec2 uv){
 
 
 
-    vec3 v = vec3(x,y,z) ;
+    vec3 v =1.- vec3(x,y,z) ;
 
 
 
