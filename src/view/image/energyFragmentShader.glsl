@@ -3,7 +3,6 @@ uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
 uniform float iKernel[9];
-uniform float iLevel;
 
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
@@ -30,6 +29,7 @@ void imageProcess(in vec2 uv){
     vec3 minV = vec3(0.);
     vec2 imgSize = vec2(width,height);
 
+    float iLevel = 1.0 + 10. * (sin(iTime)+1.0);
     vec2 pos = uv ;
     vec3 I = (texture2D(iChannel0, pos)).rgb;
 
@@ -56,8 +56,9 @@ void imageProcess(in vec2 uv){
 
 
 
-    vec3 v = vec3(x,y,z) ;
 
+
+    vec3 v = vec3(x,y,z) ;
 
 
 
