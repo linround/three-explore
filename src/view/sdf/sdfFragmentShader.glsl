@@ -21,18 +21,19 @@ vec3 distColor(float dist){
     return color;
 }
 
-
+// 中心点为0，半径为r
 float sdfCircle(in vec2 st,in float r){
     return length(st-center)-r;
 }
 
-void renderCircleSDF(in vec2 st){
+void renderCircleSDF(in vec2 st,inout vec4 fragColor){
     float v = sdfCircle(st,radius);
     vec3 color = distColor(v);
-    gl_FragColor = vec4(color,1.0);
+    fragColor = vec4(color,1.0);
 }
 
 
+// a,b为线段的两端点
 float sdfLine(in vec2 p,in vec2 a,in vec2 b){
     vec2 ap = p-a;
     vec2 ab = b-a;
@@ -42,30 +43,67 @@ float sdfLine(in vec2 p,in vec2 a,in vec2 b){
     return length(qp);
 }
 
-void renderLineSDF(in vec2 st){
+void renderLineSDF(in vec2 st,inout vec4 fragColor){
     vec2 a = vec2(sin(iTime),0.5);
     vec2 b = vec2(0.,sin(iTime));
     float v = sdfLine(st,a,b);
     vec3 color = distColor(v);
-    gl_FragColor = vec4(color,1.0);
+    fragColor = vec4(color,1.0);
 }
+
+// 中心点为 （0,0）;长宽为 a
 float sdfBox(in vec2 p,in vec2 a){
     vec2 q = abs(p)-a;
     return length(max(q,0.))+min(max(q.x,q.y),0.);
 }
 
-void renderBoxSDF(in vec2 st){
+void renderBoxSDF(in vec2 st,inout vec4 fragColor){
     vec2 a = vec2(0.2);
     float v = sdfBox(st,a);
     vec3 color = distColor(v);
-    gl_FragColor = vec4(color,1.0);
+    fragColor = vec4(color,1.0);
+}
+
+float sdfRoundBox(in vec2 p,in vec2 a,in float r){
+    vec2 b = a - vec2(r);
+    vec2 q = abs(p)-b;
+    // 这里求出新的 以b点的sdf
+    // 为了弥补b失去的区域区域
+    // 将计算b区域的计算结果在原有基础上减去r
+    // 这样就能得到 原有坐标范围扩大了对应的r范围
+    return length(max(q,0.))+min(max(q.x,q.y),0.)-r;
+}
+void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
+    vec2 a = vec2(0.5);
+    float r = 0.1;
+    float v = sdfRoundBox(st,a,r);
+    vec3 color = distColor(v);
+    fragColor = vec4(color,1.0);
 }
 
 
 void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
-    st = (st*2.0*boundary)-boundary;
-    // renderCircleSDF(st);
-    // renderLineSDF(st);
-    renderBoxSDF(st);
+    st*= 2.;
+    vec2 area = floor(st);
+    if(area.x == 0.&&area.y ==0. ){
+        st = fract(st);
+        st= st*2.-1.;
+         renderCircleSDF(st,gl_FragColor);
+    }
+    if(area.x == 0.&&area.y ==1. ){
+        st = fract(st);
+        st= st*2.-1.;
+        renderLineSDF(st,gl_FragColor);
+    }
+    if(area.x == 1.&&area.y ==0. ){
+        st = fract(st);
+        st= st*2.-1.;
+        renderBoxSDF(st,gl_FragColor);
+    }
+    if(area.x == 1.&&area.y ==1. ){
+        st = fract(st);
+        st= st*2.-1.;
+        renderRoundBoxSDF(st,gl_FragColor);
+    }
 }
