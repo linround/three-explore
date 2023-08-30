@@ -20,12 +20,27 @@ vec3 distColor(float dist){
     color = mix(color,vec3(1.),smoothstep(0.01,0.,abs(dist))); // 添加上边缘线条
     return color;
 }
+
+
 float sdfCircle(in vec2 st,in float r){
     return length(st-center)-r;
 }
 
-void renderSDF(in vec2 st){
+void renderCircleSDF(in vec2 st){
     float v = sdfCircle(st,radius);
+    vec3 color = distColor(v);
+    gl_FragColor = vec4(color,1.0);
+}
+
+
+float sdfLine(in vec2 p,in vec2 a,in vec2 b){
+    return 0.5;
+}
+
+void renderLineSDF(in vec2 st){
+    vec2 a = vec2(0.5);
+    vec2 b = vec2(0.);
+    float v = sdfLine(st,a,b);
     vec3 color = distColor(v);
     gl_FragColor = vec4(color,1.0);
 }
@@ -33,5 +48,6 @@ void renderSDF(in vec2 st){
 void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     st = (st*2.0*boundary)-boundary;
-    renderSDF(st);
+    // renderCircleSDF(st);
+    renderLineSDF(st);
 }
