@@ -12,6 +12,7 @@ import { Cube } from '../view/cube/Cube.jsx'
 import { Image } from '../view/image/image.jsx'
 import { CurvedSurface } from '../view/curvedSurface/curvedSurface.jsx'
 import { Light } from '../view/light/light.jsx'
+import SDF from '../view/sdf/sdf.jsx'
 
 
 export const router = createBrowserRouter([
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: 'light',
         element: <Light />,
+      },
+      {
+        path: 'sdf',
+        element: <SDF />,
       }
     ],
   },

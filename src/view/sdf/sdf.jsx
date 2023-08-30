@@ -1,51 +1,26 @@
 import { Component, createRef } from 'react'
+import { Text } from './Text.jsx'
 import css from './css.module.less'
 import { CanvasComponent } from '../../component/canvas.jsx'
-import { Text } from './Text.jsx'
 import * as THREE from 'three'
 import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
-
+import sdfFragmentShader from './sdfFragmentShader.glsl?raw'
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
-import lightFragShader from './lightFragShader.glsl?raw'
-import lightCubeFragmentShader from './lightCubeFragmentShader.glsl?raw'
-import raytraceFragmentShader from './raytraceFragmentShader.glsl?raw'
-import lightPointAspect from './lightPointAspect.glsl?raw'
-import sphereLightFragmentShader from './sphereLightFragmentShader.glsl?raw'
 
-export class Light extends Component {
+export default class SDF extends Component {
   constructor(props) {
     super(props)
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
-    this.renderLight = this.renderLight.bind(this)
-    this.renderCube = this.renderCube.bind(this)
-    this.renderRay = this.renderRay.bind(this)
-    this.renderCos = this.renderCos.bind(this)
-    this.renderSphere = this.renderSphere.bind(this)
+    this.renderSDF = this.renderSDF.bind(this)
   }
-  renderSphere() {
-    this.renderScene(sphereLightFragmentShader, commonVertexShader)
-  }
-  renderCos() {
-    this.renderScene(lightPointAspect, commonVertexShader)
-  }
-  renderRay() {
-    this.renderScene(raytraceFragmentShader, commonVertexShader)
-  }
-  renderLight() {
-    this.renderScene(lightFragShader, commonVertexShader)
-  }
-  renderCube() {
-    this.renderScene(lightCubeFragmentShader, commonVertexShader)
+  renderSDF() {
+    this.renderScene(sdfFragmentShader, commonVertexShader)
   }
   componentDidMount() {
-    // this.renderLight()
-    // this.renderCube()
-    // this.renderRay()
-    // this.renderCos()
-    this.renderSphere()
+    this.renderSDF()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -97,19 +72,20 @@ export class Light extends Component {
       y = canvas.height - e.offsetY
     })
   }
+
   render() {
     return (
-      <div className={css.container}>
-        <CanvasComponent ref={this.canvas}>
-          <div className={css.buttons}>
-            {/*<button onClick={this.renderLight}>Circle</button>*/}
-            {/*<button onClick={this.renderCube}>Cube</button>*/}
-            {/*<button onClick={this.renderRay}>Ray</button>*/}
-            <button onClick={this.renderSphere}>Sphere</button>
-            <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
-          </div>
-        </CanvasComponent>
-        <Text />
+      <div>
+        <div className={css.container}>
+          <CanvasComponent
+            ref={this.canvas} >
+            <div className={css.buttons}>
+              <button>test</button>
+            </div>
+          </CanvasComponent>
+          <Text />
+        </div>
+
       </div>
     )
   }
