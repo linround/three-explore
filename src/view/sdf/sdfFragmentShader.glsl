@@ -34,20 +34,38 @@ void renderCircleSDF(in vec2 st){
 
 
 float sdfLine(in vec2 p,in vec2 a,in vec2 b){
-    return 0.5;
+    vec2 ap = p-a;
+    vec2 ab = b-a;
+    float h = dot(ap,ab)/dot(ab,ab);
+    vec2 qp = ap - clamp(h,0.,1.)*ab;
+
+    return length(qp);
 }
 
 void renderLineSDF(in vec2 st){
-    vec2 a = vec2(0.5);
-    vec2 b = vec2(0.);
+    vec2 a = vec2(sin(iTime),0.5);
+    vec2 b = vec2(0.,sin(iTime));
     float v = sdfLine(st,a,b);
     vec3 color = distColor(v);
     gl_FragColor = vec4(color,1.0);
 }
+float sdfBox(in vec2 p,in vec2 a){
+    vec2 q = abs(p)-a;
+    return length(max(q,0.))+min(max(q.x,q.y),0.);
+}
+
+void renderBoxSDF(in vec2 st){
+    vec2 a = vec2(0.2);
+    float v = sdfBox(st,a);
+    vec3 color = distColor(v);
+    gl_FragColor = vec4(color,1.0);
+}
+
 
 void main() {
     vec2 st = gl_FragCoord.xy/iResolution.xy;
     st = (st*2.0*boundary)-boundary;
     // renderCircleSDF(st);
-    renderLineSDF(st);
+    // renderLineSDF(st);
+    renderBoxSDF(st);
 }
