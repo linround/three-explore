@@ -17,11 +17,12 @@ const vec3 deltax = vec3(S ,0, 0);
 const vec3 deltay = vec3(0 ,S, 0);
 const vec3 deltaz = vec3(0 ,0, S);
 
+// 这里有些类似3位的SDF
 float distanceToNearestSurface(vec3 p){
-    float s = 1.0;
+    float s = 1.0;// 定义了长宽高的值
     vec3 d = abs(p) - vec3(s);
-    return min(max(d.x, max(d.y,d.z)), 0.0)
-    + length(max(d,0.0));
+    return min(max(d.x, max(d.y,d.z)), 0.0) //这是计算内部的点 到表面的最小距离（负值）
+    + length(max(d,0.0));// 这是计算外部坐标点 到表面的距离（正值）
 }
 
 
@@ -41,15 +42,19 @@ vec3 computeLambert(vec3 p, vec3 n, vec3 l){
     return vec3(dot(normalize(l-p), n));
 }
 
+// 从某一点 p出发
+// 沿着方向 dir
 vec3 intersectWithWorld(vec3 p, vec3 dir){
     float dist = 0.0;
     float nearest = 0.0;
     vec3 result = vec3(0.0);
+    // 计算
     for(int i = 0; i < 20; i++){
+        // 计算到表面的点的最近的距离
         nearest = distanceToNearestSurface(p + dir*dist);
         if(nearest < EPSILON){
             vec3 hit = p+dir*dist;
-            vec3 light = vec3(100.0*sin(iTime), 30.0*cos(iTime), 50.0*cos(iTime));
+            vec3 light = vec3(100.0, 30.0, 50.0);
             result = computeLambert(hit, computeSurfaceNormal(hit), light);
             break;
         }
@@ -61,9 +66,9 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
 void renderCurve() {
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
 
-    float cameraDistance = 10.0;
-    vec3 cameraPosition = vec3(10.0*sin(iTime), 0.0, 10.0*cos(iTime));
-    vec3 cameraDirection = vec3(-1.0*sin(iTime), 0.0, -1.0*cos(iTime));
+    float cameraDistance = 80.0;
+    vec3 cameraPosition = vec3(10.0, 0.0, 10.0);
+    vec3 cameraDirection = vec3(-1.0, 0.0, -1.0);
     vec3 cameraUp = vec3(0.0, 1.0, 0.0);
 
     // generate the ray for this pixel
