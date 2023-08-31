@@ -44,6 +44,10 @@ vec3 computeLambert(vec3 p, vec3 n, vec3 l){
 // dir 相机位置指向观察平面上某一点的位置的向量
 
 // p 是固定的
+// dir 是随着 x,y变化而变化
+
+// 所以当cameraDirection 方向越大，x,y 所能扩展的范围也越小
+// cameraDirection 越小，x,y 所能扩展的范围也越小
 vec3 intersectWithWorld(vec3 p, vec3 dir){
     float dist = 0.0;
     float nearest = 0.0;
@@ -94,8 +98,6 @@ void renderCurve() {
     // nright cameraUp cameraDirection 分别为 x,y,z轴的坐标系上的向量
     // 即cameraDirection 方向上是固定不变（或则说z轴控制远景），以nright，cameraUp组成的平面坐标不断变化
 
-    // 所以当cameraDirection 方向越大，x,y 所能扩展的范围也越小
-    // cameraDirection 越小，x,y 所能扩展的范围也越小
     vec3 rayDirection = normalize(pixel - cameraPosition);
 
     vec3 pixelColour = intersectWithWorld(cameraPosition, rayDirection);
