@@ -5,8 +5,6 @@ uniform sampler2D iChannel0;
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
 
-// ray computation vars
-const float fov = 50.0;
 
 // epsilon-type values
 const float S = 0.01;
@@ -66,20 +64,17 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
 void renderCurve() {
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
 
-    float cameraDistance = 80.0;
-    vec3 cameraPosition = vec3(10.0, 0.0, 10.0);
-    vec3 cameraDirection = vec3(-1.0, 0.0, -1.0);
-    vec3 cameraUp = vec3(0.0, 1.0, 0.0);
+    vec3 cameraPosition = vec3(5.0, .0, 5.0); // 相机位置
+    vec3 cameraDirection = vec3(-1.0, .0, -1.0); // 相机的方向
+    vec3 cameraUp = vec3(0.0, 1.0, 0.0); // 定义相机向上的向量
 
-    // generate the ray for this pixel
-    const float fovx = PI * fov / 360.0;
-    float fovy = fovx * iResolution.y/iResolution.x;
-    float ulen = tan(fovx);
-    float vlen = tan(fovy);
 
     vec2 camUV = uv*2.0 - vec2(1.0, 1.0);
+    // 利用相机向上的向量与相机方向的叉乘，得到相机的另一个分量
     vec3 nright = normalize(cross(cameraUp, cameraDirection));
-    vec3 pixel = cameraPosition + cameraDirection + nright*camUV.x*ulen + cameraUp*camUV.y*vlen;
+
+    vec3 pixel = cameraPosition + cameraDirection + nright*camUV.x + cameraUp*camUV.y;
+    // 方向向量 由相机位置指向 坐标点位置
     vec3 rayDirection = normalize(pixel - cameraPosition);
 
     vec3 pixelColour = intersectWithWorld(cameraPosition, rayDirection);
