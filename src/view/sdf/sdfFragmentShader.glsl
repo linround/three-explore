@@ -6,9 +6,6 @@ uniform sampler2D iChannel0;
 #define TWO_PI 6.28318530718
 
 
-const float boundary = 1.;
-const float radius = boundary/2.;
-const vec2 center = vec2(0.);
 
 
 vec3 distColor(float dist){
@@ -23,10 +20,12 @@ vec3 distColor(float dist){
 
 // 中心点为0，半径为r
 float sdfCircle(in vec2 st,in float r){
+    vec2 center = vec2(0.);
     return length(st-center)-r;
 }
 
 void renderCircleSDF(in vec2 st,inout vec4 fragColor){
+     float radius = (sin(iTime)+1.)/2.;
     float v = sdfCircle(st,radius);
     vec3 color = distColor(v);
     fragColor = vec4(color,1.0);
@@ -58,7 +57,9 @@ float sdfBox(in vec2 p,in vec2 a){
 }
 
 void renderBoxSDF(in vec2 st,inout vec4 fragColor){
-    vec2 a = vec2(0.2);
+    float width = (sin(iTime)+1.)/2.;
+    float height = (cos(iTime)+1.)/2.;
+    vec2 a = vec2(width,height);
     float v = sdfBox(st,a);
     vec3 color = distColor(v);
     fragColor = vec4(color,1.0);
@@ -74,7 +75,8 @@ float sdfRoundBox(in vec2 p,in vec2 a,in float r){
     return length(max(q,0.))+min(max(q.x,q.y),0.)-r;
 }
 void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
-    vec2 a = vec2(0.5);
+    float height = (cos(iTime)+1.)/2.;
+    vec2 a = vec2(0.5,height);
     float r = 0.1;
     float v = sdfRoundBox(st,a,r);
     vec3 color = distColor(v);
