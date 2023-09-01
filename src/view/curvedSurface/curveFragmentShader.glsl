@@ -23,14 +23,26 @@ float distanceToNearestSurface(vec3 p){
 }
 
 
-// better normal implementation with half the sample points
-// used in the blog post method
+// 计算 表面的法向量
+// p是距离表面小于epsilon范围内的点
+//
 vec3 computeSurfaceNormal(vec3 p){
+    // 距离表面的点具有正负值
     float d = distanceToNearestSurface(p);
+    // 假设此时的点是外部的点（p） 且距离是0.005
+    // 沿着 nright 加上 某个距离，那么此时的 距离是增加的
+    // 那么实际得到的法向量 nright为正数
+    // 同理，cameraUp，cameraDirection都是整数
+
+
+    // 如果此时的点是内部的点p 且距离是 -0.005
+    // 沿着 nright 加上 某个距离，那么此时的 可能变为-0.001，
+    // 那么实际得到的法向量 nright为正数
+    // 同理，cameraUp，cameraDirection都是整数
     return normalize(vec3(
-    distanceToNearestSurface(p+deltax)-d,
-    distanceToNearestSurface(p+deltay)-d,
-    distanceToNearestSurface(p+deltaz)-d
+    distanceToNearestSurface(p+deltax)-d,// nright
+    distanceToNearestSurface(p+deltay)-d, // cameraUp
+    distanceToNearestSurface(p+deltaz)-d // cameraDirection
     ));
 }
 
@@ -56,6 +68,7 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
     // i的 的次数多少 与立方体的大小有关
     // i 8   r=1
     // i 13  r=2
+    // 此时的i的最小次数为 cameraPosition到点的距离/ 初次计算时的最短的距离
     for(int i = 0; i < 13; i++){
         // 计算到表面的点的最近的距离
         // i= 0时，p+0 此时计算的是 cameraPosition 到立方体表面的最小距离 即沿着dir方向的距离 d0;此时d0范围较大
