@@ -117,7 +117,7 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
 
         // 如果点 p+dir*dist 距离表面在某个范围EPSILON 内，则被认为是表面的点
         float EPSILON = 0.01;
-        if(nearest < EPSILON){
+        if(abs(nearest) < EPSILON){ // nearest由正负，正的是外面，负的是内部；使用绝对值可以减少内部点的计算
             result = computeLambert(point, computeSurfaceNormal(point), light);
             break;
         }
