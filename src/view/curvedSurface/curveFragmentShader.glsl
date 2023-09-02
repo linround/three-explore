@@ -126,13 +126,12 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
     return result;
 }
 
-void renderCurve() {
+vec3 renderCurve(in vec2 uv) {
     vec3 axis = vec3(0,1,1);
     mat4 roate = roateMat(axis,iTime);
 
 
     // 物体永远在vec3(0,0,0)处
-    vec2 uv = gl_FragCoord.xy/iResolution.xy;
 
     vec3 center = vec3(0.);// 物体的位置
     vec3 cameraPosition = vec3(5.0, .0, 5.0); // 相机位置
@@ -173,10 +172,14 @@ void renderCurve() {
     vec3 rayDirection = normalize(pixel - cameraPosition);
 
     vec3 pixelColour = intersectWithWorld(cameraPosition, rayDirection);
-    gl_FragColor = vec4(pixelColour, 1.0);
+    return pixelColour;
+
 }
 
 
 void main() {
-    renderCurve();
+
+    vec2 uv = gl_FragCoord.xy/iResolution.xy;
+    vec3 color = renderCurve(uv);
+    gl_FragColor = vec4(color, 1.0);
 }
