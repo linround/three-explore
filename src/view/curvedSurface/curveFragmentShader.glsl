@@ -39,10 +39,14 @@ vec3 computeSurfaceNormal(vec3 p){
     // 沿着 nright 加上 某个距离，那么此时的 可能变为-0.001，
     // 那么实际得到的法向量 nright为正数
     // 同理，cameraUp，cameraDirection都是整数
+
+    // 通过得到在三个基方向上的变化率，从而得到下一个点的变化方向，
+    // 即得沿着三个周的梯度变化方向
+    // 这里可以看作是求平面方程系数（a,b,c）的方式来计算法向量
     return normalize(vec3(
-    distanceToNearestSurface(p+deltax)-d,// nright
-    distanceToNearestSurface(p+deltay)-d, // cameraUp
-    distanceToNearestSurface(p+deltaz)-d // cameraDirection
+    distanceToNearestSurface(p+deltax)-d,// nright 得到在 nright 方向的变化率
+    distanceToNearestSurface(p+deltay)-d, // cameraUp 得到 cameraUp 方向的变化率
+    distanceToNearestSurface(p+deltaz)-d // cameraDirection 得到 cameraDirection 方向的变化率
     ));
 }
 
