@@ -12,7 +12,17 @@ const float S = 0.01;
 const vec3 deltax = vec3(S ,0, 0);
 const vec3 deltay = vec3(0 ,S, 0);
 const vec3 deltaz = vec3(0 ,0, S);
-
+mat4 roateMat(in vec3 u,in float theta){
+    float c = cos(theta) ;
+    float s = sin(theta);
+    u = normalize(u);
+    // 以下是构建一个三维旋转矩阵的列
+    vec4 c0 = vec4(u.x*u.x*(1.0-c)+c,u.x*u.y*(1.-c)+u.z*s,u.x*u.z*(1.-c)-u.y*s,0.0);
+    vec4 c1 = vec4(u.x*u.y*(1.-c)-u.z*s,u.y*u.y*(1.-c)+c,u.y*u.z*(1.-c)+u.x*s,0.0);
+    vec4 c2 = vec4(u.z*u.x*(1.-c)+u.y*s,u.z*u.y*(1.-c)-u.x*s,u.z*u.z*(1.-c)+c,0.0);
+    vec4 c3 = vec4(0.,0.,0.,1.);
+    return mat4(c0,c1,c2,c3);
+}
 
 // 球体的sdf
 float distanceToNearestSurfaceSphere(vec3 p){
@@ -117,11 +127,24 @@ vec3 intersectWithWorld(vec3 p, vec3 dir){
 }
 
 void renderCurve() {
+    vec3 axis = vec3(0,1,1);
+    mat4 roate = roateMat(axis,iTime);
+
+
+    // 物体永远在vec3(0,0,0)处
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
 
+    vec3 center = vec3(0.);// 物体的位置
     vec3 cameraPosition = vec3(5.0, .0, 5.0); // 相机位置
     vec3 cameraUp = vec3(0.0, 1.0, 0.0); // 定义相机向上的向量
-    vec3 cameraDirection = vec3(-1.0, .0, -1.0); // 相机的方向
+
+    // 对相机和其向上的向量进行旋转
+    cameraPosition = (vec4(cameraPosition,1.)*roate).xyz;
+    cameraUp = (vec4(cameraUp,1.)*roate).xyz;
+
+
+
+    vec3 cameraDirection = normalize(center - cameraPosition); // 相机的方向 使用单位向量，以便后续的计算
 
 
     vec2 camUV = uv*2.0 - vec2(1.0, 1.0);
