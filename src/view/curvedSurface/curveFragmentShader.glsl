@@ -59,6 +59,7 @@ vec3 computeSurfaceNormal(vec3 p){
     // 通过得到在三个基方向上的变化率，从而得到下一个点的变化方向，
     // 即得沿着三个周的梯度变化方向
     // 这里可以看作是求平面方程系数（a,b,c）的方式来计算法向量
+    // deltax越小，越接近该点的变化趋势
     return normalize(vec3(
     distanceToNearestSurface(p+deltax)-d,// nright 得到在 nright 方向的变化率
     distanceToNearestSurface(p+deltay)-d, // cameraUp 得到 cameraUp 方向的变化率
