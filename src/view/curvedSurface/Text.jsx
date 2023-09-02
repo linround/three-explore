@@ -4,6 +4,7 @@ export function Text() {
       <h1>关于如何构建曲面</h1>
       <p>附录：</p>
   
+      <li><a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/'}>方向导数和梯度的直观理解</a></li>
       <li><a href={'https://zhuanlan.zhihu.com/p/267722955'}>平面方程求解公式</a></li>
       <li><a href={'https://zh.wikipedia.org/zh-cn/%E6%A2%AF%E5%BA%A6'}>梯度</a></li>
       <li><a href={'https://zhuanlan.zhihu.com/p/586364840'}>彻底理解投影矩阵</a></li>
