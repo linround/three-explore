@@ -6,10 +6,9 @@ uniform sampler2D iChannel0;
 #define TWO_PI 6.28318530718
 
 
-// epsilon-type values
 const float S = 0.01;
 
-// const delta vectors for normal calculation
+// 定义在各个方向上的 Δ值
 const vec3 deltax = vec3(S ,0, 0);
 const vec3 deltay = vec3(0 ,S, 0);
 const vec3 deltaz = vec3(0 ,0, S);
