@@ -14,12 +14,28 @@ const vec3 deltax = vec3(S ,0, 0);
 const vec3 deltay = vec3(0 ,S, 0);
 const vec3 deltaz = vec3(0 ,0, S);
 
-// 这里有些类似3位的SDF
-float distanceToNearestSurface(vec3 p){
+
+// 球体的sdf
+float distanceToNearestSurfaceSphere(vec3 p){
+    float r = 2.;
+    float d = length(p)-r;
+    return d;
+}
+
+// 使用维的sdf求立方体
+float distanceToNearestSurfaceCube(in vec3 p){
+
     float s = 2.0;// 定义了长宽高的值
     vec3 d = abs(p) - vec3(s);
     return min(max(d.x, max(d.y,d.z)), 0.0) //这是计算内部的点 到表面的最小距离（负值）
     + length(max(d,0.0));// 这是计算外部坐标点 到表面的距离（正值）
+}
+
+// 这里有些类的SDF
+float distanceToNearestSurface(vec3 p){
+    return distanceToNearestSurfaceCube(p);
+//    return distanceToNearestSurfaceSphere(p);
+
 }
 
 
