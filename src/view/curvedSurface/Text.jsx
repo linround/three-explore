@@ -14,6 +14,9 @@ export function Text() {
       <p>方程求<a>偏导</a>，即可得到在方程中的每一点处的最大变化速率</p>
       <p>多元函数的偏导，组合成了梯度，即得到具有方向性的最大变化速率</p>
       <p>梯度描述了脱离该平面最快的方向，其就是该平面法向量的方向</p>
+      <iframe width="640" height="360" frameBorder="0"
+              src="https://www.shadertoy.com/embed/DlSBzz?gui=true&t=10&paused=true&muted=false"
+              allowFullScreen></iframe>
       <ul>
         <li>直线方程 f(x,y)</li>
         <p>例如：2x-y =0,求得偏导为矢量(2,-1),该矢量与直线垂直 </p>
