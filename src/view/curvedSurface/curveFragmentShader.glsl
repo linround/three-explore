@@ -153,8 +153,8 @@ vec3 renderCurve(in vec2 uv) {
 
     // nright和cameraUp都是单位向量
     // nright和cameraUp 组成的平面垂直于 cameraDirection
-    // pct增大，相当于 将视点靠近原点，也就是更靠近物体
-    // pct减小,相当于 将视点远离原点，也就是里物体越远
+    // pct增大，相当于 将视点靠近原点，也就是更靠近物体，但是相应的，相机位置与该平面的连线角度会不断增大，即物体会变大
+    // pct减小,相当于 将视点远离原点，也就是里物体越远,但是相应的，相机位置与该平面的连线角度会不断减小，即物体会缩小
 
     float pct = 1.0;
     // 求得 cameraDirection 固定，平面上的坐标点
