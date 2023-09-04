@@ -19,6 +19,11 @@ export function Text() {
       <iframe width="640" height="360" frameBorder="0" src="https://www.shadertoy.com/embed/DlSBzz?gui=true&t=10&paused=true&muted=false"
         allowFullScreen></iframe>
       <ul>
+        <li>关于gama矫正</li>
+        <p>我们计算出来的颜色A，由于每种显示设备都有自己的Gamma值；设备最终的输出值实际是 A 的
+        Gamma次幂（对于CTR，Gamma通常为2.2）；所以在计算出结果B后，通常对B需要进行gamma矫正；即将B转换为
+          B的 1/gamma 次幂；这样再显示到设备上时，实际才是B的值
+        </p>
         <li>直线方程 f(x,y)</li>
         <p>例如：2x-y =0,求得偏导为矢量(2,-1),该矢量与直线垂直 </p>
         <p>例如圆：x²+y²-1=0，求得偏导为（2x,2y）;
