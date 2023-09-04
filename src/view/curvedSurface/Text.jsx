@@ -3,7 +3,9 @@ export function Text() {
     <main>
       <h1>关于如何构建曲面</h1>
       <p>附录：</p>
-  
+
+      <li><a href={'https://learnopengl-cn.github.io/05%20Advanced%20Lighting/02%20Gamma%20Correction/'}>
+        Gamma校正</a></li>
       <li><a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/'}>方向导数和梯度的直观理解</a></li>
       <li><a href={'https://zhuanlan.zhihu.com/p/267722955'}>平面方程求解公式</a></li>
       <li><a href={'https://zh.wikipedia.org/zh-cn/%E6%A2%AF%E5%BA%A6'}>梯度</a></li>
@@ -14,9 +16,8 @@ export function Text() {
       <p>方程求<a>偏导</a>，即可得到在方程中的每一点处的最大变化速率</p>
       <p>多元函数的偏导，组合成了梯度，即得到具有方向性的最大变化速率</p>
       <p>梯度描述了脱离该平面最快的方向，其就是该平面法向量的方向</p>
-      <iframe width="640" height="360" frameBorder="0"
-              src="https://www.shadertoy.com/embed/DlSBzz?gui=true&t=10&paused=true&muted=false"
-              allowFullScreen></iframe>
+      <iframe width="640" height="360" frameBorder="0" src="https://www.shadertoy.com/embed/DlSBzz?gui=true&t=10&paused=true&muted=false"
+        allowFullScreen></iframe>
       <ul>
         <li>直线方程 f(x,y)</li>
         <p>例如：2x-y =0,求得偏导为矢量(2,-1),该矢量与直线垂直 </p>
@@ -39,8 +40,8 @@ export function Text() {
         <p>根据之前由任意不共线三点得到的平面方程的性质：</p>
         <p>向量（a,b,c）为该平面的法向量，那么就只需要求得a,b,c即可知道该平面法向量；</p>
         <p>d的实质作用就是可以构造无数个平行的面；或者可以认为d=0时，截距在各轴为0，通过不断地移动d，会形成无数个平行的平面</p>
-        
-        
+
+
       </ul>
       <p>在渲染立方体的过程中，目前介绍了两种方式</p>
       <li>从观察点出发，对立方体顶点，在平面上进行投影，使用投影的顶点构成立方体的面</li>

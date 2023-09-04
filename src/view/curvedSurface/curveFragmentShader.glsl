@@ -78,7 +78,9 @@ vec3 computeSurfaceNormal(vec3 p){
 
 
 vec3 computeLambert(vec3 p, vec3 n, vec3 l){
-    return vec3(dot(normalize(l-p), n));
+    vec3 color = vec3(dot(normalize(l-p), n));
+    // 进行gamma矫正
+    return pow(color,vec3(1.0/2.2));
 }
 
 // p 相机位置
@@ -175,6 +177,7 @@ vec3 renderCurve(in vec2 uv) {
     return pixelColour;
 
 }
+
 
 
 void main() {
