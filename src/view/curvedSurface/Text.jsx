@@ -19,9 +19,24 @@ export function Text() {
       <iframe width="640" height="360" frameBorder="0" src="https://www.shadertoy.com/embed/DlSBzz?gui=true&t=10&paused=true&muted=false"
         allowFullScreen></iframe>
       <ul>
+        <li>多边形绘制算法</li>
+        <p>Gouraud表面绘制（强度插值表面绘制）</p>
+        <ul>
+          <li>1.每个多边形顶点处的平均法向量</li>
+          <li>2.对于每个顶点根据光照模型来计算其光强度</li>
+          <li>3.在多边形投影区域对顶点进行线性插值</li>
+        </ul>
+        <li>phong明暗处理</li>
+        <ul>
+          <li>1.确定每个多边形顶点处的法向量</li>
+          <li>2.在多边形投影区域上对顶点法向量进行线性插值</li>
+          <li>3.根据光照模型，使用插值的法向量，沿每条扫描线计算投影像素的光强度</li>
+        </ul>
+        <li>关于半色调技术</li>
+        <p>即将多个像素单元组合起来，表示一种强度值</p>
         <li>关于gamma矫正</li>
         <p>我们计算出来的颜色A，由于每种显示设备都有自己的Gamma值；设备最终的输出值实际是 A 的
-        Gamma次幂（对于CTR，Gamma通常为2.2）；所以在计算出结果B后，通常对B需要进行gamma矫正；即将B转换为
+        Gamma次幂（对于CTR，Gamma通常为1.7到2.2之间）；所以在计算出结果B后，通常对B需要进行gamma矫正；即将B转换为
           B的 1/gamma 次幂；这样再显示到设备上时，实际才是B的值
         </p>
         <p>在考虑光的衰减方程时，不进行gamma矫正会产生更加强烈的衰减</p>
