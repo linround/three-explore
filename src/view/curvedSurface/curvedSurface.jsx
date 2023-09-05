@@ -8,6 +8,7 @@ import { resizeRendererToDisplaySize } from '../../utils.js'
 
 import commonVertexShader from '../../common/commonVertexShader.glsl?raw'
 import curveFragmentShader from './curveFragmentShader.glsl?raw'
+import curvePlaneFragmentShader from './curvePlaneFragmentShader.glsl?raw'
 
 export class CurvedSurface extends Component {
   constructor(props) {
@@ -15,14 +16,19 @@ export class CurvedSurface extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderCurve = this.renderCurve.bind(this)
+    this.renderPlane = this.renderPlane.bind(this)
   }
 
   componentDidMount() {
-    this.renderCurve()
+    // this.renderCurve()
+    this.renderPlane()
   }
 
   renderCurve() {
     this.renderScene(curveFragmentShader, commonVertexShader)
+  }
+  renderPlane() {
+    this.renderScene(curvePlaneFragmentShader, commonVertexShader)
   }
   renderScene(fragmentShader, vertexShader) {
     const canvas = this.canvas.current
@@ -79,7 +85,8 @@ export class CurvedSurface extends Component {
         <CanvasComponent
           ref={this.canvas} >
           <div className={css.buttons}>
-            <button>test</button>
+            <button onClick={this.renderCurve}>cube</button>
+            <button onClick={this.renderPlane}>plane</button>
           </div>
         </CanvasComponent>
         <Text />
