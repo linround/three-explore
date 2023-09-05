@@ -27,6 +27,10 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - 倾斜摄影：无人机+reality capture
 - NeRF：无人机+LUMA AI
 
+## 相关项目案例
+- https://github.com/fengtianxi001/MF-TurbineMonitor
+- https://github.com/alwxkxk/iot-visualization-examples
+
 ## commit规范
 - `feat`：新功能（feature）
 - `fix`：修补bug
