@@ -20,8 +20,8 @@ export class CurvedSurface extends Component {
   }
 
   componentDidMount() {
-    // this.renderCurve()
-    this.renderPlane()
+    this.renderCurve()
+    // this.renderPlane()
   }
 
   renderCurve() {
