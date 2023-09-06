@@ -12,6 +12,7 @@ export default function Menus() {
         <li><Link to='sdf'>sdf；</Link></li>
         <li><Link to='curvedSurface'>如何构建曲面；</Link></li>
         <li><Link to='light'>光照在模型中的实现；</Link></li>
+        <li><Link to='texture'>纹理表面细节添加方法；</Link></li>
         <li><Link to='image'>使用 shader 进行图像处理，模糊，边缘检测、锐化······；</Link></li>
         <li><Link to='native'>使用一种接近原生的方式去定义图形；</Link></li>
       </ul>
