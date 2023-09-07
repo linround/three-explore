@@ -41,7 +41,7 @@ export class Texture extends Component {
     const uniforms = {
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },
-      iMouse: { value: new THREE.Vector2(), },
+      iMouse: { value: new THREE.Vector3(), },
       iChannel0: { value: texture, },
     }
     const material = new THREE.ShaderMaterial({
