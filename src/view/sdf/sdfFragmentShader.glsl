@@ -2,6 +2,7 @@ uniform vec3 iResolution;
 uniform vec2 iMouse;
 uniform float iTime;
 uniform sampler2D iChannel0;
+
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
 
@@ -25,7 +26,7 @@ float sdfCircle(in vec2 st,in float r){
 }
 
 void renderCircleSDF(in vec2 st,inout vec4 fragColor){
-     float radius = (sin(iTime)+1.)/2.;
+    float radius = (sin(iTime)+1.)/2.;
     float v = sdfCircle(st,radius);
     vec3 color = distColor(v);
     fragColor = vec4(color,1.0);
@@ -84,28 +85,39 @@ void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
 }
 
 
-void main() {
-    vec2 st = gl_FragCoord.xy/iResolution.xy;
-    st*= 2.;
+
+
+
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 st = fragCoord.xy/iResolution.xy;
+    st*= 3.;
+    st.x *= iResolution.x/iResolution.y;
     vec2 area = floor(st);
     if(area.x == 0.&&area.y ==0. ){
         st = fract(st);
         st= st*2.-1.;
-         renderCircleSDF(st,gl_FragColor);
+        renderCircleSDF(st,fragColor);
     }
     if(area.x == 0.&&area.y ==1. ){
         st = fract(st);
         st= st*2.-1.;
-        renderLineSDF(st,gl_FragColor);
+        renderLineSDF(st,fragColor);
     }
     if(area.x == 1.&&area.y ==0. ){
         st = fract(st);
         st= st*2.-1.;
-        renderBoxSDF(st,gl_FragColor);
+        renderBoxSDF(st,fragColor);
     }
     if(area.x == 1.&&area.y ==1. ){
         st = fract(st);
         st= st*2.-1.;
-        renderRoundBoxSDF(st,gl_FragColor);
+        renderRoundBoxSDF(st,fragColor);
     }
+}
+
+
+void main() {
+    mainImage(gl_FragColor,gl_FragCoord.xy);
 }
