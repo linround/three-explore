@@ -12,6 +12,7 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 
 ## 相关课程
 - [计算几何-邓俊辉](https://www.xuetangx.com/course/THU08091000327/16906681)
+- [d3-数据可视化简介](https://observablehq.com/tutorials)
 - [blender软件建模](https://www.youtube.com/playlist?list=PLjEaoINr3zgFX8ZsChQVQsuDSjEqdWMAD)
 ## 关于建模的一些库
 - [更现代的3D建模工具：3d-scanner](https://3dlabstore.com.hk/3d-scanner)
