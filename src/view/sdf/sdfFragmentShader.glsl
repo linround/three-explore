@@ -85,6 +85,11 @@ void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
 }
 
 
+void renderTriangleSDF(in vec2 st,inout vec4 fragColor){
+    vec3 color = vec3(0.5);
+    fragColor = vec4(color,1.0);
+}
+
 
 
 
@@ -114,6 +119,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         st = fract(st);
         st= st*2.-1.;
         renderRoundBoxSDF(st,fragColor);
+    }
+    if(area.x==2. && area.y == 2.){
+        st = fract(st);
+        st = st*2.-1.;
+        renderTriangleSDF(st,fragColor);
     }
 }
 
