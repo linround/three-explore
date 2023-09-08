@@ -36,7 +36,7 @@ void renderCircleSDF(in vec2 st,inout vec4 fragColor){
 // a,b为线段的两端点
 float sdfLine(in vec2 p,in vec2 a,in vec2 b){
     vec2 ap = p-a;
-    vec2 ab = normalize(b-a);
+    vec2 ab = b-a;
     float h = dot(ap,ab)/dot(ab,ab);
     vec2 qp = ap - clamp(h,0.,1.)*ab;
 
@@ -119,8 +119,8 @@ float sideSDF(in vec2 p, in vec2 a,in vec2 b){
     vec2 ap = p-a;
     vec2 abDir = normalize(ab);
 
-    float h = clamp(dot(abDir,ap)/dot(abDir,abDir),0.,1.);
-    vec2 qp = ap-h*abDir;
+    float h = dot(ap,ab)/dot(ab,ab);
+    vec2 qp = ap-clamp(h,0.,1.)*ab;
     return length(qp);
 }
 
@@ -146,30 +146,36 @@ bool inSide(in vec2 st,vec3[3] triangle){
 float d2Cross(in vec2 v1,in vec2 v2){
     // 叉乘结果大于0 返回1 逆时针
     // 叉乘结果小于0 返回-1 顺时针
-    return sign(v1.x*v2.y-v2.x*v1.y);
+    return (v1.x*v2.y-v2.x*v1.y);
 }
 float triangleSDF(in vec2 st,in vec2 a,in vec2 b,in vec2 c ){
-    float s = d2Cross(b-a,c-b);
+    float s = sign(d2Cross(b-a,c-b));
     // 这里再次判断，点是位于外部还是内部，
     // 外部点 叉积结果 小于0，顺时针；内部点叉积结果大于0，逆时针
     // 再乘以s，
-    float d1 = sideSDF(st,a,b);
-    float s1 = s*d2Cross(st-a,b-a);
+    float qp0 = sideSDF(st,a,b);
 
-    float d2 = sideSDF(st,b,c);
-    float s2 = s*d2Cross(st-b,c-b);
+    float qp1 = sideSDF(st,b,c);
 
-    float d3 = sideSDF(st,c,a);
-    float s3 = s*d2Cross(st-c,a-c);
+    float qp2 = sideSDF(st,c,a);
 
-    float d = min(d1,min(d2,d3));
-    s = min(s1,min(s2,s3));
-    return d*s;
+    float d = min(qp0,min(qp1,qp2));
+    vec3 triangle[3] = vec3[3](
+    vec3(a,0.),
+    vec3(b,0.),
+    vec3(c,0.)
+    );
+    bool i = inSide(st,triangle);// 判断点是否在三角形内部
+
+
+    return i?-d:d;// 内部为负，外部为正
 }
 void renderTriangleSDF(in vec2 st,inout vec4 fragColor){
-    vec2 v1 = vec2(0.,1.);
-    vec2 v2 = vec2(1.0,0.0);
-    vec2 v3 = vec2(-1.0,0.);
+    float s = sin(iTime)+1.;
+    float c = cos(iTime)+1.;
+    vec2 v1 = vec2(0.3*s*c,0.5*c);
+    vec2 v2 = vec2(0.5*s,0.4*c);
+    vec2 v3 = vec2(-0.5*s,0.5*s);
     float d = triangleSDF(st,v1,v2,v3);
     vec3 color = distColor(d);
     fragColor = vec4(color,1.);
