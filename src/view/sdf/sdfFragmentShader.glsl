@@ -36,7 +36,7 @@ void renderCircleSDF(in vec2 st,inout vec4 fragColor){
 // a,b为线段的两端点
 float sdfLine(in vec2 p,in vec2 a,in vec2 b){
     vec2 ap = p-a;
-    vec2 ab = b-a;
+    vec2 ab = normalize(b-a);
     float h = dot(ap,ab)/dot(ab,ab);
     vec2 qp = ap - clamp(h,0.,1.)*ab;
 
@@ -85,11 +85,31 @@ void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
 }
 
 
-void renderTriangleSDF(in vec2 st,inout vec4 fragColor){
-    vec3 color = vec3(0.5);
-    fragColor = vec4(color,1.0);
-}
+float rhombusSDF(in vec2 st,in vec2 range){
+    float height = range.y;
+    float width = range.x;
+    vec2 p =abs(st);
 
+    vec2 a = vec2(0.,height);
+    vec2 b = vec2(width,0.);
+
+    vec2 ap = p-a;
+    vec2 ab = b-a;
+    vec2 abDir = normalize(ab);
+    float h = clamp( dot(ap,abDir)/dot(abDir,abDir) ,0.,length(ab));
+
+    vec2 qp = ap-h*abDir;
+    float s = sign(abDir.x*ap.y-ap.x*abDir.y);
+    return s*length(qp);
+}
+void renderRhombusSDF(in vec2 st,inout vec4 fragColor){
+    float h = 0.5*(sin(iTime)+1.);
+    float w = 0.5*(cos(iTime)+1.);
+    vec2 range = vec2(h,w);
+    float d = rhombusSDF(st,range);
+    vec3 color = distColor(d);
+    fragColor = vec4(color,1.);
+}
 
 
 
@@ -123,7 +143,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     if(area.x==2. && area.y == 2.){
         st = fract(st);
         st = st*2.-1.;
-        renderTriangleSDF(st,fragColor);
+        renderRhombusSDF(st,fragColor);
     }
 }
 
