@@ -84,7 +84,7 @@ void renderRoundBoxSDF(in vec2 st,inout vec4 fragColor){
     fragColor = vec4(color,1.0);
 }
 
-
+// 菱形
 float rhombusSDF(in vec2 st,in vec2 range){
     float height = range.y;
     float width = range.x;
@@ -112,6 +112,76 @@ void renderRhombusSDF(in vec2 st,inout vec4 fragColor){
 }
 
 
+
+
+float sideSDF(in vec2 p, in vec2 a,in vec2 b){
+    vec2 ab = b-a;
+    vec2 ap = p-a;
+    vec2 abDir = normalize(ab);
+
+    float h = clamp(dot(abDir,ap)/dot(abDir,abDir),0.,1.);
+    vec2 qp = ap-h*abDir;
+    return length(qp);
+}
+
+bool sameSide(in vec2 uv,in vec3 A,in vec3 B,in vec3 C){
+    vec3 p = vec3(uv,0.);
+    vec3 side = B-A;
+    // 判断p点和C点是否在边的同一侧
+    vec3 n1 = cross(side,C-A);
+    vec3 n2 = cross(side,p-A);
+    if(dot(n1,n2)>=0.){
+        return true;
+    }
+    return false;
+}
+bool inSide(in vec2 st,vec3[3] triangle){
+    if(
+    sameSide(st,triangle[0],triangle[1],triangle[2])&&
+    sameSide(st,triangle[1],triangle[2],triangle[0])&&
+    sameSide(st,triangle[2],triangle[0],triangle[1])
+    ) { return true; }
+    return false;
+}
+float d2Cross(in vec2 v1,in vec2 v2){
+    // 叉乘结果大于0 返回1 逆时针
+    // 叉乘结果小于0 返回-1 顺时针
+    return sign(v1.x*v2.y-v2.x*v1.y);
+}
+float triangleSDF(in vec2 st,in vec2 a,in vec2 b,in vec2 c ){
+    float s = d2Cross(b-a,c-b);
+    // 这里再次判断，点是位于外部还是内部，
+    // 外部点 叉积结果 小于0，顺时针；内部点叉积结果大于0，逆时针
+    // 再乘以s，
+    float d1 = sideSDF(st,a,b);
+    float s1 = s*d2Cross(st-a,b-a);
+
+    float d2 = sideSDF(st,b,c);
+    float s2 = s*d2Cross(st-b,c-b);
+
+    float d3 = sideSDF(st,c,a);
+    float s3 = s*d2Cross(st-c,a-c);
+
+    float d = min(d1,min(d2,d3));
+    s = min(s1,min(s2,s3));
+    return d*s;
+}
+void renderTriangleSDF(in vec2 st,inout vec4 fragColor){
+    vec2 v1 = vec2(0.,1.);
+    vec2 v2 = vec2(1.0,0.0);
+    vec2 v3 = vec2(-1.0,0.);
+    float d = triangleSDF(st,v1,v2,v3);
+    vec3 color = distColor(d);
+    fragColor = vec4(color,1.);
+}
+
+
+void renderTest(in vec2 st,inout vec4 fragColor){
+    vec3 color1 = vec3(1.0,1.0,0.0);
+    vec3 color2 = vec3(.0,0.5,1.0);
+    vec3 color = min(color1,color2);
+    fragColor = vec4(color,1.);
+}
 
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
@@ -144,6 +214,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         st = fract(st);
         st = st*2.-1.;
         renderRhombusSDF(st,fragColor);
+    }
+    if(area.x==0. && area.y == 2.){
+        st = fract(st);
+        st = st*2.-1.;
+        renderTriangleSDF(st,fragColor);
+    }
+    if(area.x==1. && area.y ==2.){
+        renderTest(st,fragColor);
     }
 }
 
