@@ -100,7 +100,7 @@ float rhombusSDF(in vec2 st,in vec2 range){
 
     vec2 qp = ap-h*abDir;
     float s = sign(abDir.x*ap.y-ap.x*abDir.y);
-    return s*length(qp);
+    return s*(length(qp));
 }
 void renderRhombusSDF(in vec2 st,inout vec4 fragColor){
     float h = 0.5*(sin(iTime)+1.);
