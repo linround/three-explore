@@ -1,7 +1,8 @@
 export function Text() {
   return (
     <main>
-      <h1>凹凸映射；</h1>
+      <h1> 纹理映射</h1>
+      <li>凹凸映射；</li>
       <p>使用扰动函数，得到扰动法向量</p>
       <li>帧映射(18.4)</li>
 
