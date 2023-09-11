@@ -22,17 +22,11 @@ jobs:
           node-version: ${{ matrix.node-version }} # 这里可以指定特定版本，也可以引用变量
       - run: npm install # 执行命令
       - run: npm run build # 执行命令
+      - name: uploadFile
       - uses: cross-the-world/scp-pipeline@master
         env:
           WELCOME: "ssh scp ssh pipelines"
           LASTSSH: "Doing something after copying"
-          with:
-            host: ${{ secrets.USER_HOST }}
-            user: ${{ secrets.USER_NAME }}
-            pass: ${{ secrets.USER_PASS }}
-            connect_timeout: 10s
-            local: './dist/*'
-            remote: /usr/local/nginx/threejs
 
 
 
