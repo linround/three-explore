@@ -7,7 +7,6 @@ on:
   push:
     tags:
       - v1.*
-    branches: 'main'
 jobs:
   #  运行的任务 build_test_deploy
   test:
