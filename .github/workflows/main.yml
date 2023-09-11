@@ -1,7 +1,7 @@
 # action的名称
-name: learn-github-actions
+name: three.ucalendar.cn
 # 运行器 的名称
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: three.ucalendar.cn
 # 监听指定分支的push和pull_request事件
 on:
   push:
