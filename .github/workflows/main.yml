@@ -8,11 +8,15 @@ jobs:
   #  运行的任务 check-bats-version
   check-bats-version:
     runs-on: ubuntu-latest # 任务运行在最新的操作平台
+    strategy:
+      matrix:
+        node-version: [ 16.x, 18.x, 20.x ] # 对多个版本的node 运行任务
     steps:
       - uses: actions/checkout@v3 # checkout的妙用 https://github.com/actions/checkout
+      - name: Use Node.js ${{ matrix.node-version }}
       - uses: actions/setup-node@v3 # 使用 setup-node v3 版本来安装指定的nodejs
         with:
-          node-version: '18'
+          node-version: ${{ matrix.node-version }} # 这里可以指定特定版本，也可以引用变量
       - run: npm install # 执行命令
       - run: npm run test # 执行命令
       - run: npm run build # 执行命令
