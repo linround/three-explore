@@ -1,9 +1,4 @@
-# action的名称
-name: learn-github-actions
-# 运行器 的名称
-run-name: ${{ github.actor }} is learning GitHub Actions
-# 监听push事件
-on: [push]
+
 jobs:
   #  运行的任务 check-bats-version
   check-bats-version:
