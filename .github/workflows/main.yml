@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 jobs:
   #  运行的任务 check-bats-version
-  build_Test:
+  build_test:
     runs-on: ubuntu-latest # 任务运行在最新的操作平台
     strategy:
       matrix:
