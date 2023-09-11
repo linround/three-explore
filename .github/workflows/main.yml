@@ -5,15 +5,13 @@ run-name: ${{ github.actor }} is learning GitHub Actions
 # 监听push事件
 on: [push]
 jobs:
-#  运行的任务 check-bats-version
-  check-bats-version:
-    runs-on: ubuntu-latest # 任务运行在最新的操作平台
+  build:
+    runs-on: ubuntu-latest
     steps:
+      # This step checks out a copy of your repository.
       - uses: actions/checkout@v3
-        with:
-          path: 'test'
-      - uses: actions/setup-node@v3 # 使用 setup-node v3 版本来安装指定的nodejs
-        with:
-          node-version: '18'
-      - run: npm install -g bats
-      - run: bats -v
+      # This step references the directory that contains the action.
+      - uses: ./.github/actions/hello-world-action
+
+
+
