@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hover 状态改变类名 1`] = `
+<a
+  className="normal"
+  href="https://three.ucalendar.cn/"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  three
+</a>
+`;
+
+exports[`hover 状态改变类名 2`] = `
+<a
+  className="hovered"
+  href="https://three.ucalendar.cn/"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  three
+</a>
+`;
+
+exports[`hover 状态改变类名 3`] = `
+<a
+  className="normal"
+  href="https://three.ucalendar.cn/"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  three
+</a>
+`;
