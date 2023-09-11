@@ -6,8 +6,12 @@ run-name: three.ucalendar.cn
 on:
   push:
     branches: [ main ]
+    tags:
+      - v1.*
   pull_request:
     branches: [ main ]
+    tags:
+      - v1.*
 jobs:
   #  运行的任务 build_test_deploy
   test:
