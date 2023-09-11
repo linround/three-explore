@@ -13,8 +13,9 @@ jobs:
       - uses: actions/setup-node@v3 # 使用 setup-node v3 版本来安装指定的nodejs
         with:
           node-version: '18'
-      - run: npm install -g bats # 执行命令
-      - run: bats -v # 执行命令
+      - run: npm install # 执行命令
+      - run: npm run test # 执行命令
+      - run: npm run build # 执行命令
 
 
 
