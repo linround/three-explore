@@ -10,7 +10,20 @@ on:
     branches: [ main ]
 jobs:
   #  运行的任务 build_test_deploy
-  build_test_deploy:
+  test:
+    runs-on: ubuntu-latest # 任务运行在最新的操作平台
+    strategy:
+      matrix:
+        node-version: [ 18.x ] # 通过指定多个版本，从而对多个版本都进行测试
+    steps:
+      - uses: actions/checkout@v3 # checkout的妙用 https://github.com/actions/checkout
+      - uses: actions/setup-node@v3 # 使用 setup-node v3 版本来安装指定的nodejs
+        with:
+          node-version: ${{ matrix.node-version }} # 这里可以指定特定版本，也可以引用变量
+      - run: npm install # 执行命令
+      - run: npm run test # 执行命令
+  #  运行的任务 build_test_deploy
+  build_deploy:
     runs-on: ubuntu-latest # 任务运行在最新的操作平台
     strategy:
       matrix:
