@@ -5,13 +5,11 @@ run-name: three.ucalendar.cn
 # 监听指定分支的push和pull_request事件
 on:
   push:
-    branches: [ main ]
+    branches: 'main'
     tags:
       - v1.*
   pull_request:
-    branches: [ main ]
-    tags:
-      - v1.*
+    branches: [main]
 jobs:
   #  运行的任务 build_test_deploy
   test:
