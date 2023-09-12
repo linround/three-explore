@@ -293,7 +293,8 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    vec2 p = (-iResolution.xy + 2.0 * fragCoord.xy) / iResolution.y;
+    float width = 2.;
+    vec2 p =  (width * fragCoord.xy / iResolution.xy)-width/2.;
 
     vec3 eye = vec3(278.0, 273.0, -800.0);
     vec2 rot = vec2(41, 0.);
