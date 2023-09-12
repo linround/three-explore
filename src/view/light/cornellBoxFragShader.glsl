@@ -296,7 +296,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 p = (-iResolution.xy + 2.0 * fragCoord.xy) / iResolution.y;
 
     vec3 eye = vec3(278.0, 273.0, -800.0);
-    vec2 rot = vec2(iTime, 0.);
+    vec2 rot = vec2(41, 0.);
     eye.yz = cos(rot.y) * eye.yz + sin(rot.y) * eye.zy * vec2(-1.0, 1.0);
     eye.xz = cos(rot.x) * eye.xz + sin(rot.x) * eye.zx * vec2(1.0, -1.0);
 
