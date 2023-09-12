@@ -1,4 +1,5 @@
 import img7 from './img/img_7.png?url'
+import { CodeText } from '../../component/codeText.jsx'
 export function Plane() {
   return (
     <>
@@ -27,7 +28,12 @@ export function Plane() {
         <p>  屏幕面还是平行桌子的边缘，而此时绕Z轴旋转的角度给手机姿态带来的影响和最开始旋转X轴给手机姿态带来的影响是一样的——都是使手机最终的姿态</p>
         <p>  （已经绕Y轴旋转了90度使得手机屏幕与桌子边缘平行）为绕着垂直于屏幕的轴旋转一定的角度。你完全可以不用绕Z轴旋转，</p>
         <p>  通过调节绕X轴旋转的角度数，使得最终手机的姿态和上述旋转过程达到的姿态一样。此时就是造成了万向锁</p>
-        <p> 万向锁的造成原因是因为，宣旋转角度导致了旋转前后有两个坐标轴的重合</p>
+        <CodeText>
+          <>
+            <p>万向锁的造成原因是因为，宣旋转角度导致了旋转前后有两个坐标轴的重合;</p>
+            <p>四元数很直接的描述了绕单个轴进行旋转，所以不存在多个旋转轴，旋转前后重合的情况；</p>
+          </>
+        </CodeText>
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/mtByWc?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
