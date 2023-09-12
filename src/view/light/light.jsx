@@ -13,6 +13,7 @@ import lightCubeFragmentShader from './lightCubeFragmentShader.glsl?raw'
 import raytraceFragmentShader from './raytraceFragmentShader.glsl?raw'
 import lightPointAspect from './lightPointAspect.glsl?raw'
 import sphereLightFragmentShader from './sphereLightFragmentShader.glsl?raw'
+import cornellBoxFragShader from './cornellBoxFragShader.glsl?raw'
 
 export class Light extends Component {
   constructor(props) {
@@ -24,6 +25,11 @@ export class Light extends Component {
     this.renderRay = this.renderRay.bind(this)
     this.renderCos = this.renderCos.bind(this)
     this.renderSphere = this.renderSphere.bind(this)
+    this.renderCornellBox = this.renderCornellBox.bind(this)
+  }
+  renderCornellBox() {
+    this.renderScene(cornellBoxFragShader, commonVertexShader)
+
   }
   renderSphere() {
     this.renderScene(sphereLightFragmentShader, commonVertexShader)
@@ -45,7 +51,8 @@ export class Light extends Component {
     // this.renderCube()
     // this.renderRay()
     // this.renderCos()
-    this.renderSphere()
+    // this.renderSphere()
+    this.renderCornellBox()
   }
 
   renderScene(fragmentShader, vertexShader) {
@@ -63,6 +70,7 @@ export class Light extends Component {
     texture.wrapS = THREE.RepeatWrapping
     texture.wrapT = THREE.RepeatWrapping
     const uniforms = {
+      iFrame: 2,
       iTime: { value: 0, },
       iResolution: { value: new THREE.Vector3(), },
       iMouse: { value: new THREE.Vector2(), },
@@ -107,6 +115,7 @@ export class Light extends Component {
             {/*<button onClick={this.renderRay}>Ray</button>*/}
             <button onClick={this.renderSphere}>Sphere</button>
             <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
+            <button onClick={this.renderCornellBox}>CornellBox</button>
           </div>
         </CanvasComponent>
         <Text />
