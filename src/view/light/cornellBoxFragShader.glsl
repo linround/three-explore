@@ -291,15 +291,52 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     return color;
 }
 
+mat3 roateX(float angle){
+    float c = cos(angle);
+    float s = sin(angle);
+
+    vec3 c1 = vec3(1,0,0);
+    vec3 c2 = vec3(0,c,s);
+    vec3 c3 = vec3(0,-s,c);
+    return mat3(
+    c1,c2,c3
+    );
+}
+
+mat3 roateY(float angle){
+    float c = cos(angle);
+    float s = sin(angle);
+
+    vec3 c1 = vec3(c,0,-s);
+    vec3 c2 = vec3(0,1,0);
+    vec3 c3 = vec3(s,0,c);
+    return mat3(
+    c1,c2,c3
+    );
+}
+mat3 roateZ(float angle){
+    float c = cos(angle);
+    float s = sin(angle);
+
+    vec3 c1 = vec3(c,s,0);
+    vec3 c2 = vec3(-s,c,0);
+    vec3 c3 = vec3(0,0,1);
+    return mat3(
+    c1,c2,c3
+    );
+}
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
+    // 定义屏幕的宽度
     float width = 2.;
+    // 转换坐标范围 到[-1,1]
     vec2 p =  (width * fragCoord.xy / iResolution.xy)-width/2.;
 
-    vec3 eye = vec3(278.0, 273.0, -800.0);
-    vec2 rot = vec2(41, 0.);
-    eye.yz = cos(rot.y) * eye.yz + sin(rot.y) * eye.zy * vec2(-1.0, 1.0);
-    eye.xz = cos(rot.x) * eye.xz + sin(rot.x) * eye.zx * vec2(1.0, -1.0);
+    // 定义观察点的坐标
+    vec3 eye = vec3(100.0);
+    eye.xyz *= roateX(iTime);
+    eye.xyz *= roateY(0.);
 
     vec3 ro = eye;
     vec3 ta = vec3(-278.0, -274.4, -279.6);
