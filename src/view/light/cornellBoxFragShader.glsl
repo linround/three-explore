@@ -5,7 +5,7 @@ uniform int iFrame;
 uniform sampler2D iChannel0;
 #define TWO_PI 6.28318530718
 #define TMIN     0.1
-#define TMAX     5000.0
+#define TMAX     3000.0
 
 #define ID_NONE           -1.0
 #define ID_FLOOR           0.10
@@ -20,7 +20,7 @@ uniform sampler2D iChannel0;
 
 #define GLASS_REFRACTION_INDEX    1.5
 
-// http://www.graphics.cornell.edu/online/box/data.html
+// http://www.graphics.cornell.edu/o nline/box/data.html
 const vec4 FLOOR          = vec4(278.0, 0.0, 279.6, ID_FLOOR);
 const vec4 CEILING        = vec4(278.0, 0.0, 279.6, ID_CEILING);
 const vec4 WALL_BACK      = vec4(278.0, 274.4, 0.0, ID_WALL_BACK);
@@ -334,24 +334,34 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 p =  (width * fragCoord.xy / iResolution.xy)-width/2.;
 
     // 定义观察点的坐标
-    vec3 eye = vec3(100.0);
-    eye.xyz *= roateX(iTime);
-    eye.xyz *= roateY(0.);
+    vec3 eye = vec3(200.0, 274.4, 279.6);
+    eye.xyz *= roateX(55.);
+    eye.xyz *= roateY(45.);
 
     vec3 ro = eye;
-    vec3 ta = vec3(-278.0, -274.4, -279.6);
+    vec3 ta = vec3(-200.0, -274.4, -279.6);
 
+    // 观察点指向 目标物体 的方向向量
     vec3 cw = normalize(ta - ro);
+    // 使用y轴作为向上的向量，求得垂直于 y轴和cw方向向量所称平面的 cu向量
+    // 得到 观察坐标系的三个基底， cw,y,cu
     vec3 cu = normalize(cross(vec3(0.0, 1.0, 0.0), cw));
+    // 重新吹顶y这个向量，使得 cw cv cu 是互相垂直的
+    // cw y cv 是共面的三个坐标向量（y可能不垂直cw，但是cv是垂直于cw的）
     vec3 cv = normalize(cross(cw, cu));
+    // 最终得到新的由 cu cv cw 组成的互相垂直的基底所形成的坐标系
+    // cw 是观察点指向 目标的向量
+    // cu 垂直于 cw于y轴形成的平面
+    // cv 垂直于 cw于cu
     mat3 cam = mat3(cu, cv, cw);
 
-    vec3 rd = cam * normalize(vec3(p.xy, 2.75));
+    vec3 rd =   normalize(vec3(p.xy,.5))*cam;
 
     // background
-    vec3 color = vec3(0.0);
+    vec3 color = vec3(0.);
 
     vec2 obj = raymarchScene(ro, rd, TMIN, TMAX, true);
+
     float id = obj.x;
     if (id != ID_VOID) {
         float t = obj.y;
