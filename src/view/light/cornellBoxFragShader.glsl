@@ -459,16 +459,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             // pos 交点坐标
             // rd 观察坐标系中，观察平面像素点与观察点之间的投射方向
             // nor 交点处的表面法向量
-            color = getGlassBallColor(pos, rd, nor);
+            color = getGlassBallColor(pos, rd, nor); // 玻璃球 折射
         }
         else if (id == ID_SPHERE_REFLECT) {
-            color = getMirrorBallColor(pos, rd, nor);
+            color = getMirrorBallColor(pos, rd, nor); // 镜面球 高光
         }
         else if (id == ID_FLOOR) {
-            color = getFloorColor(obj, pos, rd, nor);
+            color = getFloorColor(obj, pos, rd, nor); // 地面
         }
         else {
-            color = getBoxColor(obj, pos, rd, nor);
+            color = getBoxColor(obj, pos, rd, nor); // 墙体
         }
     }
 
