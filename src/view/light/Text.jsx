@@ -33,6 +33,8 @@ export function Text() {
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
+        <li>观察坐标系的建立和推导</li>
+        在几乎所有的
         <li>实现光线追踪</li>
         <ul>
           <li>确定对象表面的点对于从某个像素发出的光线是否可见</li>

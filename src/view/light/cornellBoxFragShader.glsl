@@ -345,7 +345,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 cw = normalize(ta - ro);
     // 使用y轴作为向上的向量，求得垂直于 y轴和cw方向向量所称平面的 cu向量
     // 得到 观察坐标系的三个基底， cw,y,cu
-    vec3 cu = normalize(cross(vec3(0.0, 1.0, 0.0), cw));
+    vec3 cu = normalize(cross(vec3(0.0, 1.0, .0), cw));
     // 重新吹顶y这个向量，使得 cw cv cu 是互相垂直的
     // cw y cv 是共面的三个坐标向量（y可能不垂直cw，但是cv是垂直于cw的）
     vec3 cv = normalize(cross(cw, cu));
