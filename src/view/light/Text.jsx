@@ -10,6 +10,7 @@ export function Text() {
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li><a href={'https://zhuanlan.zhihu.com/p/104765641'}>观察矩阵的推导</a></li>
           <li><a href={blinnPhongUrl}>Blinn–Phong reflection model</a></li>
           <li><a href={whisperUrl}>折射方向的推导</a></li>
           <li><a href={'https://zhuanlan.zhihu.com/p/41269520'}>一篇光线追踪入门</a> </li>

@@ -355,14 +355,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // cv 垂直于 cw于cu
     mat3 cam = mat3(cu, cv, cw);
 
+
+    // 眼睛指向目标位置 方向 cw 作为 观察坐标系的 z 轴
+    //
     vec3 rd =   normalize(vec3(p.xy,.5))*cam;
 
     // background
     vec3 color = vec3(0.);
 
+    // 找到光线在场景中的交点物体
     vec2 obj = raymarchScene(ro, rd, TMIN, TMAX, true);
 
     float id = obj.x;
+    //
     if (id != ID_VOID) {
         float t = obj.y;
         vec3 pos = ro + rd * t;

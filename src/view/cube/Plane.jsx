@@ -5,14 +5,16 @@ export function Plane() {
     <>
       <main>
         <h1>立方体面的2D投影</h1>
-
         <p>附录：</p>
+        <ul>
+          <li><a href={'https://krasjet.github.io/quaternion/bonus_gimbal_lock.pdf'}>（Gimbal Lock）万向锁</a></li>
+          <li><a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>四元数的可视化（视频）；</a></li>
+          <li><a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >四元数与三维旋转（pdf）；</a></li>
+          <li> <a href={'https://zhuanlan.zhihu.com/p/267722955'} target={'_blank'} rel="noreferrer">平面方程的求解公式；</a></li>
+          <li><a href={'https://www.shadertoy.com/view/4dG3RK'}>立方体示例1；</a></li>
+          <li><img src={img7}/></li>
+        </ul>
 
-        <p><a target={'_blank'} rel="noreferrer" href={'https://www.bilibili.com/video/BV1SW411y7W1/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>四元数的可视化（视频）；</a></p>
-        <p><a target={'_blank'} rel="noreferrer" href={'https://krasjet.github.io/quaternion/quaternion.pdf'} >四元数与三维旋转（pdf）；</a></p>
-        <p> <a href={'https://zhuanlan.zhihu.com/p/267722955'} target={'_blank'} rel="noreferrer">平面方程的求解公式；</a></p>
-        <p><a href={'https://www.shadertoy.com/view/4dG3RK'}>立方体示例1；</a></p>
-        <p><img src={img7}/></p>
         <li>万向锁直观理解</li>
         <p>万向锁导致的维度丢失；</p>
         <p>欧拉角是由三个角度表示，表示物体从原始姿态到目标姿态的一个变换。无论（α，β，γ）三个角度值是多少，</p>
