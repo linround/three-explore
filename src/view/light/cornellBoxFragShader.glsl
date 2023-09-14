@@ -26,11 +26,11 @@ const vec4 CEILING        = vec4(278.0, 0.0, 279.6, ID_CEILING);
 const vec4 WALL_BACK      = vec4(278.0, 274.4, 0.0, ID_WALL_BACK);
 const vec4 WALL_RIGHT     = vec4(0.0, 274.4, 279.6, ID_WALL_RIGHT);
 const vec4 WALL_LEFT      = vec4(0.0, 274.4, 279.6, ID_WALL_LEFT);
-const vec4 LIGHT          = vec4(65.0, 0.0, 52.5, ID_LIGHT);
+const vec4 LIGHT          = vec4(50.0, 5.0, 50., ID_LIGHT);// 定义灯的宽度 高度 深度
 const vec4 SPHERE_REFRACT = vec4(80.0, 0.0, 0.0, ID_SPHERE_REFRACT);
 const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT);
 
-const vec3 lightPos = vec3(278.0, 0.0, 279.6);
+const vec3 lightPos = vec3(200.0, 0.0, 200.);
 
 float sdBox(in vec3 p, in vec3 box) {
     vec3 d = abs(p) - box;
@@ -53,27 +53,51 @@ vec2 intersectSpheres(in vec3 p, bool refrSph) {
     return res;
 }
 
+// p 是世界坐标系中的点，因为观察坐标系原点是eye的世界坐标系的坐标
+// 同时   p的坐标点是通过迭代的方式，一步步进行逼近物体的
+// 通过在观察坐标系中，从而来计算投影平面像素点上世界坐标系的坐标值
 vec2 intersect(in vec3 p, bool refrSph) {
     // hit object ID is stored in res.x, distance to object is in res.y
+    // res.x 保存了光线投射到的物体ID
+    // res.y 保存了当前 光线断点离物体表面的距离
+
 
     vec2 res = vec2(ID_VOID, 2000.0);
 
     vec2 obj = vec2(ID_LIGHT, sdBox(p + lightPos, LIGHT.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
 
     obj = vec2(ID_FLOOR, sdBox(p + vec3(278.0, 548.8, 279.6), FLOOR.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
+
     obj = vec2(ID_CEILING, sdBox(p + vec3(278.0, 0.0, 279.6), CEILING.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y){
+        res = obj;
+    }
+
     obj = vec2(ID_WALL_BACK, sdBox(p + vec3(278.0, 274.4, 559.2), WALL_BACK.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
+
     obj = vec2(ID_WALL_RIGHT, sdBox(p + vec3(556.0, 274.4, 279.6), WALL_RIGHT.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
+
     obj = vec2(ID_WALL_LEFT, sdBox(p + vec3(0.0, 274.4, 279.6), WALL_LEFT.xyz));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
 
     obj = intersectSpheres(p, refrSph);
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
 
     return res;
 }
@@ -82,16 +106,27 @@ vec2 intersect(in vec3 p) {
     return intersect(p, true);
 }
 
+// ro 是观察点在世界坐标系的坐标 即 eye
+// rd 即将像素点xy映射到 观察坐标系的 uv平面,坐标cu,cv
+// rd 定义了一个cw（即观察坐标系的z轴） 固定的投影平面
+// cw 方向 是观察点指向 目标的方向 即 target-eye
 vec2 raymarchScene(in vec3 ro, in vec3 rd, in float tmin, in float tmax, bool refrSph) {
     vec3 res = vec3(ID_NONE);
-    float t = tmin;
-    for (int i = 0; i < 250; i++) {
+    float t = tmin;// tmin 默认值为0.1
+    for (int i = 0; i < 100; i++) {
+        // p 点 是从eye出发，沿着投影平面上的点的方向行进
+        // t 最开始是0.1，即行进的距离初始为0.1
         vec3 p = ro + rd * t;
+
+        // res.x 保存了光线投射到的物体ID
+        // res.y 保存了当前 光线端点离物体表面的距离
+        // res.z 保存了从观察坐标系原点出发，距离物体表面的距离
         res = vec3(intersect(p, refrSph), t);
         float d = res.y;
-        if (d < (0.001 * t) || t > tmax)
-        break;
-        t += 0.5 * d;
+        if (d < 0.05 || t > tmax){
+            break;
+        }
+        t += d;
     }
     return res.xz;
 }
@@ -353,17 +388,21 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // cw 是观察点指向 目标的向量
     // cu 垂直于 cw于y轴形成的平面
     // cv 垂直于 cw于cu
+    // 观察坐标系的原点实际就是 观察点(即eye坐标点)
     mat3 cam = mat3(cu, cv, cw);
 
 
     // 眼睛指向目标位置 方向 cw 作为 观察坐标系的 z 轴
-    //
-    vec3 rd =   normalize(vec3(p.xy,.5))*cam;
+    // 与y,cw共面的        cv 作为观察坐标系的 y 轴
+    // 垂直于cw,cv的       cu 作为观察坐标系的 x 轴
+    vec3 rd =   normalize(vec3(p.xy,1.))*cam;
 
-    // background
+    // 背景色
     vec3 color = vec3(0.);
 
     // 找到光线在场景中的交点物体
+    // ro 是观察点在世界坐标系中的坐标
+    // rd 的xy 平面实际就是 当前的像素平面，也就是观察坐标系的 cu,cv平面
     vec2 obj = raymarchScene(ro, rd, TMIN, TMAX, true);
 
     float id = obj.x;
