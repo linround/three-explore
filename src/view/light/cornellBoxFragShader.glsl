@@ -451,10 +451,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // pos 是表面点的在世界坐标系中的坐标点
         // 且pos是某个物体表面与投射线的交点位置处
         vec3 pos = ro + rd * t;
-        // 得到该点的法向量
+        // 得到该交点处的法向量
         vec3 nor = getNormal(pos);
 
+        // 对于折射球体
         if (id == ID_SPHERE_REFRACT) {
+            // pos 交点坐标
+            // rd 观察坐标系中，观察平面像素点与观察点之间的投射方向
+            // nor 交点处的表面法向量
             color = getGlassBallColor(pos, rd, nor);
         }
         else if (id == ID_SPHERE_REFLECT) {
