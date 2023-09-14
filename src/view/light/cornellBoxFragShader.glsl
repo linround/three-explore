@@ -171,11 +171,18 @@ vec3 getNormal(in vec3 p) {
     ));
 }
 
+
+// ro 反射线方向进行投射时的交点位置
+// rd 反射线方向进行投射时，交点出的法向量
+// tmin 统一使用 80
 float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
     float ao = 0.0;
     for (float i = 0.0; i < 5.0; i++) {
-        float t = tmin + pow(i / 5.0, 2.0);
+        float t = tmin + pow(i / 10.0, 2.0);
+
+        // 从 投射点ro处出发，沿着投射方向rd 进行叠加坐标
         vec3 p = ro + rd * t;
+        // 计算新的坐标点p处 李投射交叉点处的距离
         float d = intersect(p).y;
         ao += max(0.0, t - 0.5 * d - 0.05);
     }
@@ -292,12 +299,32 @@ vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     return color;
 }
 
+
+// 玻璃材质有折射和反射
+// 这里先计算了反射
+
+// pos 投射交点坐标
+// rd 观察坐标系中，观察平面像素点与观察点之间的投射方向，（x,y,1）
+// nor 交点处的表面法向量
 vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
+    // 这里求反射向量 rd是入射向量，nor该点的法线方向
     vec3 refl = reflect(rd, nor);
-    vec2 reflObj = raymarchScene(pos, refl, TMIN, TMAX, true);
+    // 这里以交点处为起点  从该点以 反射方向进行投射。
+    // 投射 最终返回的是 投射到的对象的ID 以及投射起始点距离物体表面点的距离
+    vec2 reflObj = raymarchScene(pos, refl, TMIN, TMAX, true); // 反射遇见的物体
+    // 计算出反射线从交点pos进行投射时交点处的坐标
     vec3 reflPos = pos + refl * reflObj.y;
+    // 再次计算反射线投射时，交点处的法向量
     vec3 reflNor = getNormal(reflPos);
+
+
+    // reflPos 反射线方向进行投射时的交点位置
+    // reflNor 反射线方向进行投射时，交点出的法向量
     float reflOcc = clamp(raymarchAO(reflPos, reflNor, 80.0), 0.0, 1.0);
+
+
+
+    // refract 根据入射向量，法向量，折射率的关系计算折射方向
     vec3 refr = refract(rd, nor, 1.0 / GLASS_REFRACTION_INDEX);
     vec2 robj = raymarchScene(pos, refr, TMIN, TMAX, false);
     vec3 rpos = pos + refr * robj.y;

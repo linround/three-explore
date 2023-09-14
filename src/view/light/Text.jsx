@@ -1,5 +1,12 @@
 import { CodeText } from '../../component/codeText.jsx'
 
+function Normal() {
+  return (
+    <a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>
+      方向导数和梯度的直观理解；(视频)
+    </a>
+  )
+}
 export function Text() {
   const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
   const blinnPhongUrl = 'https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model'
@@ -10,10 +17,9 @@ export function Text() {
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li><a href={'https://zh.wikipedia.org/wiki/%E6%96%AF%E6%B6%85%E5%B0%94%E5%AE%9A%E5%BE%8B'}>斯涅尔定律</a></li>
           <li>
-            <a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>
-            方向导数和梯度的直观理解；(视频)
-            </a>
+            <Normal />
           </li>
           <li><a href={'https://zhuanlan.zhihu.com/p/104765641'}>观察矩阵的推导</a></li>
           <li><a href={blinnPhongUrl}>Blinn–Phong reflection model</a></li>
@@ -41,14 +47,16 @@ export function Text() {
         <li>关于法向量mvp中的一些理解</li>
         <p>传统的方式：已知三点可得平面方程：平面方程ax+by+cz+d = 0，求取a,b,c即可得到法向量（a,b,c）</p>
         <p>在使用mvp进行投射时，例如对于使用sdf表示的立方体表面，要找到投射射线与立方体表面的相交点，在对射线使用迭代的过程
-        中，逐步判断改射线端点与球体是否相交，从而找到该相交的点。在此，如何确定该交点的法向量呢？</p>
+        中，逐步判断改射线端点与球体是否相交，从而找到该相交的点。在此，如何确定该交点的法向量呢？参考：
+        <Normal /></p>
         <li>观察坐标系的建立和推导</li>
         <p>前提假设：相机到目标的向量 作为Vz；</p>
         在几乎所有的推导过程中，均使用世界坐标系的y轴作为相机的up方向，其作用是默认Vz和y轴形成的平面与 Vz和Vy形成的是同一个平面。
-        <li>实现光线追踪</li>
+        <li>实现光线追踪过程的一些理解</li>
         <ul>
-          <li>确定对象表面的点对于从某个像素发出的光线是否可见</li>
-          <li>对该点进行着色</li>
+          <li>在计算平面表面点的法向量时，例如可以把立方体sdf当作其表面方程，通过在各个轴上进行轻微的偏移，并利用SDF方程计算出最终的偏移量
+          ，通过对各轴偏移的计算即可算出在该点处的方向变化率，从而确定该点的法向量。
+          </li>
         </ul>
 
         <li>可见对象的颜色和光照模型建模</li>
