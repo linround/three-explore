@@ -35,7 +35,8 @@ float distanceToNearestSurfaceSphere(vec3 p){
 float distanceToNearestSurfaceCube(in vec3 p){
 
     float s = 2.0;// 定义了长宽高的值
-    vec3 d = abs(p) - vec3(s);
+    vec3 center = vec3(0.0);
+    vec3 d = abs(p-center) - vec3(s);
     return min(max(d.x, max(d.y,d.z)), 0.0) //这是计算内部的点 到表面的最小距离（负值）
     + length(max(d,0.0));// 这是计算外部坐标点 到表面的距离（正值）
 }

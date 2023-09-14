@@ -10,6 +10,11 @@ export function Text() {
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li>
+            <a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>
+            方向导数和梯度的直观理解；(视频)
+            </a>
+          </li>
           <li><a href={'https://zhuanlan.zhihu.com/p/104765641'}>观察矩阵的推导</a></li>
           <li><a href={blinnPhongUrl}>Blinn–Phong reflection model</a></li>
           <li><a href={whisperUrl}>折射方向的推导</a></li>
@@ -33,6 +38,10 @@ export function Text() {
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
+        <li>关于法向量mvp中的一些理解</li>
+        <p>传统的方式：已知三点可得平面方程：平面方程ax+by+cz+d = 0，求取a,b,c即可得到法向量（a,b,c）</p>
+        <p>在使用mvp进行投射时，例如对于使用sdf表示的立方体表面，要找到投射射线与立方体表面的相交点，在对射线使用迭代的过程
+        中，逐步判断改射线端点与球体是否相交，从而找到该相交的点。在此，如何确定该交点的法向量呢？</p>
         <li>观察坐标系的建立和推导</li>
         <p>前提假设：相机到目标的向量 作为Vz；</p>
         在几乎所有的推导过程中，均使用世界坐标系的y轴作为相机的up方向，其作用是默认Vz和y轴形成的平面与 Vz和Vy形成的是同一个平面。

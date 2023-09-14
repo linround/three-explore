@@ -21,14 +21,14 @@ uniform sampler2D iChannel0;
 #define GLASS_REFRACTION_INDEX    1.5
 
 // http://www.graphics.cornell.edu/o nline/box/data.html
-const vec4 FLOOR          = vec4(278.0, 0.0, 279.6, ID_FLOOR);
-const vec4 CEILING        = vec4(278.0, 0.0, 279.6, ID_CEILING);
-const vec4 WALL_BACK      = vec4(278.0, 274.4, 0.0, ID_WALL_BACK);
-const vec4 WALL_RIGHT     = vec4(0.0, 274.4, 279.6, ID_WALL_RIGHT);
-const vec4 WALL_LEFT      = vec4(0.0, 274.4, 279.6, ID_WALL_LEFT);
+const vec4 FLOOR          = vec4(300.0, 0.0, 300., ID_FLOOR);// 定义地板的宽度 高度 深度
+const vec4 CEILING        = vec4(278.0, 0.0, 279.6, ID_CEILING);// 定义天花板的宽度 高度 深度
+const vec4 WALL_BACK      = vec4(278.0, 274.4, 0.0, ID_WALL_BACK);// 定义后墙的宽度 高度 深度
+const vec4 WALL_RIGHT     = vec4(0.0, 274.4, 279.6, ID_WALL_RIGHT);// 定义右墙的宽度 高度 深度
+const vec4 WALL_LEFT      = vec4(0.0, 274.4, 279.6, ID_WALL_LEFT);// 定义左墙的宽度 高度 深度
 const vec4 LIGHT          = vec4(50.0, 5.0, 50., ID_LIGHT);// 定义灯的宽度 高度 深度
-const vec4 SPHERE_REFRACT = vec4(80.0, 0.0, 0.0, ID_SPHERE_REFRACT);
-const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT);
+const vec4 SPHERE_REFRACT = vec4(50.0, 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球 半径
+const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
 
 const vec3 lightPos = vec3(200.0, 0.0, 200.);
 
@@ -41,14 +41,25 @@ float sdSphere(vec3 p, float s) {
     return length(p) - s;
 }
 
+//返回
+// res.x 存储投射到的物体ID
+// res.y 存储投射端点离 物体的距离
 vec2 intersectSpheres(in vec3 p, bool refrSph) {
     // hit object ID is stored in res.x, distance to object is in res.y
 
+    // res.x 存储投射到的物体ID
+    // res.y 存储投射端点离 物体的距离
     vec2 res = vec2(ID_VOID, 2000.0);
 
-    if (refrSph) res = vec2(ID_SPHERE_REFRACT, sdSphere(p + vec3(380.0, 468.8, 166.0), SPHERE_REFRACT.x));
+    if (refrSph){
+        // 折射球
+        res = vec2(ID_SPHERE_REFRACT, sdSphere(p + vec3(380.0, 468.8, 166.0), SPHERE_REFRACT.x));
+    }
+    // 反射球
     vec2 obj = vec2(ID_SPHERE_REFLECT, sdSphere(p + vec3(190.0, 448.8, 365.0), SPHERE_REFLECT.x));
-    if (obj.y < res.y) res = obj;
+    if (obj.y < res.y) {
+        res = obj;
+    }
 
     return res;
 }
@@ -57,38 +68,42 @@ vec2 intersectSpheres(in vec3 p, bool refrSph) {
 // 同时   p的坐标点是通过迭代的方式，一步步进行逼近物体的
 // 通过在观察坐标系中，从而来计算投影平面像素点上世界坐标系的坐标值
 vec2 intersect(in vec3 p, bool refrSph) {
-    // hit object ID is stored in res.x, distance to object is in res.y
     // res.x 保存了光线投射到的物体ID
-    // res.y 保存了当前 光线断点离物体表面的距离
+    // res.y 保存了当前 投射端点离物体表面的距离
 
 
     vec2 res = vec2(ID_VOID, 2000.0);
 
+    // 这里是计算灯管处的SDF盒子
     vec2 obj = vec2(ID_LIGHT, sdBox(p + lightPos, LIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
-    obj = vec2(ID_FLOOR, sdBox(p + vec3(278.0, 548.8, 279.6), FLOOR.xyz));
+    // 这里是计算地板处的SDF盒子
+    obj = vec2(ID_FLOOR, sdBox(p + vec3(278.0, 550, 279.6), FLOOR.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
-
+    // 这里是计算天花板处的SDF盒子
     obj = vec2(ID_CEILING, sdBox(p + vec3(278.0, 0.0, 279.6), CEILING.xyz));
     if (obj.y < res.y){
         res = obj;
     }
 
+    // 这里是计算内墙壁的SDF盒子
     obj = vec2(ID_WALL_BACK, sdBox(p + vec3(278.0, 274.4, 559.2), WALL_BACK.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
+    // 这里是计算右墙的SDF盒子
     obj = vec2(ID_WALL_RIGHT, sdBox(p + vec3(556.0, 274.4, 279.6), WALL_RIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
+    // 这里是计算左墙的SDF盒子
     obj = vec2(ID_WALL_LEFT, sdBox(p + vec3(0.0, 274.4, 279.6), WALL_LEFT.xyz));
     if (obj.y < res.y) {
         res = obj;
@@ -102,6 +117,9 @@ vec2 intersect(in vec3 p, bool refrSph) {
     return res;
 }
 
+// res.x 保存了光线投射到的物体ID
+// res.y 保存了当前 投射端点离物体表面的距离
+// p是世界坐标系中的某个点
 vec2 intersect(in vec3 p) {
     return intersect(p, true);
 }
@@ -116,26 +134,41 @@ vec2 raymarchScene(in vec3 ro, in vec3 rd, in float tmin, in float tmax, bool re
     for (int i = 0; i < 100; i++) {
         // p 点 是从eye出发，沿着投影平面上的点的方向行进
         // t 最开始是0.1，即行进的距离初始为0.1
+        // 这里的p是世界坐标系的坐标点
         vec3 p = ro + rd * t;
 
         // res.x 保存了光线投射到的物体ID
-        // res.y 保存了当前 光线端点离物体表面的距离
+        // res.y 保存了当前 投射端点离物体表面的距离
         // res.z 保存了从观察坐标系原点出发，距离物体表面的距离
         res = vec3(intersect(p, refrSph), t);
         float d = res.y;
-        if (d < 0.05 || t > tmax){
+        // 最终得到距离投射端点 小于dRange的物体对象
+        float dRange = 0.05;
+        if (d < dRange || t > tmax){
             break;
         }
         t += d;
     }
+    // 最终返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
     return res.xz;
 }
 
+// 传入的是p点 即世界坐标系的某个点的坐标
 vec3 getNormal(in vec3 p) {
-    vec2 eps = vec2(0.005, 0.0);
-    return normalize(vec3(intersect(p + eps.xyy).y - intersect(p - eps.xyy).y,
-    intersect(p + eps.yxy).y - intersect(p - eps.yxy).y,
-    intersect(p + eps.yyx).y - intersect(p - eps.yyx).y));
+    // 偏移值越小，就越接近该平面上的邻点，从而更准确的确定该点处的的变化速率和方向
+    vec2 eps = vec2(0.001, 0.0);
+    // 各轴偏移0.005
+    // 偏移后 计算投射端点距离表面的变化值 Δ
+    // 计算出在微小范围的偏移导致的 Δ，使用Δ来表示该点的法向量
+
+    // 对交点 p各轴偏移后，计算偏移之后的两个点之间距离
+    // 这里需要进行 正负偏移，进而确定该点处具体的偏移方向
+    // 然后求取各方向的变化速率即可
+    return normalize(vec3(
+    (intersect(p + eps.xyy).y - intersect(p - eps.xyy).y)/(2.0*eps.x),// 计算Δx
+    (intersect(p + eps.yxy).y - intersect(p - eps.yxy).y)/(2.0*eps.x), // 计算Δy
+    (intersect(p + eps.yyx).y - intersect(p - eps.yyx).y)/(2.0*eps.x) //计算Δz
+    ));
 }
 
 float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
@@ -405,11 +438,20 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // rd 的xy 平面实际就是 当前的像素平面，也就是观察坐标系的 cu,cv平面
     vec2 obj = raymarchScene(ro, rd, TMIN, TMAX, true);
 
+    // obj 是得到的最终投射到的物体对象
+    // obj.x 是该投射对象的物体ID
+    // obj.y 观察点距离距离物体表面点的距离
     float id = obj.x;
-    //
+
     if (id != ID_VOID) {
+        // t 是观察点距离对象表面的距离
         float t = obj.y;
+        // 求得表面处点的坐标
+        // 观察点+距离*观察坐标系的基地
+        // pos 是表面点的在世界坐标系中的坐标点
+        // 且pos是某个物体表面与投射线的交点位置处
         vec3 pos = ro + rd * t;
+        // 得到该点的法向量
         vec3 nor = getNormal(pos);
 
         if (id == ID_SPHERE_REFRACT) {
