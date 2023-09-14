@@ -34,7 +34,8 @@ export function Text() {
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
         <li>观察坐标系的建立和推导</li>
-        在几乎所有的
+        <p>前提假设：相机到目标的向量 作为Vz；</p>
+        在几乎所有的推导过程中，均使用世界坐标系的y轴作为相机的up方向，其作用是默认Vz和y轴形成的平面与 Vz和Vy形成的是同一个平面。
         <li>实现光线追踪</li>
         <ul>
           <li>确定对象表面的点对于从某个像素发出的光线是否可见</li>
