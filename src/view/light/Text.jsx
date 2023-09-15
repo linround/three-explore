@@ -18,6 +18,21 @@ export function Text() {
         <h1>光照在模型中的实现</h1>
         <p>附录：</p>
         <ul>
+          <li>
+            SSAO
+            <ul>
+              <li>
+                <a href={'https://learnopengl-cn.github.io/05%20Advanced%20Lighting/09%20SSAO/'}>
+                  learnopengl-SSAO
+                </a>
+              </li>
+              <li>
+                <a href={'https://zhuanlan.zhihu.com/p/145339736'}>
+                  UE4 Mobile GTAO 实现(HBAO续)
+                </a>
+              </li>
+            </ul>
+          </li>
           <li><a href={'https://zhuanlan.zhihu.com/p/357142662'}>
             光线追踪基本原理分享（网易雷火）
           </a></li>
@@ -63,6 +78,7 @@ export function Text() {
             <li>BVH算法，即对场景进行划分，划分完成后，利用划分的数据进行加速求交
             。如果一条射线为与大包围盒相交，那么它肯定不会与包围盒内部的各个小块模型
             的三角形面相交，这样的排除算法可以加速交点检测</li>
+            <li><a>为什么在玻璃材质中，玻璃材质所产生的折射光线，在计算该折射光线与场景物体相交时却忽略了折射球呢</a></li>
           </ul>
         </li>
         <li>观察坐标系的建立和推导</li>

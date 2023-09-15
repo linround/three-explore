@@ -109,6 +109,7 @@ vec2 intersect(in vec3 p, bool refrSph) {
         res = obj;
     }
 
+    // 计算相交球体
     obj = intersectSpheres(p, refrSph);
     if (obj.y < res.y) {
         res = obj;
@@ -173,12 +174,16 @@ vec3 getNormal(in vec3 p) {
 
 
 // ro 反射线方向进行投射时的交点位置
-// rd 反射线方向进行投射时，交点出的法向量
+// rd 反射线方向进行投射时，交点处的法向量
 // tmin 统一使用 80
+
+// 环境光遮蔽计算
+// 主要通过构建从表面上一点 朝其法线所在上半球的所有方向发出射线，然后检查他们是否与其他对象相交来计算环境光遮蔽因子
 float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
     float ao = 0.0;
     for (float i = 0.0; i < 5.0; i++) {
-        float t = tmin + pow(i / 10.0, 2.0);
+        //
+        float t = 60. + pow(i / 5., 2.0);
 
         // 从 投射点ro处出发，沿着投射方向rd 进行叠加坐标
         vec3 p = ro + rd * t;
@@ -256,7 +261,7 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 vec3 getWallColor(in vec2 obj) {
     vec3 color = vec3(0.0);
     float id = obj.x;
-    if (id == ID_FLOOR) color = vec3(0.25, 0.175, 0.1);
+    if (id == ID_FLOOR) color = vec3(0.1, 0.175, 0.1);
     if (id == ID_CEILING) color = vec3(0.25, 0.175, 0.1);
     if (id == ID_WALL_BACK) color = vec3(0.25, 0.175, 0.1);
     if (id == ID_WALL_RIGHT) color = vec3(0.0, 0.05, 0.0);
@@ -307,6 +312,7 @@ vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
 // rd 观察坐标系中，观察平面像素点与观察点之间的投射方向，（x,y,1）
 // nor 交点处的表面法向量
 vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
+    // 玻璃面上的点的反射计算
     // 这里求反射向量 rd是入射向量，nor该点的法线方向
     vec3 refl = reflect(rd, nor);
     // 这里以交点处为起点  从该点以 反射方向进行投射。
@@ -324,12 +330,20 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
 
 
 
+    // 玻璃面上的点的折射计算
     // refract 根据入射向量，法向量，折射率的关系计算折射方向
     vec3 refr = refract(rd, nor, 1.0 / GLASS_REFRACTION_INDEX);
+    // 计算折射光线在场景中的交点（不考虑折射球）
+    // 最终返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
     vec2 robj = raymarchScene(pos, refr, TMIN, TMAX, false);
+    // 找到折射光线与物体相交的点
     vec3 rpos = pos + refr * robj.y;
+    // 计算折射光线的交点处
     vec3 rnor = getNormal(rpos);
+
+    // 得到该交点处的基本颜色
     vec3 color = getWallColor(robj);
+    //
     float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
     if (robj.x == ID_SPHERE_REFLECT) {
         vec3 rrefl = reflect(refr, rnor);
