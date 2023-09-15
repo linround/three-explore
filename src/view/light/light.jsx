@@ -14,6 +14,7 @@ import raytraceFragmentShader from './raytraceFragmentShader.glsl?raw'
 import lightPointAspect from './lightPointAspect.glsl?raw'
 import sphereLightFragmentShader from './sphereLightFragmentShader.glsl?raw'
 import cornellBoxFragShader from './cornellBoxFragShader.glsl?raw'
+import basicsFragShader from './basicsFragShader.glsl?raw'
 
 export class Light extends Component {
   constructor(props) {
@@ -26,6 +27,10 @@ export class Light extends Component {
     this.renderCos = this.renderCos.bind(this)
     this.renderSphere = this.renderSphere.bind(this)
     this.renderCornellBox = this.renderCornellBox.bind(this)
+    this.renderBasic = this.renderBasic.bind(this)
+  }
+  renderBasic(){
+    this.renderScene(basicsFragShader,commonVertexShader)
   }
   renderCornellBox() {
     this.renderScene(cornellBoxFragShader, commonVertexShader)
@@ -116,6 +121,7 @@ export class Light extends Component {
             <button onClick={this.renderSphere}>Sphere</button>
             <button onClick={this.renderCos}>Cosθ的n次方对于光斑的影响</button>
             <button onClick={this.renderCornellBox}>CornellBox</button>
+            <button onClick={this.renderBasic}>Basic</button>
           </div>
         </CanvasComponent>
         <Text />

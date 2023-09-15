@@ -178,7 +178,8 @@ vec3 getNormal(in vec3 p) {
 // tmin 统一使用 80
 
 // 环境光遮蔽计算
-// 主要通过构建从表面上一点 朝其法线所在上半球的所有方向发出射线，然后检查他们是否与其他对象相交来计算环境光遮蔽因子
+// 主要通过构建从表面上一点 朝其法线所在上半球的所有方向发出射线，
+// 然后检查他们是否与其他对象相交来计算环境光遮蔽因子
 float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
     float ao = 0.0;
     for (float i = 0.0; i < 5.0; i++) {
@@ -261,12 +262,12 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 vec3 getWallColor(in vec2 obj) {
     vec3 color = vec3(0.0);
     float id = obj.x;
-    if (id == ID_FLOOR) color = vec3(0.1, 0.175, 0.1);
-    if (id == ID_CEILING) color = vec3(0.25, 0.175, 0.1);
-    if (id == ID_WALL_BACK) color = vec3(0.25, 0.175, 0.1);
-    if (id == ID_WALL_RIGHT) color = vec3(0.0, 0.05, 0.0);
-    if (id == ID_WALL_LEFT) color = vec3(0.25, 0.0, 0.0);
-    if (id == ID_LIGHT) color = vec3(10.0);
+    if (id == ID_FLOOR) color = vec3(0.5);// 地板的颜色
+    if (id == ID_CEILING) color = vec3(1.0, 0.0, 1.0);// 天花板的颜色
+    if (id == ID_WALL_BACK) color = vec3(0.0, 1.0, 0.0);// 后墙的颜色
+    if (id == ID_WALL_RIGHT) color = vec3(1.0, 0.0, 0.0);// 右墙的颜色
+    if (id == ID_WALL_LEFT) color = vec3(0.0, 0.0, 1.0);// 左墙的颜色
+    if (id == ID_LIGHT) color = vec3(1.0);// 灯光box的颜色
     return color;
 }
 
@@ -342,11 +343,21 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     vec3 rnor = getNormal(rpos);
 
     // 得到该交点处的基本颜色
-    vec3 color = getWallColor(robj);
+    // getWallColor 得到的始终是物体的颜色；因为其传入的始终是光线与某个对象的相交信息
     //
+    vec3 color = getWallColor(robj);
+    // raymarchAO是求像素点的光线遮蔽，得到环境光遮蔽因子
     float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
+
+    // 玻璃球实际是一个折射球
+    // 玻璃球的折射光线 投射击中了反射球
     if (robj.x == ID_SPHERE_REFLECT) {
+        // refr 折射向量
+        // rnor 折射向量投射处的交点法向量
+        // 由于折射光线击中反射球
+        // rrefl 为再次计算的折射线集中反射球处的 反射向量
         vec3 rrefl = reflect(refr, rnor);
+        //
         robj = raymarchScene(rpos, rrefl, TMIN, TMAX, true);
         rpos = rpos + rrefl * robj.y;
         rnor = getNormal(rpos);
@@ -495,7 +506,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // 得到该交点处的法向量
         vec3 nor = getNormal(pos);
 
-        // 对于折射球体
+        // 折射球体是玻璃材质
+
+        // 判断
         if (id == ID_SPHERE_REFRACT) {
             // pos 交点坐标
             // rd 观察坐标系中，观察平面像素点与观察点之间的投射方向
