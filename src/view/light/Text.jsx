@@ -8,6 +8,7 @@ function Normal() {
   )
 }
 export function Text() {
+  const refractUrl = 'https://www.cnblogs.com/theWhisper/p/10269574.html'
   const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
   const blinnPhongUrl = 'https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model'
   const whisperUrl = 'https://www.cnblogs.com/theWhisper/p/10269574.html'
@@ -116,6 +117,28 @@ export function Text() {
             <p>在光线追踪算法中，会从投影点（相机位置）连接观察平面上的像素点，从而形成一个光线；</p>
           </li>
         </ul>
+        <li>全反射</li>
+        <p>当介质确定时，也就是介质的折射率确定；此时要发生全反射对入射角大小有一定的要求，我们把折射角为90°时的入射角称为临界角，此时的折射光线无法进入折射介质中，会发生全反射；</p>
+        <p>例如：光从某种介质折射率为n的介质中像空气或真空时的入射角恰好是临界角C，此时折射角R=90°。由折射率sinC*n = 1*sinR = 1*sin90° = 1；sinC =1/n</p>
+
+        <p>当折射率之比确定时，1/n,如折射角为R，入射角为C；即1/n = sinC/sinR;发生全反射，R=90°，此时入射角sinC = 1/n </p>
+        <li>关于refract 函数</li>
+        <p>计算入射矢量的折射方向，<a href={refractUrl}>查看；</a></p>
+        <CodeText>
+          <>
+            <p>float refract(float I, float N, float eta)</p>
+            <p>vec2 refract(vec2 I, vec2 N, float eta)</p>
+            <p>I指定了入射矢量</p>
+            <p>N指定了法向量</p>
+            <p>eta指定了折射率之比（入射矢量所在空间的折射率/折射矢量所在空间的折射率）</p>
+            <p>k = 1.0-eta*eta*(1.0-dot(N,I)*dot(N,I))</p>
+            <p>K&lt;0时，发生全反射，无折射效应.返回
+              <a href={'https://stackoverflow.com/questions/23824374/what-does-the-term-gentype-mean-in-opengl-glsl'}>
+                genType</a>(0)</p>
+            <p>K&gt;0时，应用折射公式：折射向量=eta*I-(eta*dot(N,I)+sqrt(k))*N</p>
+            <p></p>
+          </>
+        </CodeText>
         <li>关于 reflect 函数</li>
         <p> 计算入射矢量的反射方向，<a href={reflectUrl}>查看；</a></p>
         <CodeText>
