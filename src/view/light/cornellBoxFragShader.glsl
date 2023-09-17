@@ -536,6 +536,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         }
         // 击中的是反射球
         else if (id == ID_SPHERE_REFLECT) {
+            // pos 首次投射的交点坐标
+            // rd 首次投射的方向
+            // nor 首次投射处的
             color = getMirrorBallColor(pos, rd, nor); // 镜面球 高光
         }
         else if (id == ID_FLOOR) {

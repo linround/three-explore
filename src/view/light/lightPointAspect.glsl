@@ -5,6 +5,8 @@ uniform sampler2D iChannel0;
 #define PI 3.1415926
 #define TWO_PI 6.28318530718
 
+varying vec3 c;
+
 
 float cosN(in vec2 st){
     float x = st.x;
@@ -78,6 +80,7 @@ void main() {
 
     float v = cosV(st,8.);
     color = mix(color,lineColor,v);
+    color = mix(color,c,0.6);
 
 
 
