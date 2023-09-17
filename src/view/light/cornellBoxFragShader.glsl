@@ -339,7 +339,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     vec2 robj = raymarchScene(pos, refr, TMIN, TMAX, false);
     // 找到折射光线与物体相交的点
     vec3 rpos = pos + refr * robj.y;
-    // 计算折射光线的交点处
+    // 计算折射光线的交点处的法向量
     vec3 rnor = getNormal(rpos);
 
     // 得到该交点处的基本颜色
@@ -347,6 +347,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     //
     vec3 color = getWallColor(robj);
     // raymarchAO是求像素点的光线遮蔽，得到环境光遮蔽因子
+    // 这是光线交点处的环境遮蔽因子
     float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
 
     // 玻璃球实际是一个折射球
@@ -357,17 +358,33 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         // 由于折射光线击中反射球
         // rrefl 为再次计算的折射线集中反射球处的 反射向量
         vec3 rrefl = reflect(refr, rnor);
-        //
+        // robj 折射光线交点处的反射光线 进行投射 相交的物体
+        // rpos 折射光线的起始位置
+        // rrefl 折射光线击中物体处 产生的反射光线
         robj = raymarchScene(rpos, rrefl, TMIN, TMAX, true);
+
+        // 折射光线的反射 光线 集中场景中物体的位置
         rpos = rpos + rrefl * robj.y;
+        // 计算该点的法向量
         rnor = getNormal(rpos);
+
+        // 计算该点处的实际颜色
         color = getWallColor(robj);
+        // 折射光线的反射光线集中了 折射球
         if (robj.x == ID_SPHERE_REFRACT) {
+            // rrefl 折射光线集中的反射球处的反射向量
+            // rnor 折射光线击中处的反射光线 击中折射球的法向量
+            // rrefr 折射球产生的折射光线
             vec3 rrefr = refract(rrefl, rnor, 1.0 / (GLASS_REFRACTION_INDEX * 2.0));
+            // 折射球此时产生的折射光线再次 击中物体
             vec2 rrobj = raymarchScene(rpos, rrefr, TMIN, TMAX, false);
+            // 计算击中物体处的位置
             vec3 rrpos = rpos + rrefr * rrobj.y;
+            // 集中处的位置的法向量
             vec3 rrnor = getNormal(rrpos);
+            // 击中处的颜色
             color = getWallColor(rrobj);
+            // 计算环境光遮蔽因子
             float occ = clamp(raymarchAO(rrpos, rrnor, 80.0), 0.0, 1.0);
             color *= occ;
         }
@@ -386,7 +403,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         reflColor *= occ;
     }
     color *= getLightColor(robj, rpos, refr, rnor) * occ;
-    color = mix(color, reflColor, 0.02);
+    color = mix(color, reflColor, 0.5);
 
     return color;
 }
@@ -485,6 +502,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // 背景色
     vec3 color = vec3(0.);
 
+    // 首次投射
     // 找到光线在场景中的交点物体
     // ro 是观察点在世界坐标系中的坐标
     // rd 的xy 平面实际就是 当前的像素平面，也就是观察坐标系的 cu,cv平面
@@ -509,12 +527,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // 折射球体是玻璃材质
 
         // 判断
+        // 击中的是折射球
         if (id == ID_SPHERE_REFRACT) {
             // pos 交点坐标
             // rd 观察坐标系中，观察平面像素点与观察点之间的投射方向
             // nor 交点处的表面法向量
             color = getGlassBallColor(pos, rd, nor); // 玻璃球 折射
         }
+        // 击中的是反射球
         else if (id == ID_SPHERE_REFLECT) {
             color = getMirrorBallColor(pos, rd, nor); // 镜面球 高光
         }
