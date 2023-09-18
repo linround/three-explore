@@ -22,6 +22,14 @@ export function Text() {
             SSAO
             <ul>
               <li>
+                <a href={'http://frederikaalund.com/a-comparative-study-of-screen-space-ambient-occlusion-methods/'}>
+                  A Comparative Study of Screen-Space Ambient Occlusion Methods
+                </a>
+              </li>
+              <li>
+                <a href={'https://zhuanlan.zhihu.com/p/28489928'}>延迟渲染(Deferred Rendering)的前生今世</a>
+              </li>
+              <li>
                 <a href={'https://learnopengl-cn.github.io/05%20Advanced%20Lighting/09%20SSAO/'}>
                   learnopengl-SSAO
                 </a>
@@ -68,6 +76,20 @@ export function Text() {
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
+        <li>关于环境光遮蔽的一些理解</li>
+        <p>假设一个场景：一个点光源，一个反射球，一个折射球</p>
+        <p>从观察点指向像素平面中的像素点，此时构成一条投射射线；</p>
+
+
+        <li>关于延迟渲染的一些理解</li>
+        <p>渲染方式：</p>
+        <p>1.几何处理阶段：渲染所有的几何、颜色数据到G-Buffer</p>
+        <p>2.光照处理阶段：使用G-Buffer计算场景中的光照</p>
+        <p>G-Buffer用于存储每个像素对应的位置(Position)，法线(Normal)，漫反射颜色（Diffuse Color，可以认为是一种材质参数）等</p>
+        <p>传统渲染方式，先对物体进行着色（考虑多光源的着色），再在渲染过程中进行深度测试；</p>
+        <p>延迟渲染可以理解为先将物体渲染到屏幕空间，再逐光源对该缓冲进行着色，从而避免了因计算
+        被深度测试丢弃的片元而产生不必要的开销；基本思想是：先执行深度测试，在进行着色计算。</p>
+
         <li>关于法向量mvp中的一些理解</li>
         <p>传统的方式：已知三点可得平面方程：平面方程ax+by+cz+d = 0，求取a,b,c即可得到法向量（a,b,c）</p>
         <p>在使用mvp进行投射时，例如对于使用sdf表示的立方体表面，要找到投射射线与立方体表面的相交点，在对射线使用迭代的过程

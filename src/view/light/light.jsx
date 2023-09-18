@@ -29,8 +29,8 @@ export class Light extends Component {
     this.renderCornellBox = this.renderCornellBox.bind(this)
     this.renderBasic = this.renderBasic.bind(this)
   }
-  renderBasic(){
-    this.renderScene(basicsFragShader,commonVertexShader)
+  renderBasic() {
+    this.renderScene(basicsFragShader, commonVertexShader)
   }
   renderCornellBox() {
     this.renderScene(cornellBoxFragShader, commonVertexShader)
@@ -55,9 +55,9 @@ export class Light extends Component {
     // this.renderLight()
     // this.renderCube()
     // this.renderRay()
-    this.renderCos()
+    // this.renderCos()
     // this.renderSphere()
-    // this.renderCornellBox()
+    this.renderCornellBox()
   }
 
   renderScene(fragmentShader, vertexShader) {

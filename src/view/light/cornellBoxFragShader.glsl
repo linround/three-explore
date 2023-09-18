@@ -180,7 +180,17 @@ vec3 getNormal(in vec3 p) {
 // 环境光遮蔽计算
 // 主要通过构建从表面上一点 朝其法线所在上半球的所有方向发出射线，
 // 然后检查他们是否与其他对象相交来计算环境光遮蔽因子
-float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
+
+// 这个遮蔽因子 用来估算环境光照分量的大小，遮蔽因子越大，环境光照分量越小
+// 反之环境光越大。
+
+
+
+// https://zhuanlan.zhihu.com/p/484196734
+// http://frederikaalund.com/a-comparative-study-of-screen-space-ambient-occlusion-methods/
+// SSAO 的技术实现的关键步骤
+// 1.延迟
+float raymarchAO(in vec3 ro, in vec3 rd) {
     float ao = 0.0;
     for (float i = 0.0; i < 5.0; i++) {
         //
@@ -188,7 +198,7 @@ float raymarchAO(in vec3 ro, in vec3 rd, float tmin) {
 
         // 从 投射点ro处出发，沿着投射方向rd 进行叠加坐标
         vec3 p = ro + rd * t;
-        // 计算新的坐标点p处 李投射交叉点处的距离
+        // 计算新的坐标点p处 在投射交叉点处的距离
         float d = intersect(p).y;
         ao += max(0.0, t - 0.5 * d - 0.05);
     }
@@ -273,7 +283,7 @@ vec3 getWallColor(in vec2 obj) {
 
 vec3 getBoxColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     vec3 color = getWallColor(obj);
-    float occ = clamp(raymarchAO(pos, nor, 80.0), 0.0, 1.0);
+    float occ = clamp(raymarchAO(pos, nor), 0.0, 1.0);
     color *= getLightColor(obj, pos, rd, nor) * occ;
     return color;
 }
@@ -284,19 +294,19 @@ vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     vec3 rpos = pos + refl * robj.y;
     vec3 rnor = getNormal(rpos);
     vec3 color = getWallColor(robj);
-    float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
+    float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
     if (robj.x == ID_SPHERE_REFRACT) {
         vec3 rrefl = reflect(refl, rnor);
         vec2 reflObj = raymarchScene(rpos, rrefl, TMIN, TMAX, true);
         vec3 reflPos = rpos + rrefl * reflObj.y;
         vec3 reflNor = getNormal(reflPos);
-        float reflOcc = clamp(raymarchAO(reflPos, reflNor, 80.0), 0.0, 1.0);
+        float reflOcc = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
         vec3 refr = refract(refl, rnor, 1.0 / (GLASS_REFRACTION_INDEX * 2.0));
         robj = raymarchScene(rpos, refr, TMIN, TMAX, false);
         rpos = rpos + refr * robj.y;
         rnor = getNormal(rpos);
         color = getWallColor(robj);
-        float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
+        float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
         color *= occ;
         color = mix(color, getWallColor(reflObj) * reflOcc, 0.02);
     }
@@ -327,7 +337,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
 
     // reflPos 反射线方向进行投射时的交点位置
     // reflNor 反射线方向进行投射时，交点出的法向量
-    float reflOcc = clamp(raymarchAO(reflPos, reflNor, 80.0), 0.0, 1.0);
+    float reflOcc = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
 
 
 
@@ -348,7 +358,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     vec3 color = getWallColor(robj);
     // raymarchAO是求像素点的光线遮蔽，得到环境光遮蔽因子
     // 这是光线交点处的环境遮蔽因子
-    float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
+    float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
 
     // 玻璃球实际是一个折射球
     // 玻璃球的折射光线 投射击中了反射球
@@ -385,10 +395,10 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
             // 击中处的颜色
             color = getWallColor(rrobj);
             // 计算环境光遮蔽因子
-            float occ = clamp(raymarchAO(rrpos, rrnor, 80.0), 0.0, 1.0);
+            float occ = clamp(raymarchAO(rrpos, rrnor), 0.0, 1.0);
             color *= occ;
         }
-        float occ = clamp(raymarchAO(rpos, rnor, 80.0), 0.0, 1.0);
+        float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
         color *= occ;
     }
     vec3 reflColor = getWallColor(reflObj);
@@ -399,7 +409,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         reflPos = reflPos + rrefl * reflObj.y;
         reflNor = getNormal(reflPos);
         reflColor = getWallColor(reflObj);
-        float occ = clamp(raymarchAO(reflPos, reflNor, 80.0), 0.0, 1.0);
+        float occ = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
         reflColor *= occ;
     }
     color *= getLightColor(robj, rpos, refr, rnor) * occ;
@@ -421,7 +431,7 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
         rnor = getNormal(rpos);
         if (robj.x == ID_LIGHT) {
             vec3 difColor = vec3(18.4, 15.6, 8.0);
-            float occ = clamp(raymarchAO(pos, nor, 80.0), 0.0, 1.0);
+            float occ = clamp(raymarchAO(pos, nor), 0.0, 1.0);
             color = mix(color, difColor * occ, 0.05);
         }
     }
