@@ -403,6 +403,8 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
     }
     vec3 reflColor = getWallColor(reflObj);
     reflColor *= reflOcc;
+    // 因为场景中只有一个反射球
+    // 以下条件语句是否执行作用不大
     if (reflObj.x == ID_SPHERE_REFLECT) {
         vec3 rrefl = reflect(refl, reflNor);
         reflObj = raymarchScene(reflPos, rrefl, TMIN, TMAX, true);

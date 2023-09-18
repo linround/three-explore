@@ -7,6 +7,14 @@ function Normal() {
     </a>
   )
 }
+
+function TBN() {
+  return (
+    <a href={'https://www.cnblogs.com/HDDDDDD/p/15335800.html'}>
+      计算机图形学：凹凸贴图、法线贴图、切线空间、TBN矩阵
+    </a>
+  )
+}
 export function Text() {
   const refractUrl = 'https://www.cnblogs.com/theWhisper/p/10269574.html'
   const reflectUrl = 'https://blog.csdn.net/yinhun2012/article/details/79466517'
@@ -38,6 +46,9 @@ export function Text() {
                 <a href={'https://zhuanlan.zhihu.com/p/145339736'}>
                   UE4 Mobile GTAO 实现(HBAO续)
                 </a>
+              </li>
+              <li>
+                <TBN />
               </li>
             </ul>
           </li>
@@ -77,8 +88,29 @@ export function Text() {
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
         <li>关于环境光遮蔽的一些理解</li>
-        <p>假设一个场景：一个点光源，一个反射球，一个折射球</p>
-        <p>从观察点指向像素平面中的像素点，此时构成一条投射射线；</p>
+        <CodeText>
+          <>
+            <p>
+              环境光遮蔽因子的计算，通过构建从表面上的一点，朝其法线所在的上半球所有方向发出射线，然后检查他们是否与其他对象相交
+              来计算环境光遮蔽因子；
+              这个遮蔽因子用来估算环境光照分量的大小，遮蔽因子越大，环境光分量越小，反之环境光越大；
+            </p>
+            <p>首先创建一个正交基，切线每一次都会根据随机出来的法线向量值变动。根据
+              <a>TBN</a>矩阵的正交性,可以求出副法线，以此构造出来的TBN矩阵用作后面将随机转动的向量转出空间。
+              然后检查样本的深度值是否大于存储的深度值，如果大于就添加到最终的遮蔽因子上；
+            </p>
+            <p>这里参见<TBN /> 的推到结果：最终推导除了TBN三个新的基地向量；T对应U，B对应V，N属于TB平面和UV平面共同的法向量；
+              最终的[Xobject,Yobject,Zobject],分别假设[U,0,0],
+              [0,V,0],[0,0,1],即可得到TBN的三个对应分量
+            U*[Tx,Tb,Ty],V*[Bx,Bb,By],1*[Nx,Nb,Ny],进而更好的理解模型空间向切线空间的坐标变换</p>
+          </>
+        </CodeText>
+        <p>假设一个场景：一个点光源，一个镜面球，一个玻璃球，一个普通材质的立方体盒子（即不发生折射，也不发生反射）</p>
+        <p>从观察点指向像素平面中的像素点，此时构成一条投射射线；该射线击中了第一个相交物体，若该物体是是普通材质，则直接计算该点的在
+          光照模型中的颜色即可；若该物体击中的是反射球体，此时产生反射射线1，继续计算射线1击中的材质，如果射线1击中了普通材质，
+          那么最终的颜色就是改普通材质；如果射线1击中了玻璃材质，此时玻璃材质会产生折射射线2和反射射线3，此时改玻璃材质交点处
+        的颜色组成由：玻璃自身的颜色+折射线2击中物体的颜色+反射线3击中物体的颜色，注意（不考虑折射线2的投射对自身的击中）,
+        递归计算折射线击中的颜色和反射线击中的颜色</p>
 
 
         <li>关于延迟渲染的一些理解</li>
