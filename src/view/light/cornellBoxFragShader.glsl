@@ -252,10 +252,14 @@ float ambientOcclusion(vec3 p, vec3 n) {
     float step = 8.;
     float ao = 0.;
     float dist;
-    int num = 5;
+    int num = 10;
     for (int i = 1; i <= num; i++) {
         dist = step * float(i);
-        // 这里计算每一步投射对于的距离，找到距离该投射线最近的 物体位置
+        // 这里计算每一步投射时的距离，找到距离该投射线最近的 物体位置
+        // 当物体表面距离越靠近该投射线的投射端点，
+        // 此时每次一投射结果的距离 会影响该因子的大小
+        // 距离比投射距离 还大的就直接记为0
+        // 距离再投射范围内的 使用下面的算法来统计该因子的影响程度
         float v = (dist - intersect(p + n * dist).y) / dist;
         ao += max(0., v);
     }

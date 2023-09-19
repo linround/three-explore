@@ -36,6 +36,11 @@ export function Text() {
             SSAO
             <ul>
               <li>
+                <a href={'https://zhuanlan.zhihu.com/p/367443771'}>
+                  Screen Space Ambient Occlusion(屏幕空间环境光遮蔽)
+                </a>
+              </li>
+              <li>
                 <a href={'http://frederikaalund.com/a-comparative-study-of-screen-space-ambient-occlusion-methods/'}>
                   A Comparative Study of Screen-Space Ambient Occlusion Methods
                 </a>
@@ -133,6 +138,7 @@ export function Text() {
         <li style={{
           display: 'flex',
           flexWrap: 'wrap',
+          justifyContent: 'center',
         }}>
           <ImageComponent url={renderTBN} name='TBN' />
           <ImageComponent url={renderNormal} name='Normal' />
