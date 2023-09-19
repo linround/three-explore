@@ -1,5 +1,11 @@
 import { CodeText } from '../../component/codeText.jsx'
 
+import renderNormal from './renderNormal.png?url'
+import renderTBN from './renderTBN.png?url'
+import { ImageComponent } from '../../component/Image.jsx'
+
+
+
 function Normal() {
   return (
     <a href={'https://www.bilibili.com/video/BV1uZ4y1L7bB/?vd_source=2fbc276c906dcfb63eeb8b5cf37bd9ff'}>
@@ -87,6 +93,19 @@ export function Text() {
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
+        <li>关于梯度、变化速率、法向量之间的联系</li>
+        <CodeText>
+          <>
+            <p>对于直线ax+by+c=0,其法线:(a,b);要求直线的法线，直接求偏导即可；
+            对于面 ax+by+cz+d=0,其法线：(a,b,c),要求面的法线，直接求偏导即可；
+              偏导描述的是沿着某一轴的变化率，即使用ΔVx/Δx,ΔVy/Δy,ΔVz/Δz即可得到每一轴的变化率；
+              例如在平面0*x+0*y+c*z+d = 0中，在X,Y轴的变化率始终是0，在z轴的变化率是c,其法向量即为（0，0，c）,
+              可以认为该平面在沿着其法向量的方向变化最大；例如在平面x+y+z+d=0中，在X,Y,Z轴的变化率都是1，其法向量为（1,1,1）。
+            </p>
+            <p>同样，根据以上的示例，在已知平面某个点P和该点的法向量Rd，求该点的切线空间TBN(T切线，B副切线，N法向量)，
+            只需要找到一个与法线不共线的向量V1，通过叉乘RdxV1即可确定T，通过叉乘TxN即可确定B。从而确定该点的切向空间。当然也可以参考平面三点求切向空间；同样也可以利用平面方程求切线空间；</p>
+          </>
+        </CodeText>
         <li>关于环境光遮蔽的一些理解</li>
         <CodeText>
           <>
@@ -111,6 +130,13 @@ export function Text() {
           那么最终的颜色就是改普通材质；如果射线1击中了玻璃材质，此时玻璃材质会产生折射射线2和反射射线3，此时改玻璃材质交点处
         的颜色组成由：玻璃自身的颜色+折射线2击中物体的颜色+反射线3击中物体的颜色，注意（不考虑折射线2的投射对自身的击中）,
         递归计算折射线击中的颜色和反射线击中的颜色</p>
+        <li style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+        }}>
+          <ImageComponent url={renderTBN} name='TBN' />
+          <ImageComponent url={renderNormal} name='Normal' />
+        </li>
 
 
         <li>关于延迟渲染的一些理解</li>

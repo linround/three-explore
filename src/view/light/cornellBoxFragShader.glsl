@@ -4,6 +4,7 @@ uniform float iTime;
 uniform int iFrame;
 uniform sampler2D iChannel0;
 #define TWO_PI 6.28318530718
+#define PI 3.1415926
 #define TMIN     0.1
 #define TMAX     3000.0
 
@@ -166,13 +167,100 @@ vec3 getNormal(in vec3 p) {
     // 这里需要进行 正负偏移，进而确定该点处具体的偏移方向
     // 然后求取各方向的变化速率即可
     return normalize(vec3(
-    (intersect(p + eps.xyy).y - intersect(p - eps.xyy).y)/(2.0*eps.x),// 计算Δx
-    (intersect(p + eps.yxy).y - intersect(p - eps.yxy).y)/(2.0*eps.x), // 计算Δy
-    (intersect(p + eps.yyx).y - intersect(p - eps.yyx).y)/(2.0*eps.x) //计算Δz
+        (intersect(p + eps.xyy).y - intersect(p - eps.xyy).y)/(2.0*eps.x),// 计算Δx
+        (intersect(p + eps.yxy).y - intersect(p - eps.yxy).y)/(2.0*eps.x), // 计算Δy
+        (intersect(p + eps.yyx).y - intersect(p - eps.yyx).y)/(2.0*eps.x) //计算Δz
     ));
 }
 
+mat4 roateMat(in vec3 u,in float theta){
+    float c = cos(theta) ;
+    float s = sin(theta);
+    u = normalize(u);
+    // 以下是构建一个三维旋转矩阵的列
+    vec4 c0 = vec4(u.x*u.x*(1.0-c)+c,u.x*u.y*(1.-c)+u.z*s,u.x*u.z*(1.-c)-u.y*s,0.0);
+    vec4 c1 = vec4(u.x*u.y*(1.-c)-u.z*s,u.y*u.y*(1.-c)+c,u.y*u.z*(1.-c)+u.x*s,0.0);
+    vec4 c2 = vec4(u.z*u.x*(1.-c)+u.y*s,u.z*u.y*(1.-c)-u.x*s,u.z*u.z*(1.-c)+c,0.0);
+    vec4 c3 = vec4(0.,0.,0.,1.);
+    return mat4(c0,c1,c2,c3);
+}
 
+float random (in float x) {
+    return fract(sin(x)*1e4);
+}
+// ro 是某个点的坐标
+// rd 是该点的法向量
+// 使用一个随机轴对法向量旋转，得到新的向量
+mat3 getTBN(in vec3 ro,in vec3 rd){
+    vec3 temp = vec3(random(rd.x),random(rd.y),random(rd.x));
+    temp = normalize(temp);
+    rd = normalize(rd);
+    vec3 tangent = cross(rd,temp);
+    tangent = normalize(tangent);
+    vec3 bitangent = cross(rd,tangent);
+    bitangent = normalize(bitangent);
+    return mat3(
+    tangent,bitangent,rd);
+}
+// 均匀的取16个方向点
+vec3[160] makeDirs(){
+    vec3[160] items;
+    float r = 1.0;
+    for(int i=0;i<16;i++){
+        for(int j=0;j<10;j++){
+            int index = i*16+j;
+            float phi = TWO_PI*float(i)/16.;
+            float theta = PI*float(j)/10.;
+            float z = r*sin(phi);
+            float x = r*cos(phi)*cos(theta);
+            float y = r*cos(phi)*sin(theta);
+            items[index] = vec3(x,y,z);
+        }
+    }
+    return items;
+}
+float tbnRenderAO(in vec3 ro, in vec3 rd) {
+    float ao = 0.0;
+    mat3 tbn = getTBN(ro,rd);
+    vec3[160] dirs = makeDirs();
+    float len = float(dirs.length());
+    for (float i = 0.0; i < len; i++) {
+        vec3 dir = dirs[int(i)];
+        vec3 temp = dir.x*tbn[0]+dir.y*tbn[1]+dir.z*tbn[2];
+        temp = normalize(temp);
+        vec2 obj = raymarchScene(ro, temp, TMIN, TMAX, true);
+        // 投射有击中物体
+        // 说明有遮蔽，那么ao加该分量的比例
+        if(obj.x ==ID_SPHERE_REFLECT ){
+            rd = normalize(rd);
+            float aspect = dot(rd,temp);
+            // 计算 光线和法线方向
+            float nd = dot(rd,lightPos-ro);
+            // 小于0是球面背光处，大于零需要计算
+            aspect = nd>0.?1.:aspect;
+            ao+=(1.0*aspect);
+        }
+
+    }
+    // ao 代表的是遮蔽的的情况
+    // ao 越大,遮蔽因子越大，环境光照分量越小
+    return 1.-ao/len;
+}
+
+
+float ambientOcclusion(vec3 p, vec3 n) {
+    float step = 8.;
+    float ao = 0.;
+    float dist;
+    int num = 5;
+    for (int i = 1; i <= num; i++) {
+        dist = step * float(i);
+        // 这里计算每一步投射对于的距离，找到距离该投射线最近的 物体位置
+        float v = (dist - intersect(p + n * dist).y) / dist;
+        ao += max(0., v);
+    }
+    return 1. - ao /float(num);
+}
 // ro 反射线方向进行投射时的交点位置
 // rd 反射线方向进行投射时，交点处的法向量
 // tmin 统一使用 80
@@ -191,19 +279,10 @@ vec3 getNormal(in vec3 p) {
 // SSAO 的技术实现的关键步骤
 // 1.延迟
 float raymarchAO(in vec3 ro, in vec3 rd) {
-    float ao = 0.0;
-    for (float i = 0.0; i < 5.0; i++) {
-        //
-        float t = 60. + pow(i / 5., 2.0);
-
-        // 从 投射点ro处出发，沿着投射方向rd 进行叠加坐标
-        vec3 p = ro + rd * t;
-        // 计算新的坐标点p处 在投射交叉点处的距离
-        float d = intersect(p).y;
-        ao += max(0.0, t - 0.5 * d - 0.05);
-    }
-    return 1.0 - 0.00125 * ao;
+    return ambientOcclusion(ro,rd); // 普通的采样算法
+//    return tbnRenderAO(ro,rd); // 计算TBN，均匀采样
 }
+
 
 float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
     float sh = 1.0;
