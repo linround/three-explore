@@ -371,28 +371,50 @@ vec3 getBoxColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     return color;
 }
 
+// pos 首次投射的交点坐标
+// rd 首次投射的方向
+// nor 首次投射处的法向量
 vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
+    // 首次投射击中镜面, 镜面直接发生反射
+    // 反射向量 refl
     vec3 refl = reflect(rd, nor);
+    // 从首次集中镜面出的位置，对反射方向进行投射
+    // robj 包括了击中物体的ID和距离
     vec2 robj = raymarchScene(pos, refl, TMIN, TMAX, true);
+    // 找到反射线击中物体的位置
     vec3 rpos = pos + refl * robj.y;
+    // 得到该位置处的法线
     vec3 rnor = getNormal(rpos);
+    // 得到反射线击中的物体的颜色
     vec3 color = getWallColor(robj);
+    // 得到反射线击中物体位置处的光线遮蔽因子
     float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
+    // 反射击中的是折射球
+    // 重新计算经过折射后的的光线击中的颜色和 击中处的环境遮蔽因子
     if (robj.x == ID_SPHERE_REFRACT) {
+        // refl 发射首次击中时的反射向量，可以认为是击中折射球的入射光线
+        // rnor 首次反射线 击中处的位置的法向量，即击中的折射球体处的法向量
+        // 折射球此时产生反射线
         vec3 rrefl = reflect(refl, rnor);
         vec2 reflObj = raymarchScene(rpos, rrefl, TMIN, TMAX, true);
         vec3 reflPos = rpos + rrefl * reflObj.y;
         vec3 reflNor = getNormal(reflPos);
         float reflOcc = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
+
+        // 折射球此时产生折射线
         vec3 refr = refract(refl, rnor, 1.0 / (GLASS_REFRACTION_INDEX * 2.0));
         robj = raymarchScene(rpos, refr, TMIN, TMAX, false);
         rpos = rpos + refr * robj.y;
+        //
         rnor = getNormal(rpos);
         color = getWallColor(robj);
         float occ = clamp(raymarchAO(rpos, rnor), 0.0, 1.0);
         color *= occ;
+
+        // 折射球处的颜色 以产生折射线击中的颜色为底色，反射线为目标色进行适配
         color = mix(color, getWallColor(reflObj) * reflOcc, 0.02);
     }
+    //
     color *= getLightColor(robj, rpos, refl, rnor) * occ;
 
     return color;
@@ -633,7 +655,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         else if (id == ID_SPHERE_REFLECT) {
             // pos 首次投射的交点坐标
             // rd 首次投射的方向
-            // nor 首次投射处的
+            // nor 首次投射处的法向量
             color = getMirrorBallColor(pos, rd, nor); // 镜面球 高光
         }
         else if (id == ID_FLOOR) {
