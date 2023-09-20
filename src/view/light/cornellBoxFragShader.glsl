@@ -76,36 +76,36 @@ vec2 intersect(in vec3 p, bool refrSph) {
     vec2 res = vec2(ID_VOID, 2000.0);
 
     // 这里是计算灯管处的SDF盒子
-    vec2 obj = vec2(ID_LIGHT, sdBox(p + lightPos, LIGHT.xyz));
+    vec2 obj = vec2(ID_LIGHT, sdBox(p - (-lightPos), LIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算地板处的SDF盒子
-    obj = vec2(ID_FLOOR, sdBox(p + vec3(278.0, 550, 279.6), FLOOR.xyz));
+    obj = vec2(ID_FLOOR, sdBox(p - vec3(-278.0, -550, -279.6), FLOOR.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
     // 这里是计算天花板处的SDF盒子
-    obj = vec2(ID_CEILING, sdBox(p + vec3(278.0, 0.0, 279.6), CEILING.xyz));
+    obj = vec2(ID_CEILING, sdBox(p - vec3(-278.0, 0.0, -279.6), CEILING.xyz));
     if (obj.y < res.y){
         res = obj;
     }
 
     // 这里是计算内墙壁的SDF盒子
-    obj = vec2(ID_WALL_BACK, sdBox(p + vec3(278.0, 274.4, 559.2), WALL_BACK.xyz));
+    obj = vec2(ID_WALL_BACK, sdBox(p - vec3(-278.0, -274.4, -559.2), WALL_BACK.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算右墙的SDF盒子
-    obj = vec2(ID_WALL_RIGHT, sdBox(p + vec3(556.0, 274.4, 279.6), WALL_RIGHT.xyz));
+    obj = vec2(ID_WALL_RIGHT, sdBox(p - vec3(-556.0, -274.4, -279.6), WALL_RIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算左墙的SDF盒子
-    obj = vec2(ID_WALL_LEFT, sdBox(p + vec3(0.0, 274.4, 279.6), WALL_LEFT.xyz));
+    obj = vec2(ID_WALL_LEFT, sdBox(p - vec3(-0.0, -274.4, -279.6), WALL_LEFT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
@@ -302,10 +302,17 @@ float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
     return sh;
 }
 
+// obj 返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
+// pos 投射的交点坐标
+// rd 投射的方向 可当作入射光
+// nor 投射交点处的法向量
+// 获取该点各种反射光的集合结果
 vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
+    // 定义漫反射光
     vec3 difColor = vec3(18.4, 15.6, 8.0);
 
     // main light
+    // 光线方向
     vec3 lightDir = normalize(vec3(-lightPos.x, -125.0, -lightPos.z) - pos);
     float lightDist = length(vec3(-lightPos.x, -125.0, -lightPos.z) - pos);
     float dif = max(0.0, dot(nor, lightDir));
@@ -320,8 +327,9 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     if (id != ID_LIGHT && id != ID_CEILING) lightColor *= sha;
 
     // light bounce on back wall
-    lightDir = normalize(vec3(-278.0, -274.4, -55.0) + pos);
-    lightDist = length(vec3(-278.0, -274.4, -55.0) + pos);
+    // 后墙壁中心点
+    lightDir = normalize(vec3(-278.0, -274.4, -559.2) + pos);
+    lightDist = length(vec3(-278.0, -274.4, -559.0) + pos);
     dif = max(0.0, dot(nor, lightDir));
     h = normalize(-rd + lightDir);
     spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
@@ -365,8 +373,11 @@ vec3 getWallColor(in vec2 obj) {
 }
 
 vec3 getBoxColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
+    // 得到击中的物体颜色
     vec3 color = getWallColor(obj);
+    // 计算该点击中处的遮蔽因子
     float occ = clamp(raymarchAO(pos, nor), 0.0, 1.0);
+    // 获取该点各种反射光的集合结果
     color *= getLightColor(obj, pos, rd, nor) * occ;
     return color;
 }
@@ -414,7 +425,7 @@ vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         // 折射球处的颜色 以产生折射线击中的颜色为底色，反射线为目标色进行适配
         color = mix(color, getWallColor(reflObj) * reflOcc, 0.02);
     }
-    //
+    // getLightColor 获取该点各种反射光的集合结果
     color *= getLightColor(robj, rpos, refl, rnor) * occ;
 
     return color;
@@ -519,14 +530,25 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         float occ = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
         reflColor *= occ;
     }
+
+    // getLightColor 获取该点各种反射光的集合结果
     color *= getLightColor(robj, rpos, refr, rnor) * occ;
     color = mix(color, reflColor, 0.5);
 
     return color;
 }
 
+// obj 返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
+// pos 首次投射的交点坐标
+// rd 首次投射的方向 可当作入射光
+// nor 首次投射处的法向量
 vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
+    // obj 返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
+    // pos 首次投射的交点坐标
+    // rd 首次投射的方向 可当作入射光
+    // nor 首次投射处的法向量
     vec3 color = getBoxColor(obj, pos, rd, nor);
+
     vec3 lightDir = normalize(vec3(-lightPos.x, 500.0, -lightPos.z) - pos);
     vec2 robj = raymarchScene(pos, lightDir, TMIN, TMAX, true);
     if (robj.x == ID_SPHERE_REFRACT) {
@@ -623,6 +645,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // 找到光线在场景中的交点物体
     // ro 是观察点在世界坐标系中的坐标
     // rd 的xy 平面实际就是 当前的像素平面，也就是观察坐标系的 cu,cv平面
+    // 最终返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
     vec2 obj = raymarchScene(ro, rd, TMIN, TMAX, true);
 
     // obj 是得到的最终投射到的物体对象
@@ -658,7 +681,12 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             // nor 首次投射处的法向量
             color = getMirrorBallColor(pos, rd, nor); // 镜面球 高光
         }
+        // 首次投射击中的是地板
         else if (id == ID_FLOOR) {
+            // obj 返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
+            // pos 首次投射的交点坐标
+            // rd 首次投射的方向 可当作入射光
+            // nor 首次投射处的法向量
             color = getFloorColor(obj, pos, rd, nor); // 地面
         }
         else {
