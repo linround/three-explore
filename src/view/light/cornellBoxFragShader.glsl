@@ -321,7 +321,7 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     vec3 difColor = vec3(18.4, 15.6, 8.0);
 
     // main light
-    // 光线方向
+    // 光线方向从pos指向光源
     vec3 lightDir = normalize(vec3(lightPos.x, -125.0, lightPos.z) - pos);
     float lightDist = length(vec3(lightPos.x, -125.0, lightPos.z) - pos);
     float dif = max(0.0, dot(nor, lightDir));
