@@ -31,7 +31,16 @@ const vec4 LIGHT          = vec4(50.0, 5.0, 50., ID_LIGHT);// 定义灯的宽度
 const vec4 SPHERE_REFRACT = vec4(50.0, 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球 半径
 const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
 
-const vec3 lightPos = vec3(200.0, 0.0, 200.);
+
+const vec3 FLOOR_CENTER = vec3(-278.,-550,-279.6);
+const vec3 CEILING_CENTER = vec3(-278.,0,-279.6);
+const vec3 WALL_BACK_CENTER = vec3(-278.,-274.4,-559.2);
+const vec3 WALL_RIGHT_CENTER = vec3(-556.,-274.4,-279.6);
+const vec3 WALL_LEFT_CENTER = vec3(-0.,-274.4,-279.6);
+const vec3 lightPos = vec3(-200.0, 0.0, -200.);
+const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);
+const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);
+
 
 float sdBox(in vec3 p, in vec3 box) {
     vec3 d = abs(p) - box;
@@ -54,10 +63,10 @@ vec2 intersectSpheres(in vec3 p, bool refrSph) {
 
     if (refrSph){
         // 折射球
-        res = vec2(ID_SPHERE_REFRACT, sdSphere(p + vec3(380.0, 468.8, 166.0), SPHERE_REFRACT.x));
+        res = vec2(ID_SPHERE_REFRACT, sdSphere(p - SPHERE_REFRACT_CENTER, SPHERE_REFRACT.x));
     }
     // 反射球
-    vec2 obj = vec2(ID_SPHERE_REFLECT, sdSphere(p + vec3(190.0, 448.8, 365.0), SPHERE_REFLECT.x));
+    vec2 obj = vec2(ID_SPHERE_REFLECT, sdSphere(p - SPHERE_REFLECT_CENTER, SPHERE_REFLECT.x));
     if (obj.y < res.y) {
         res = obj;
     }
@@ -76,36 +85,36 @@ vec2 intersect(in vec3 p, bool refrSph) {
     vec2 res = vec2(ID_VOID, 2000.0);
 
     // 这里是计算灯管处的SDF盒子
-    vec2 obj = vec2(ID_LIGHT, sdBox(p - (-lightPos), LIGHT.xyz));
+    vec2 obj = vec2(ID_LIGHT, sdBox(p - (lightPos), LIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算地板处的SDF盒子
-    obj = vec2(ID_FLOOR, sdBox(p - vec3(-278.0, -550, -279.6), FLOOR.xyz));
+    obj = vec2(ID_FLOOR, sdBox(p - FLOOR_CENTER, FLOOR.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
     // 这里是计算天花板处的SDF盒子
-    obj = vec2(ID_CEILING, sdBox(p - vec3(-278.0, 0.0, -279.6), CEILING.xyz));
+    obj = vec2(ID_CEILING, sdBox(p - CEILING_CENTER, CEILING.xyz));
     if (obj.y < res.y){
         res = obj;
     }
 
     // 这里是计算内墙壁的SDF盒子
-    obj = vec2(ID_WALL_BACK, sdBox(p - vec3(-278.0, -274.4, -559.2), WALL_BACK.xyz));
+    obj = vec2(ID_WALL_BACK, sdBox(p - WALL_BACK_CENTER, WALL_BACK.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算右墙的SDF盒子
-    obj = vec2(ID_WALL_RIGHT, sdBox(p - vec3(-556.0, -274.4, -279.6), WALL_RIGHT.xyz));
+    obj = vec2(ID_WALL_RIGHT, sdBox(p - WALL_RIGHT_CENTER, WALL_RIGHT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
 
     // 这里是计算左墙的SDF盒子
-    obj = vec2(ID_WALL_LEFT, sdBox(p - vec3(-0.0, -274.4, -279.6), WALL_LEFT.xyz));
+    obj = vec2(ID_WALL_LEFT, sdBox(p - WALL_LEFT_CENTER, WALL_LEFT.xyz));
     if (obj.y < res.y) {
         res = obj;
     }
@@ -313,15 +322,15 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 
     // main light
     // 光线方向
-    vec3 lightDir = normalize(vec3(-lightPos.x, -125.0, -lightPos.z) - pos);
-    float lightDist = length(vec3(-lightPos.x, -125.0, -lightPos.z) - pos);
+    vec3 lightDir = normalize(vec3(lightPos.x, -125.0, lightPos.z) - pos);
+    float lightDist = length(vec3(lightPos.x, -125.0, lightPos.z) - pos);
     float dif = max(0.0, dot(nor, lightDir));
     vec3 h = normalize(-rd + lightDir);
     float spe = pow(clamp(dot(h, nor), 0.0, 1.0), 4.0);
     vec3 lightColor = dif * difColor * (1.0 / lightDist);
     lightColor += 0.25 * dif * spe * difColor;
 
-    lightDir = normalize(vec3(-lightPos.x, 350.0, -lightPos.z) - pos);
+    lightDir = normalize(vec3(lightPos.x, 350.0, lightPos.z) - pos);
     float sha = clamp(raymarchShadows(pos, lightDir, 0.5, 500.0), 0.0, 1.0);
     float id = obj.x;
     if (id != ID_LIGHT && id != ID_CEILING) lightColor *= sha;
@@ -549,7 +558,7 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // nor 首次投射处的法向量
     vec3 color = getBoxColor(obj, pos, rd, nor);
 
-    vec3 lightDir = normalize(vec3(-lightPos.x, 500.0, -lightPos.z) - pos);
+    vec3 lightDir = normalize(vec3(lightPos.x, 500.0, lightPos.z) - pos);
     vec2 robj = raymarchScene(pos, lightDir, TMIN, TMAX, true);
     if (robj.x == ID_SPHERE_REFRACT) {
         vec3 rpos = pos + lightDir * robj.y;
