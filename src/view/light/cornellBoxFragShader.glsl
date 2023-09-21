@@ -32,15 +32,18 @@ const vec4 SPHERE_REFRACT = vec4(50.0, 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球
 const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
 
 
-const vec3 FLOOR_CENTER = vec3(-278.,-550,-279.6);
-const vec3 CEILING_CENTER = vec3(-278.,0,-279.6);
-const vec3 WALL_BACK_CENTER = vec3(-278.,-274.4,-559.2);
-const vec3 WALL_RIGHT_CENTER = vec3(-556.,-274.4,-279.6);
-const vec3 WALL_LEFT_CENTER = vec3(-0.,-274.4,-279.6);
-const vec3 lightPos = vec3(-200.0, 0.0, -200.);
-const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);
-const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);
+const vec3 FLOOR_CENTER = vec3(-278.,-550,-279.6);// 定义地板的中心
+const vec3 CEILING_CENTER = vec3(-278.,0,-279.6);// 定义天花板的中心
+const vec3 WALL_BACK_CENTER = vec3(-278.,-274.4,-559.2);// 定义后墙 的中心
+const vec3 WALL_RIGHT_CENTER = vec3(-556.,-274.4,-279.6);// 定义 右墙 的中心
+const vec3 WALL_LEFT_CENTER = vec3(-0.,-274.4,-279.6);// 定义左墙 的中心
+const vec3 lightPos = vec3(-200.0, 0.0, -200.);// 定义 灯 的中心
+const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);// 定义折射球 的中心
+const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);// 定义反射球 的中心
 
+// 定义观察点的坐标
+vec3 eye = vec3(-280, -280, 560);
+vec3 ta = vec3(-560.0, -560, -560)*2.;
 
 float sdBox(in vec3 p, in vec3 box) {
     vec3 d = abs(p) - box;
@@ -261,7 +264,7 @@ float ambientOcclusion(vec3 p, vec3 n) {
     float step = 8.;
     float ao = 0.;
     float dist;
-    int num = 10;
+    int num = 4;
     for (int i = 1; i <= num; i++) {
         dist = step * float(i);
         // 这里计算每一步投射时的距离，找到距离该投射线最近的 物体位置
@@ -337,8 +340,8 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 
     // light bounce on back wall
     // 后墙壁中心点
-    lightDir = normalize(vec3(-278.0, -274.4, -559.2) + pos);
-    lightDist = length(vec3(-278.0, -274.4, -559.0) + pos);
+    lightDir = normalize(WALL_BACK_CENTER - pos);
+    lightDist = length(WALL_BACK_CENTER - pos);
     dif = max(0.0, dot(nor, lightDir));
     h = normalize(-rd + lightDir);
     spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
@@ -346,8 +349,8 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     lightColor += 0.5 * dif * spe * vec3(0.25, 0.175, 0.1);
 
     // light bounce on right wall
-    lightDir = normalize(vec3(-556.0, -274.4, -279.6) - pos);
-    lightDist = length(vec3(-556.0, -274.4, -279.6) - pos);
+    lightDir = normalize(WALL_RIGHT_CENTER - pos);
+    lightDist = length(WALL_RIGHT_CENTER - pos);
     dif = max(0.0, dot(nor, lightDir));
     h = normalize(-rd + lightDir);
     spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
@@ -355,8 +358,8 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     lightColor += 0.5 * dif * spe * vec3(0.0, 0.5, 0.0);
 
     // light bounce on left wall
-    lightDir = normalize(vec3(0.0, -274.4, -279.6) - pos);
-    lightDist = length(vec3(0.0, -274.4, -279.6) - pos);
+    lightDir = normalize(WALL_LEFT_CENTER - pos);
+    lightDist = length(WALL_LEFT_CENTER - pos);
     dif = max(0.0, dot(nor, lightDir));
     h = normalize(-rd + lightDir);
     spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
@@ -616,15 +619,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // 定义屏幕的宽度
     float width = 2.;
     // 转换坐标范围 到[-1,1]
-    vec2 p =  (width * fragCoord.xy / iResolution.xy)-width/2.;
+    vec2 p =  fragCoord.xy / iResolution.xy;
 
-    // 定义观察点的坐标
-    vec3 eye = vec3(200.0, 274.4, 279.6);
-    eye.xyz *= roateX(55.);
-    eye.xyz *= roateY(45.);
+
+//    eye.xyz *= roateX(iTime);
+    //    eye.xyz *= roateY(iTime);
+    //    eye.xyz *= roateY(iTime);
 
     vec3 ro = eye;
-    vec3 ta = vec3(-200.0, -274.4, -279.6);
 
     // 观察点指向 目标物体 的方向向量
     vec3 cw = normalize(ta - ro);
