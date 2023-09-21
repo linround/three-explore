@@ -300,14 +300,18 @@ float raymarchAO(in vec3 ro, in vec3 rd) {
 }
 
 
+// ro 开始投射处的位置
+// rd 开始投射的方向
 float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
     float sh = 1.0;
     float t = tmin;
-    for(int i = 0; i < 50; i++) {
+    for(int i = 0; i < 100; i++) {
         vec3 p = ro + rd * t;
+
+        // 投射击中处越近
         float d = intersectSpheres(p, true).y;
         sh = min(sh, 16.0 * d / t);
-        t += 0.5 * d;
+        t += d;
         if (d < (0.001 * t) || t > tmax)
         break;
     }
@@ -321,21 +325,32 @@ float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
 // 获取该点各种反射光的集合结果
 vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // 定义漫反射光
-    vec3 difColor = vec3(18.4, 15.6, 8.0);
+    vec3 difColor = vec3(10.);
 
     // main light
-    // 光线方向从pos指向光源
-    vec3 lightDir = normalize(vec3(lightPos.x, -125.0, lightPos.z) - pos);
-    float lightDist = length(vec3(lightPos.x, -125.0, lightPos.z) - pos);
-    float dif = max(0.0, dot(nor, lightDir));
-    vec3 h = normalize(-rd + lightDir);
-    float spe = pow(clamp(dot(h, nor), 0.0, 1.0), 4.0);
-    vec3 lightColor = dif * difColor * (1.0 / lightDist);
-    lightColor += 0.25 * dif * spe * difColor;
+    // 顶部墙体部分
+    // 漫反射部分
+    float lightPosY = -100.;
+    vec3 lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
+    float lightDist = length(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
+    float dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（）
+    // 光源 产生的漫反射信息
+    vec3 lightColor =   difColor *(1.0 / (lightDist))* dif;
 
-    lightDir = normalize(vec3(lightPos.x, 350.0, lightPos.z) - pos);
+    // 镜面反射主要反射了光的效果
+    vec3 ks = vec3(0.25);// 镜面反射参数 根据材质决定反射能量的大小，
+    float specularEx = 4.;// 镜面反射参数：光滑表面的值较大，理想反射器的值时无限的（决定镜面光斑的大小，可提高视觉效果）
+    vec3 h = normalize(-rd + lightDir);// 求得半角向量
+    float spe = pow(max(dot(h, nor), 0.0), specularEx);
+    vec3 lightSpecular = ks * difColor* spe;
+    // 漫反射加上镜面反射
+    lightColor += lightSpecular;
+
+
+    lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     float sha = clamp(raymarchShadows(pos, lightDir, 0.5, 500.0), 0.0, 1.0);
     float id = obj.x;
+    // 从
     if (id != ID_LIGHT && id != ID_CEILING) lightColor *= sha;
 
     // light bounce on back wall
