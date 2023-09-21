@@ -41,9 +41,17 @@ const vec3 lightPos = vec3(-200.0, 0.0, -200.);// 定义 灯 的中心
 const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);// 定义折射球 的中心
 const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);// 定义反射球 的中心
 
+const vec3 FLOOR_COLOR = vec3(0.5);// 地板的颜色
+const vec3 CEILING_COLOR = vec3(1.,0.,1.);// 地板的颜色
+const vec3 WALL_BACK_COLOR = vec3(0.,1.,0.);// 地板的颜色
+const vec3 WALL_RIGHT_COLOR = vec3(1.,0.,0.);// 地板的颜色
+const vec3 WALL_LEFT_COLOR = vec3(0.,0.,1.);// 地板的颜色
+const vec3 LIGHT_COLOR = vec3(1.);// 地板的颜色
+
 // 定义观察点的坐标
 vec3 eye = vec3(-280, -280, 560*2);
 vec3 ta = vec3(-560.0, -560, -560)*2.;
+vec3 LIGHT_E = vec3(18.4, 15.6, 8.0);
 
 float sdBox(in vec3 p, in vec3 box) {
     vec3 d = abs(p) - box;
@@ -302,19 +310,34 @@ float raymarchAO(in vec3 ro, in vec3 rd) {
 
 // ro 开始投射处的位置
 // rd 开始投射的方向
+// 点向光源投射 越近的距离被遮挡，那么该点光源影响就越小 越接近0
+// 越远击中 那么该点的光源影响就越接近1
+// 未被遮挡 那么光源影响因子就是 1
 float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
     float sh = 1.0;
     float t = tmin;
     for(int i = 0; i < 100; i++) {
+        // 一开始使用tmin的距离投射，计算最近的距离点d
+        // 叠加d再次进行投射 t的距离
         vec3 p = ro + rd * t;
 
-        // 投射击中处越近
+        //
         float d = intersectSpheres(p, true).y;
-        sh = min(sh, 16.0 * d / t);
+
+        // 投射击中处越近
+        // d 投射的距离
+        // t 为累计投射n次时的距离 t会不断变大
+        // 如果有遮挡 t会变大，越来越接近某个距离值，而d会越接近0，此时 d/t 会很小，sh就会变得很小,说明光源在该点的影响因子很小
+        // 如果越近的遮挡 那么就会t很小，比如先 t=1.，此时正好 d= 0.001
+        // d/t 即为0.001
+        // 如果没有遮挡，d /t就相对会大一些，可能大于1
+        sh = min(sh,16.* d / t);
         t += d;
-        if (d < (0.001 * t) || t > tmax)
+        // d 小于0.01 说明击中了物体
+        if (d < 0.001 || t > tmax)
         break;
     }
+    // 直接返回1阴影几乎没有
     return sh;
 }
 
@@ -325,20 +348,19 @@ float raymarchShadows(in vec3 ro, in vec3 rd, float tmin, float tmax) {
 // 获取该点各种反射光的集合结果
 vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // 定义漫反射光
-    vec3 difColor = vec3(10.);
+    vec3 difColor = LIGHT_E;
 
-    // main light
     // 顶部墙体部分
     // 漫反射部分
     float lightPosY = -100.;
     vec3 lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     float lightDist = length(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     float dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（）
-    // 光源 产生的漫反射信息
+    // 光源 产生的漫反射信息 lightDist 减少光点的能量
     vec3 lightColor =   difColor *(1.0 / (lightDist))* dif;
 
     // 镜面反射主要反射了光的效果
-    vec3 ks = vec3(0.25);// 镜面反射参数 根据材质决定反射能量的大小，
+    vec3 ks = vec3(0.25,0.31,0.32);// 镜面反射参数 根据材质决定反射能量的大小，
     float specularEx = 4.;// 镜面反射参数：光滑表面的值较大，理想反射器的值时无限的（决定镜面光斑的大小，可提高视觉效果）
     vec3 h = normalize(-rd + lightDir);// 求得半角向量
     float spe = pow(max(dot(h, nor), 0.0), specularEx);
@@ -347,42 +369,55 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     lightColor += lightSpecular;
 
 
+
+    // 天花板处的墙体指向光源
     lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
-    float sha = clamp(raymarchShadows(pos, lightDir, 0.5, 500.0), 0.0, 1.0);
+    // 获得整个空间高度，从而设置最大阴影计算高度
+    float height = (CEILING_CENTER.y - FLOOR_CENTER.y)*1.41;
+    // 计算光照在该点的影响因子，首次投射0.1，最多投射整个空间高度
+    float sha = clamp(raymarchShadows(pos, lightDir, 0.1, height), 0.0, 1.0);
     float id = obj.x;
-    // 从
+    // 天花板和灯本身 不受到该因子影响
     if (id != ID_LIGHT && id != ID_CEILING) lightColor *= sha;
 
-    // light bounce on back wall
-    // 后墙壁中心点
+    // 后墙壁中心点 可以看作一个光源
+    // 光线方向 从投射位置指向后墙中心
     lightDir = normalize(WALL_BACK_CENTER - pos);
     lightDist = length(WALL_BACK_CENTER - pos);
-    dif = max(0.0, dot(nor, lightDir));
-    h = normalize(-rd + lightDir);
-    spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
-    lightColor += dif * vec3(0.25, 0.175, 0.1) * (1.0 / lightDist);
-    lightColor += 0.5 * dif * spe * vec3(0.25, 0.175, 0.1);
+    dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（例如漫反射值）
 
-    // light bounce on right wall
+    lightColor += WALL_BACK_COLOR * dif  * (1.0 / lightDist);
+
+
+    // 后墙的镜面反射
+    h = normalize(-rd + lightDir);// 半角向量
+    spe = pow(clamp(dot(h, nor), 0.0, 1.0), specularEx);
+    lightColor += ks * WALL_BACK_COLOR* spe ;
+
+
+
+    // 右边墙壁发出的满发射光
     lightDir = normalize(WALL_RIGHT_CENTER - pos);
     lightDist = length(WALL_RIGHT_CENTER - pos);
-    dif = max(0.0, dot(nor, lightDir));
-    h = normalize(-rd + lightDir);
-    spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
-    lightColor += dif * vec3(0.0, 0.5, 0.0) * (1.0 / lightDist);
-    lightColor += 0.5 * dif * spe * vec3(0.0, 0.5, 0.0);
+    dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（例如漫反射值）
+    // lightDist 减少光点的能量
+    lightColor += dif * WALL_RIGHT_COLOR * (1.0 / lightDist);
 
-    // light bounce on left wall
+    // 右墙的镜面反射
+    h = normalize(-rd + lightDir);// 半角向量
+    spe = pow(clamp(dot(h, nor), 0.0, 1.0), specularEx);
+    lightColor += ks * spe * WALL_RIGHT_COLOR;
+
+    // 左边墙壁的发射光
     lightDir = normalize(WALL_LEFT_CENTER - pos);
     lightDist = length(WALL_LEFT_CENTER - pos);
-    dif = max(0.0, dot(nor, lightDir));
-    h = normalize(-rd + lightDir);
-    spe = pow(clamp(dot(h, nor), 0.0, 1.0), 2.0);
-    lightColor += dif * vec3(1.5, 0.0, 0.0) * (1.0 / lightDist);
-    lightColor += 0.5 * dif * spe * vec3(1.5, 0.0, 0.0);
+    dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（例如漫反射值）
+    lightColor += dif * WALL_LEFT_COLOR * (1.0 / lightDist);
 
-    float amb = clamp(0.75 + 0.25 * nor.y, 0.0, 1.0);
-    lightColor += 0.015 * amb * difColor;
+    // 镜面反射
+    h = normalize(-rd + lightDir);// 半角向量
+    spe = pow(clamp(dot(h, nor), 0.0, 1.0), specularEx);
+    lightColor += ks * spe * WALL_LEFT_COLOR;
 
     return lightColor;
 }
@@ -390,21 +425,25 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 vec3 getWallColor(in vec2 obj) {
     vec3 color = vec3(0.0);
     float id = obj.x;
-    if (id == ID_FLOOR) color = vec3(0.5);// 地板的颜色
-    if (id == ID_CEILING) color = vec3(1.0, 0.0, 1.0);// 天花板的颜色
-    if (id == ID_WALL_BACK) color = vec3(0.0, 1.0, 0.0);// 后墙的颜色
-    if (id == ID_WALL_RIGHT) color = vec3(1.0, 0.0, 0.0);// 右墙的颜色
-    if (id == ID_WALL_LEFT) color = vec3(0.0, 0.0, 1.0);// 左墙的颜色
-    if (id == ID_LIGHT) color = vec3(1.0);// 灯光box的颜色
+    if (id == ID_FLOOR) color = FLOOR_COLOR;// 地板的颜色
+    if (id == ID_CEILING) color = CEILING_COLOR;// 天花板的颜色
+    if (id == ID_WALL_BACK) color = WALL_BACK_COLOR;// 后墙的颜色
+    if (id == ID_WALL_RIGHT) color = WALL_RIGHT_COLOR;// 右墙的颜色
+    if (id == ID_WALL_LEFT) color = WALL_LEFT_COLOR;// 左墙的颜色
+    if (id == ID_LIGHT) color = LIGHT_COLOR;// 灯光box的颜色
     return color;
 }
 
+// 盒子各处的颜色
+// 即盒子墙体的颜色
 vec3 getBoxColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // 得到击中的物体颜色
     vec3 color = getWallColor(obj);
     // 计算该点击中处的遮蔽因子
+    // 这是每个墙体坐标点处的遮蔽因子
     float occ = clamp(raymarchAO(pos, nor), 0.0, 1.0);
     // 获取该点各种反射光的集合结果
+    // 这是 天花板墙体 左右墙体 后面墙体产生的漫反射和镜面反射的光源之和
     color *= getLightColor(obj, pos, rd, nor) * occ;
     return color;
 }
@@ -574,22 +613,37 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // pos 首次投射的交点坐标
     // rd 首次投射的方向 可当作入射光
     // nor 首次投射处的法向量
+    // 地板也属于盒子的地方
+    // 但是需要考虑折射球
     vec3 color = getBoxColor(obj, pos, rd, nor);
 
-    vec3 lightDir = normalize(vec3(lightPos.x, 500.0, lightPos.z) - pos);
+    vec3 lightDir = normalize(lightPos - pos);
+    // 地板的坐标 需要向光点进行投射
     vec2 robj = raymarchScene(pos, lightDir, TMIN, TMAX, true);
+    // 击中了反球
     if (robj.x == ID_SPHERE_REFRACT) {
+        // 计算击中该反射球的位置
         vec3 rpos = pos + lightDir * robj.y;
+        // 计算击中位置处的法向量
         vec3 rnor = getNormal(rpos);
+        // 计算该点处的折射方向
         vec3 refr = refract(lightDir, rnor, 1.0 / GLASS_REFRACTION_INDEX);
+        // 从击中点 沿着折射方向进行投射
         robj = raymarchScene(rpos, refr, TMIN, TMAX, false);
+        // 找到折射 投射集中的位置
         rpos = rpos + refr * robj.y;
+        // 获取该位置的法向量
         rnor = getNormal(rpos);
+        // 如果该折射方向处击中的是光源
+        // 因为其他物体 在实际生活中 不会产生明显的阴影光斑效果
         if (robj.x == ID_LIGHT) {
-            vec3 difColor = vec3(18.4, 15.6, 8.0);
+            vec3 difColor = LIGHT_E;
+            // 计算地板处的遮蔽因子
             float occ = clamp(raymarchAO(pos, nor), 0.0, 1.0);
-            color = mix(color, difColor * occ, 0.05);
+            // 得到 以地板为底色，目标色为光源的底色
+            color = mix(color, difColor * occ, 0.02);
         }
+
     }
     return color;
 }
@@ -637,6 +691,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 p =  fragCoord.xy / iResolution.xy;
 
 
+
 //    eye.xyz *= roateX(iTime);
     //    eye.xyz *= roateY(iTime);
     //    eye.xyz *= roateY(iTime);
@@ -679,6 +734,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // obj.y 观察点距离距离物体表面点的距离
     float id = obj.x;
 
+    // 击中了立方体内部的物体（包括墙体和内部物品）
     if (id != ID_VOID) {
         // t 是观察点距离对象表面的距离
         float t = obj.y;
@@ -716,6 +772,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             color = getFloorColor(obj, pos, rd, nor); // 地面
         }
         else {
+            // obj 返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
+            // pos 首次投射的交点坐标
+            // rd 首次投射的方向 可当作入射光
+            // nor 首次投射处的法向量
+            // 获取对应墙体的颜色即可
             color = getBoxColor(obj, pos, rd, nor); // 墙体
         }
     }
