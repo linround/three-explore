@@ -95,6 +95,10 @@ export function Text() {
           <li><a href={reflectUrl}>已知入射光线推反射；</a></li>
           <li><a href={'https://zhuanlan.zhihu.com/p/338223153'}>光线投射算法；</a></li>
         </ul>
+
+        <iframe width="640" height="360" frameBorder="0"
+          src="https://www.shadertoy.com/embed/ds3yzf?gui=true&t=10&paused=true&muted=false"
+          allowFullScreen></iframe>
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
