@@ -42,7 +42,7 @@ const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);// 定义折射球 的�
 const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);// 定义反射球 的中心
 
 // 定义观察点的坐标
-vec3 eye = vec3(-280, -280, 660);
+vec3 eye = vec3(-280, -280, 560*2);
 vec3 ta = vec3(-560.0, -560, -560)*2.;
 
 float sdBox(in vec3 p, in vec3 box) {
