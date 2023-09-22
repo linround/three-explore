@@ -365,7 +365,7 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
 
     // 顶部墙体部分
     // 漫反射部分
-    float lightPosY = -100.;
+    float lightPosY = -boxSize/5.;
     vec3 lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     float lightDist = length(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     float dif = max(0.0, dot(nor, lightDir));// 这里利用法向量和光源方向的点积 模拟材质的属性（）
