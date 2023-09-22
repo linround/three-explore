@@ -85,12 +85,14 @@ vec2 intersectSpheres(in vec3 p, bool refrSph) {
     // res.y 存储投射端点离 物体的距离
     vec2 res = vec2(ID_VOID, 2000.0);
 
+    float mF = (sin(iTime)+1.)/2.+0.2;
+    float mR = (cos(iTime)+1.)/2.+0.2;
     if (refrSph){
         // 折射球
-        res = vec2(ID_SPHERE_REFRACT, sdSphere(p - SPHERE_REFRACT_CENTER, SPHERE_REFRACT.x));
+        res = vec2(ID_SPHERE_REFRACT, sdSphere(p - SPHERE_REFRACT_CENTER*mF, SPHERE_REFRACT.x));
     }
     // 反射球
-    vec2 obj = vec2(ID_SPHERE_REFLECT, sdSphere(p - SPHERE_REFLECT_CENTER, SPHERE_REFLECT.x));
+    vec2 obj = vec2(ID_SPHERE_REFLECT, sdSphere(p - SPHERE_REFLECT_CENTER*mR, SPHERE_REFLECT.x));
     if (obj.y < res.y) {
         res = obj;
     }
