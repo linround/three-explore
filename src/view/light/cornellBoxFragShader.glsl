@@ -21,25 +21,38 @@ uniform sampler2D iChannel0;
 
 #define GLASS_REFRACTION_INDEX    1.5
 
+const float boxSize = 400.;
 // http://www.graphics.cornell.edu/o nline/box/data.html
-const vec4 FLOOR          = vec4(300.0, 0.0, 300., ID_FLOOR);// 定义地板的宽度 高度 深度
-const vec4 CEILING        = vec4(278.0, 0.0, 279.6, ID_CEILING);// 定义天花板的宽度 高度 深度
-const vec4 WALL_BACK      = vec4(278.0, 274.4, 0.0, ID_WALL_BACK);// 定义后墙的宽度 高度 深度
-const vec4 WALL_RIGHT     = vec4(0.0, 274.4, 279.6, ID_WALL_RIGHT);// 定义右墙的宽度 高度 深度
-const vec4 WALL_LEFT      = vec4(0.0, 274.4, 279.6, ID_WALL_LEFT);// 定义左墙的宽度 高度 深度
-const vec4 LIGHT          = vec4(50.0, 5.0, 50., ID_LIGHT);// 定义灯的宽度 高度 深度
-const vec4 SPHERE_REFRACT = vec4(50.0, 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球 半径
-const vec4 SPHERE_REFLECT = vec4(100.0, 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
+const vec4 FLOOR          = vec4(boxSize, 0.0, boxSize, ID_FLOOR);// 定义地板的宽度 高度 深度
+const vec4 CEILING        = vec4(boxSize, 0.0, boxSize, ID_CEILING);// 定义天花板的宽度 高度 深度
+
+const vec4 WALL_BACK      = vec4(boxSize, boxSize, 0.0, ID_WALL_BACK);// 定义后墙的宽度 高度 深度
+
+const vec4 WALL_RIGHT     = vec4(0.0, boxSize,boxSize, ID_WALL_RIGHT);// 定义右墙的宽度 高度 深度
+const vec4 WALL_LEFT      = vec4(0.0,boxSize, boxSize, ID_WALL_LEFT);// 定义左墙的宽度 高度 深度
+
+const vec4 LIGHT          = vec4(boxSize/10., boxSize/50., boxSize/10., ID_LIGHT);// 定义灯的宽度 高度 深度
+const vec4 SPHERE_REFRACT = vec4(boxSize/10., 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球 半径
+const vec4 SPHERE_REFLECT = vec4(boxSize/5., 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
 
 
-const vec3 FLOOR_CENTER = vec3(-278.,-550,-279.6);// 定义地板的中心
-const vec3 CEILING_CENTER = vec3(-278.,0,-279.6);// 定义天花板的中心
-const vec3 WALL_BACK_CENTER = vec3(-278.,-274.4,-559.2);// 定义后墙 的中心
-const vec3 WALL_RIGHT_CENTER = vec3(-556.,-274.4,-279.6);// 定义 右墙 的中心
-const vec3 WALL_LEFT_CENTER = vec3(-0.,-274.4,-279.6);// 定义左墙 的中心
-const vec3 lightPos = vec3(-200.0, 0.0, -200.);// 定义 灯 的中心
-const vec3 SPHERE_REFRACT_CENTER = vec3(-380,-468,-166);// 定义折射球 的中心
-const vec3 SPHERE_REFLECT_CENTER = vec3(-190,-448.8,-365.0);// 定义反射球 的中心
+const vec3 FLOOR_CENTER = vec3(-boxSize/2.,-boxSize,-boxSize/2.);// 定义地板的中心
+const vec3 CEILING_CENTER = vec3(-boxSize/2.,0,-boxSize/2.);// 定义天花板的中心
+
+const vec3 WALL_BACK_CENTER = vec3(-boxSize/2.,-boxSize/2.,-boxSize);// 定义后墙 的中心
+
+const vec3 WALL_RIGHT_CENTER = vec3(-boxSize,-boxSize/2.,-boxSize/2.);// 定义 右墙 的中心
+const vec3 WALL_LEFT_CENTER = vec3(0.,-boxSize/2.,-boxSize/2.);// 定义左墙 的中心
+
+const vec3 lightPos = vec3(-boxSize/2., 0.0, -boxSize/2.);// 定义 灯 的中心
+const vec3 SPHERE_REFRACT_CENTER = vec3(
+    FLOOR_CENTER.x+FLOOR.x/4.,
+    FLOOR_CENTER.y+SPHERE_REFRACT.x,
+    FLOOR_CENTER.z+FLOOR.z/4.);// 定义折射球 的中心
+const vec3 SPHERE_REFLECT_CENTER = vec3(
+    FLOOR_CENTER.x-FLOOR.x/16.,
+    FLOOR_CENTER.y+SPHERE_REFLECT.x,
+    FLOOR_CENTER.z-FLOOR.z/16.);// 定义反射球 的中心
 
 const vec3 FLOOR_COLOR = vec3(0.5);// 地板的颜色
 const vec3 CEILING_COLOR = vec3(1.,0.,1.);// 地板的颜色
@@ -49,8 +62,8 @@ const vec3 WALL_LEFT_COLOR = vec3(0.,0.,1.);// 地板的颜色
 const vec3 LIGHT_COLOR = vec3(1.);// 地板的颜色
 
 // 定义观察点的坐标
-vec3 eye = vec3(-280, -280, 560*2);
-vec3 ta = vec3(-560.0, -560, -560)*2.;
+vec3 eye = vec3(-boxSize/2., -boxSize/2., boxSize*1.5);
+vec3 ta = vec3(-boxSize*2., -boxSize*2., -boxSize*2.);
 vec3 LIGHT_E = vec3(18.4, 15.6, 8.0);
 
 float sdBox(in vec3 p, in vec3 box) {
