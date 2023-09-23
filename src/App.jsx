@@ -1,6 +1,6 @@
 import '../public/global.less'
 import './App.css'
-import { Demo } from './demo/demo.jsx'
+import { Demo } from  './demo/demo.jsx'
 
 function App() {
 
