@@ -388,7 +388,8 @@ vec3 getLightColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
     // 天花板处的墙体指向光源
     lightDir = normalize(vec3(lightPos.x, lightPosY, lightPos.z) - pos);
     // 获得整个空间高度，从而设置最大阴影计算高度
-    float height = (CEILING_CENTER.y - FLOOR_CENTER.y)*1.41;
+    // 追踪范围应该在光线下面，太大容易造成多面阴影
+    float height = (CEILING_CENTER.y - FLOOR_CENTER.y)*0.5;
     // 计算光照在该点的影响因子，首次投射0.1，最多投射整个空间高度
     float sha = clamp(raymarchShadows(pos, lightDir, 0.1, height), 0.0, 1.0);
     float id = obj.x;
