@@ -17,6 +17,13 @@ export default function Menus() {
         <li><Link to='native'>使用一种接近原生的方式去定义图形；</Link></li>
         <li><Link to='bump'>凹凸贴图；</Link></li>
 
+        <p>工具</p>
+        <li>
+          <Link to={'renderer'}>
+            renderer
+          </Link>
+        </li>
+
         <p>拓展阅读：</p>
         <li><Link to={'https://www.scratchapixel.com/'}>
           scratchapixel（对计算机图形学的介绍）</Link></li>

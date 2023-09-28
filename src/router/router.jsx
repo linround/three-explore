@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom'
 import Root from './root.jsx'
 import ErrorPage from './error-page.jsx'
 import Menus from './menus.jsx'
-import { Demo } from '../demo/demo.jsx'
 import ShaderIntroduction from '../view/shader/shaderIntroduction.jsx'
 import Geometry from '../view/geometry/geometry.jsx'
 import Native from '../view/native/native.jsx'
@@ -15,6 +14,7 @@ import { Light } from '../view/light/light.jsx'
 import SDF from '../view/sdf/sdf.jsx'
 import { Texture } from '../view/texture/texture.jsx'
 import Bump from '../view/bump/bump.jsx'
+import { Renderer } from '../view/renderer/renderer.jsx'
 
 
 export const router = createBrowserRouter([
@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/demo',
-    element: <Demo />,
+    path: 'renderer',
+    element: <Renderer />,
   }
 ])
