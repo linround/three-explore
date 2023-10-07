@@ -97,7 +97,7 @@ export function Text() {
         </ul>
 
         <iframe width="640" height="360" frameBorder="0"
-          src="https://www.shadertoy.com/embed/ds3yzf?gui=true&t=10&paused=true&muted=false"
+          src="https://www.shadertoy.com/embed/dddyDB?gui=true&t=10&paused=true&muted=false"
           allowFullScreen></iframe>
         <iframe width="640" height="360" frameBorder="0"
           src="https://www.shadertoy.com/embed/DtsfRB?gui=true&t=10&paused=true&muted=false"
