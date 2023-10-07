@@ -20,7 +20,7 @@ export default function Menus() {
         <p>工具</p>
         <li>
           <Link to={'renderer'}>
-            搭建自己的光线追踪程序
+            光线追踪可视化
           </Link>
         </li>
 
