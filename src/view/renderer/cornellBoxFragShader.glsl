@@ -19,7 +19,7 @@ uniform sampler2D iChannel0;
 #define ID_SPHERE_REFLECT  0.17
 #define ID_VOID            1.0
 
-#define GLASS_REFRACTION_INDEX    1.5
+#define GLASS_REFRACTION_INDEX    1.5 // 折射率的比率
 
 const float boxSize = 400.;
 // http://www.graphics.cornell.edu/o nline/box/data.html
@@ -55,11 +55,11 @@ FLOOR_CENTER.y+SPHERE_REFLECT.x,
 FLOOR_CENTER.z-FLOOR.z/16.);// 定义反射球 的中心
 
 const vec3 FLOOR_COLOR = vec3(0.5);// 地板的颜色
-const vec3 CEILING_COLOR = vec3(1.,0.,1.);// 地板的颜色
-const vec3 WALL_BACK_COLOR = vec3(0.,1.,0.);// 地板的颜色
-const vec3 WALL_RIGHT_COLOR = vec3(1.,0.,0.);// 地板的颜色
-const vec3 WALL_LEFT_COLOR = vec3(0.,0.,1.);// 地板的颜色
-const vec3 LIGHT_COLOR = vec3(1.);// 地板的颜色
+const vec3 CEILING_COLOR = vec3(1.,0.,1.);// 天花板板的颜色
+const vec3 WALL_BACK_COLOR = vec3(0.,1.,0.);// 后墙的颜色
+const vec3 WALL_RIGHT_COLOR = vec3(1.,0.,0.);// 右墙的颜色
+const vec3 WALL_LEFT_COLOR = vec3(0.,0.,1.);// 左墙的颜色
+const vec3 LIGHT_COLOR = vec3(1.,1.,1.);// 灯的颜色
 
 // 定义观察点的坐标
 vec3 eye = vec3(-boxSize/2., -boxSize/2., boxSize*1.5);
@@ -495,7 +495,7 @@ vec3 getMirrorBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
         float reflOcc = clamp(raymarchAO(reflPos, reflNor), 0.0, 1.0);
 
         // 折射球此时产生折射线
-        vec3 refr = refract(refl, rnor, 1.0 / (GLASS_REFRACTION_INDEX * 2.0));
+        vec3 refr = refract(refl, rnor, GLASS_REFRACTION_INDEX );
         robj = raymarchScene(rpos, refr, TMIN, TMAX, false);
         rpos = rpos + refr * robj.y;
         //
@@ -541,7 +541,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
 
     // 玻璃面上的点的折射计算
     // refract 根据入射向量，法向量，折射率的关系计算折射方向
-    vec3 refr = refract(rd, nor, 1.0 / GLASS_REFRACTION_INDEX);
+    vec3 refr = refract(rd, nor, GLASS_REFRACTION_INDEX);
     // 计算折射光线在场景中的交点（不考虑折射球）
     // 最终返回的是 投射到的对象的ID 以及观察点距离距离物体表面点的距离
     vec2 robj = raymarchScene(pos, refr, TMIN, TMAX, false);
@@ -583,7 +583,7 @@ vec3 getGlassBallColor(in vec3 pos, in vec3 rd, in vec3 nor) {
             // rrefl 折射光线集中的反射球处的反射向量
             // rnor 折射光线击中处的反射光线 击中折射球的法向量
             // rrefr 折射球产生的折射光线
-            vec3 rrefr = refract(rrefl, rnor, 1.0 / (GLASS_REFRACTION_INDEX * 2.0));
+            vec3 rrefr = refract(rrefl, rnor, GLASS_REFRACTION_INDEX );
             // 折射球此时产生的折射光线再次 击中物体
             vec2 rrobj = raymarchScene(rpos, rrefr, TMIN, TMAX, false);
             // 计算击中物体处的位置
@@ -643,7 +643,7 @@ vec3 getFloorColor(in vec2 obj, in vec3 pos, in vec3 rd, in vec3 nor) {
         // 计算击中位置处的法向量
         vec3 rnor = getNormal(rpos);
         // 计算该点处的折射方向
-        vec3 refr = refract(lightDir, rnor, 1.0 / GLASS_REFRACTION_INDEX);
+        vec3 refr = refract(lightDir, rnor,  GLASS_REFRACTION_INDEX);
         // 从击中点 沿着折射方向进行投射
         robj = raymarchScene(rpos, refr, TMIN, TMAX, false);
         // 找到折射 投射集中的位置
