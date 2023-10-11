@@ -57,9 +57,9 @@ FLOOR_CENTER.z-FLOOR.z/16.);// 定义反射球 的中心
 const vec3 FLOOR_COLOR = vec3(0.2);// 地板的颜色
 const vec3 CEILING_COLOR = vec3(0.4);// 天花板板的颜色
 const vec3 WALL_BACK_COLOR = vec3(0.2);// 后墙的颜色
-const vec3 WALL_RIGHT_COLOR = vec3(0.2,0.3,0.5);// 右墙的颜色
-const vec3 WALL_LEFT_COLOR = vec3(0.2,0.3,0.5);// 左墙的颜色
-const vec3 LIGHT_COLOR = vec3(1.,1.,1.);// 灯的颜色
+const vec3 WALL_RIGHT_COLOR = vec3(0.1);// 右墙的颜色
+const vec3 WALL_LEFT_COLOR = vec3(0.1);// 左墙的颜色
+const vec3 LIGHT_COLOR = vec3(1.);// 灯的颜色
 
 // 定义观察点的坐标
 vec3 eye = vec3(-boxSize/2., -boxSize/2., boxSize*1.5);
