@@ -59,7 +59,7 @@ export class Renderer extends Component {
         canvas.width, canvas.height, 1
       )
       uniforms.iMouse.value.set(x, y)
-      uniforms.iTime.value =  time
+      uniforms.iTime.value = 0.6
 
       renderer.render(scene, camera)
       requestAnimationFrame(render)
