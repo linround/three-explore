@@ -31,7 +31,7 @@ const vec4 WALL_BACK      = vec4(boxSize, boxSize, 0.0, ID_WALL_BACK);// 定义�
 const vec4 WALL_RIGHT     = vec4(0.0, boxSize,boxSize, ID_WALL_RIGHT);// 定义右墙的宽度 高度 深度
 const vec4 WALL_LEFT      = vec4(0.0,boxSize, boxSize, ID_WALL_LEFT);// 定义左墙的宽度 高度 深度
 
-const vec4 LIGHT          = vec4(boxSize/10., boxSize/50., boxSize/10., ID_LIGHT);// 定义灯的宽度 高度 深度
+const vec4 LIGHT          = vec4(boxSize/10., boxSize/40., boxSize/10., ID_LIGHT);// 定义灯的宽度 高度 深度
 const vec4 SPHERE_REFRACT = vec4(boxSize/10., 0.0, 0.0, ID_SPHERE_REFRACT);// 折射球 半径
 const vec4 SPHERE_REFLECT = vec4(boxSize/5., 0.0, 0.0, ID_SPHERE_REFLECT); // 反射球 半径
 
@@ -50,15 +50,15 @@ FLOOR_CENTER.x+FLOOR.x/4.,
 FLOOR_CENTER.y+SPHERE_REFRACT.x,
 FLOOR_CENTER.z+FLOOR.z/4.);// 定义折射球 的中心
 const vec3 SPHERE_REFLECT_CENTER = vec3(
-FLOOR_CENTER.x-FLOOR.x/16.,
+FLOOR_CENTER.x-FLOOR.x/20.,
 FLOOR_CENTER.y+SPHERE_REFLECT.x,
-FLOOR_CENTER.z-FLOOR.z/16.);// 定义反射球 的中心
+FLOOR_CENTER.z-FLOOR.z/20.);// 定义反射球 的中心
 
 const vec3 FLOOR_COLOR = vec3(0.2);// 地板的颜色
 const vec3 CEILING_COLOR = vec3(0.4);// 天花板板的颜色
 const vec3 WALL_BACK_COLOR = vec3(0.2);// 后墙的颜色
-const vec3 WALL_RIGHT_COLOR = vec3(0.1);// 右墙的颜色
-const vec3 WALL_LEFT_COLOR = vec3(0.1);// 左墙的颜色
+const vec3 WALL_RIGHT_COLOR = vec3(0.4);// 右墙的颜色
+const vec3 WALL_LEFT_COLOR = vec3(0.9);// 左墙的颜色
 const vec3 LIGHT_COLOR = vec3(1.);// 灯的颜色
 
 // 定义观察点的坐标

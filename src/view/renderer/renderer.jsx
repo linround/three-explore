@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 import css from './css.module.less'
+import { Layer } from './layer/layer.jsx'
 
 export class Renderer extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ export class Renderer extends Component {
         canvas.width, canvas.height, 1
       )
       uniforms.iMouse.value.set(x, y)
-      uniforms.iTime.value = 0.6
+      uniforms.iTime.value = time
 
       renderer.render(scene, camera)
       requestAnimationFrame(render)
@@ -75,6 +76,7 @@ export class Renderer extends Component {
     return (
       <div className={css.container}>
         <canvas ref={this.canvas}className={css.canvas} />
+        <Layer />
       </div>
     )
   }
