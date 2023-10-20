@@ -31,7 +31,6 @@ export class ObservationPoint extends React.Component {
           className={css.container}>
           <div className={css.content}>
             ObservationPoint
-            ObservationPoint
           </div>
           <Output />
         </div>
