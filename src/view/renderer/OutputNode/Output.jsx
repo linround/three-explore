@@ -1,7 +1,12 @@
 import css from './css.module.less'
-export function Output() {
-
+import PropTypes from 'prop-types'
+export function Output(props) {
   return (
-    <div className={css.container}></div>
+    <div
+      style={props.style}
+      className={css.container}></div>
   )
+}
+Output.propTypes = {
+  style: PropTypes.object,
 }

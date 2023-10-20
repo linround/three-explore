@@ -10,6 +10,8 @@ export function LayerWrapper(props) {
     setShow(!show)
   }
 
+
+
   return React.cloneElement(props.children, {
     style: {
       opacity: show ? 0.95 : 0,

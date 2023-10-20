@@ -12,7 +12,8 @@ export class ComponentWrapper extends React.Component {
         borderRadius: '12px',
         padding: '12px',
         overflow: 'hidden',
-        background: '#670404',
+        cursor: 'move',
+        background: '#230fbc',
         ...style,
       },
     })

@@ -9,19 +9,23 @@ export class ObservationPoint extends React.Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
+      transform: {
+        translateX: 100,
+        translateY: 200,
+      },
       position: {
-        top: 100,
-        left: 200,
+        last: { x: 0, y: 0, },
+        next: { x: 0, y: 0, },
       },
     }
   }
   handleClick(event) {
     stopPropagation(event)
+    console.log('click ObservationPoint')
   }
   render() {
     const inlineStyle = {
-      top: this.state.position.top + 'px',
-      left: this.state.position.left + 'px',
+      translate: `${this.state.transform.translateX}px ${this.state.transform.translateY}px`,
     }
     return (
       <ComponentWrapper>
