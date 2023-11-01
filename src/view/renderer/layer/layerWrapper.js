@@ -7,7 +7,7 @@ export function LayerWrapper(props) {
     stopPropagation(event)
   }
   const onClick = () => {
-    setShow(!show)
+    // setShow(!show)
   }
 
 
