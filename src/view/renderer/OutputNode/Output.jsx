@@ -4,9 +4,12 @@ export function Output(props) {
   return (
     <div
       style={props.style}
-      className={css.container}></div>
+      className={css.container}>
+      <div id={props.id}></div>
+    </div>
   )
 }
 Output.propTypes = {
   style: PropTypes.object,
+  id: PropTypes.string,
 }

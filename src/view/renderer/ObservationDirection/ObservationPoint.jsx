@@ -5,14 +5,14 @@ import { stopPropagation } from '../layer/utils.js'
 import { Output } from '../OutputNode/Output.jsx'
 import { sceneData } from '../data.js'
 
-export class ObservationPoint extends React.Component {
+export class ObservationDirection extends React.Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       transform: {
-        translateX: 100,
-        translateY: 200,
+        translateX: 500,
+        translateY: 500,
       },
       position: {
         last: { x: 0, y: 0, },
@@ -34,10 +34,10 @@ export class ObservationPoint extends React.Component {
           onClick={this.handleClick}
           style={inlineStyle}
           className={css.container}>
+          <Output id={sceneData.observationDirection.inPutNode} />
           <div className={css.content}>
-            ObservationPoint
+            ObservationDirection
           </div>
-          <Output id={sceneData.observationPoint.outPutNode} />
         </div>
       </ComponentWrapper>
     )
