@@ -15,9 +15,20 @@ export function createConnection(
   const inputRect = input.getBoundingClientRect()
   const outputRect = output.getBoundingClientRect()
   const containerRect = container.getBoundingClientRect()
-  console.log(inputRect)
-  console.log(outputRect)
-  console.log(containerRect)
+  const startX = inputRect.x - containerRect.x
+  const startY = inputRect.top - containerRect.y
+  const endX = outputRect.x - containerRect.x
+  const endY = outputRect.y - containerRect.y
+  const curve = createCurve(
+    startX, startY, endX, endY
+  )
+  const path = createPath(curve)
+  const svg = createSvg(path)
+  container.appendChild(svg)
+  console.log('svg', svg)
+  console.log('inputRect', inputRect)
+  console.log('outputRect', outputRect)
+  console.log('containerRect', containerRect)
 }
 export function createSvg(ele) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -29,6 +40,13 @@ export function createPath(d) {
   path.setAttributeNS(
     null, 'd', d
   )
+  path.setAttributeNS(
+    null, 'fill', 'blue'
+  )
+  path.setAttributeNS(
+    null, 'stroke-width', '6px'
+  )
+
   return path
 }
 export function createCurve(
