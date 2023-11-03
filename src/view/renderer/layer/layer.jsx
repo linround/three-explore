@@ -12,9 +12,10 @@ export class Layer extends React.Component {
     this.handleChangeObservationPoint = this.handleChangeObservationPoint.bind(this)
     this.state = { ...items, }
     this.layerContainer = createRef()
+    this.svgContainer = createRef()
   }
   componentDidMount() {
-    paintSvg(this.layerContainer.current)
+    paintSvg(this.layerContainer.current, this.svgContainer.current)
   }
 
   handleChangeObservationPoint() {
@@ -27,15 +28,15 @@ export class Layer extends React.Component {
         <div className={css.container} ref={this.layerContainer}>
           <ObservationPoint />
           <ObservationDirection />
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" ref={this.svgContainer}>
 
-            <path d="M10 10"/>
-            <path d="M 0 0 C 100 0, 100 200, 200 200" stroke="red" fill="blue" strokeWidth="6px"/>
+            {/*<path d="M10 10"/>*/}
+            {/*<path d="M 0 0 C 100 0, 100 200, 200 200" stroke="red" fill="none" strokeWidth="6px"/>*/}
 
-            {/*Points*/}
-            <circle cx="100" cy="0" r="10" fill="red"/>
-            <circle cx="200" cy="0" r="10" fill="red"/>
-            <circle cx="200" cy="0" r="10" fill="red"/>
+            {/*/!*Points*!/*/}
+            {/*<circle cx="100" cy="0" r="10" fill="red"/>*/}
+            {/*<circle cx="200" cy="0" r="10" fill="red"/>*/}
+            {/*<circle cx="200" cy="0" r="10" fill="red"/>*/}
 
           </svg>
         </div>

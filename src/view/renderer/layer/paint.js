@@ -1,16 +1,17 @@
 import { sceneData } from '../data.js'
-export function paintSvg(container) {
+export function paintSvg(container, svgContainer) {
   if (!container) return
   const observationPointOutPutNode =  container.querySelector('#' + sceneData.observationPoint.outPutNode)
   const observationDirectionInPutNode =  container.querySelector('#' + sceneData.observationDirection.inPutNode)
   createConnection(
     observationDirectionInPutNode,
     observationPointOutPutNode,
-    container
+    container,
+    svgContainer
   )
 }
 export function createConnection(
-  input, output, container
+  input, output, container, svgContainer
 ) {
   const inputRect = input.getBoundingClientRect()
   const outputRect = output.getBoundingClientRect()
@@ -24,11 +25,8 @@ export function createConnection(
   )
   const path = createPath(curve)
   const svg = createSvg(path)
-  container.appendChild(svg)
-  console.log('svg', svg)
-  console.log('inputRect', inputRect)
-  console.log('outputRect', outputRect)
-  console.log('containerRect', containerRect)
+
+  svgContainer.appendChild(svg)
 }
 export function createSvg(ele) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -41,10 +39,15 @@ export function createPath(d) {
     null, 'd', d
   )
   path.setAttributeNS(
-    null, 'fill', 'blue'
+    null, 'stroke-width', '5px'
   )
+
   path.setAttributeNS(
-    null, 'stroke-width', '6px'
+    null, 'stroke', 'red'
+  )
+
+  path.setAttributeNS(
+    null, 'fill', 'none'
   )
 
   return path
