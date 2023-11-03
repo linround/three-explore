@@ -10,16 +10,20 @@ export class Layer extends React.Component {
   constructor(props) {
     super(props)
     this.handleChangeObservationPoint = this.handleChangeObservationPoint.bind(this)
+    this.handlePaintSvg = this.handlePaintSvg.bind(this)
     this.state = { ...items, }
     this.layerContainer = createRef()
     this.svgContainer = createRef()
   }
   componentDidMount() {
-    paintSvg(this.layerContainer.current, this.svgContainer.current)
+    this.handlePaintSvg()
   }
 
   handleChangeObservationPoint() {
 
+  }
+  handlePaintSvg() {
+    paintSvg(this.layerContainer.current, this.svgContainer.current)
   }
 
   render() {
