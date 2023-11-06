@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 export function Output(props) {
   return (
     <div
+      {...props}
       style={props.style}
       className={css.container}>
       <div id={props.id}></div>
