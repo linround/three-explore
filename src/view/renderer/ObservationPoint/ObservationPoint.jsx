@@ -5,6 +5,7 @@ import { stopPropagation } from '../layer/utils.js'
 import { Output } from '../OutputNode/Output.jsx'
 import PropTypes from 'prop-types'
 import { NodeWrapper } from '../layer/NodeWrapper.js'
+import { SvgComponent } from '../layer/SvgComponent.jsx'
 
 export class ObservationPoint extends React.Component {
   constructor(props) {
@@ -48,22 +49,27 @@ export class ObservationPoint extends React.Component {
     const { translate, } = this.state
 
     return (
-      <ComponentWrapper
-        translate={translate}
-        position={point.page.position}>
-        <div
-          onClick={this.handleClick}
-          className={css.container}>
-          <div className={css.content}>
-            {point.outPutNode}
+      <>
+        <SvgComponent
+          translate={translate}
+          position={point.page.position} />
+        <ComponentWrapper
+          translate={translate}
+          position={point.page.position}>
+          <div
+            onClick={this.handleClick}
+            className={css.container}>
+            <div className={css.content}>
+              {point.outPutNode}
+            </div>
+            <NodeWrapper
+              setPosition={this.handleSetPosition}
+              setTranslate={this.handleSetTranslate}>
+              <Output id={point.outPutNode} />
+            </NodeWrapper>
           </div>
-          <NodeWrapper
-            setPosition={this.handleSetPosition}
-            setTranslate={this.handleSetTranslate}>
-            <Output id={point.outPutNode} />
-          </NodeWrapper>
-        </div>
-      </ComponentWrapper>
+        </ComponentWrapper>
+      </>
     )
   }
 }
