@@ -23,6 +23,7 @@ export class Layer extends React.Component {
     this.handlePaintSvg()
   }
 
+
   handleChangeObservationPoint() {
 
   }

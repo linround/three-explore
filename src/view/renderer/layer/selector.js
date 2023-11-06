@@ -76,7 +76,7 @@ export class Selector {
     const { clientX, clientY, } = e
     const x = clientX - this.initialState.position.clientX
     const y = clientY - this.initialState.position.clientY
-    this.emit('select', {
+    this.emit('selectEnd', {
       x, y,
     })
   }

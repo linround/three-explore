@@ -7,7 +7,7 @@ export class NodeWrapper extends React.Component {
   render() {
     const { children, setTranslate, } = this.props
     const selector = new Selector()
-    selector.on('selecting', (data) => {
+    selector.on('selectEnd', (data) => {
       setTranslate(data)
     })
 
