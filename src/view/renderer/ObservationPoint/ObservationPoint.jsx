@@ -11,26 +11,18 @@ export class ObservationPoint extends React.Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.handleSetTranslate = this.handleSetTranslate.bind(this)
-    this.state = {
-      translate: {
-        x: 0,
-        y: 0,
-      },
-    }
   }
   handleClick(event) {
     stopPropagation(event)
   }
   handleSetTranslate(translate) {
-    this.setState((state) => state.translate = translate)
+    this.props.handleSetPagePosition(translate)
   }
   render() {
     const { point, } = this.props
-    const { translate, } = this.state
 
     return (
       <ComponentWrapper
-        translate={translate}
         position={point.page.position}>
         <div
           onClick={this.handleClick}
@@ -48,4 +40,5 @@ export class ObservationPoint extends React.Component {
 }
 ObservationPoint.propTypes = {
   point: PropTypes.object,
+  handleSetPagePosition: PropTypes.func,
 }

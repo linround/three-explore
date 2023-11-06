@@ -11,27 +11,18 @@ export class ObservationDirection extends React.Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.handleSetTranslate = this.handleSetTranslate.bind(this)
-    this.state = {
-      translate: {
-        x: 0,
-        y: 0,
-      },
-    }
   }
 
   handleSetTranslate(translate) {
-    this.setState((state) => state.translate = translate)
+    this.props.handleSetPagePosition(translate)
   }
   handleClick(event) {
     stopPropagation(event)
-    console.log('click ObservationPoint')
   }
   render() {
     const { point, } = this.props
-    const { translate, } = this.state
     return (
       <ComponentWrapper
-        translate={translate}
         position={point.page.position}>
         <div
           onClick={this.handleClick}
@@ -52,4 +43,5 @@ export class ObservationDirection extends React.Component {
 
 ObservationDirection.propTypes = {
   point: PropTypes.object,
+  handleSetPagePosition: PropTypes.func,
 }
