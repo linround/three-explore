@@ -5,7 +5,6 @@ import { stopPropagation } from '../layer/utils.js'
 import { Output } from '../OutputNode/Output.jsx'
 import PropTypes from 'prop-types'
 import { NodeWrapper } from '../layer/NodeWrapper.js'
-import { SvgComponent } from '../layer/SvgComponent.jsx'
 
 export class ObservationDirection extends React.Component {
   constructor(props) {
@@ -49,9 +48,6 @@ export class ObservationDirection extends React.Component {
     const { translate, } = this.state
     return (
       <>
-        <SvgComponent
-          translate={translate}
-          position={point.page.position} />
         <ComponentWrapper
           translate={translate}
           position={point.page.position}>

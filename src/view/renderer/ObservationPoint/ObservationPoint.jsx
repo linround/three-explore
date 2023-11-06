@@ -1,11 +1,10 @@
-import React, { createRef } from 'react'
+import React from 'react'
 import { ComponentWrapper } from '../ComponentWrapper/ComponentWrapper.jsx'
 import css from './css.module.less'
 import { stopPropagation } from '../layer/utils.js'
 import { Output } from '../OutputNode/Output.jsx'
 import PropTypes from 'prop-types'
 import { NodeWrapper } from '../layer/NodeWrapper.js'
-import { SvgComponent } from '../layer/SvgComponent.jsx'
 
 export class ObservationPoint extends React.Component {
   constructor(props) {
@@ -50,9 +49,6 @@ export class ObservationPoint extends React.Component {
 
     return (
       <>
-        <SvgComponent
-          translate={translate}
-          position={point.page.position} />
         <ComponentWrapper
           translate={translate}
           position={point.page.position}>

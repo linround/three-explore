@@ -44,4 +44,7 @@ export const sceneData = {
       },
     },
   },
+  connections: [
+    ['observationPointOutPutNode', 'observationDirectionInPutNode']
+  ],
 }

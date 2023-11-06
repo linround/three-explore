@@ -4,6 +4,7 @@ import { LayerWrapper } from './layerWrapper.js'
 import { ObservationPoint } from '../ObservationPoint/ObservationPoint.jsx'
 import { ObservationDirection } from '../ObservationDirection/ObservationPoint.jsx'
 import { sceneData } from '../data.js'
+import { SvgComponent } from './SvgComponent.jsx'
 
 export class Layer extends React.Component {
   constructor(props) {
@@ -15,8 +16,6 @@ export class Layer extends React.Component {
       sceneData,
     }
 
-    this.layerContainer = createRef()
-    this.svgContainer = createRef()
   }
 
 
@@ -40,9 +39,12 @@ export class Layer extends React.Component {
     const { sceneData, } = this.state
     return (
       <LayerWrapper>
-        <div className={css.container} ref={this.layerContainer}>
+        <div className={css.container}>
           <ObservationPoint point={sceneData.observationPoint} handleSetPagePosition={this.handleSetObservationPointPagePosition} />
           <ObservationDirection point={sceneData.observationDirection} handleSetPagePosition={this.handleSetObservationDirectionPagePosition} />
+          <SvgComponent
+            connections={sceneData.connections}
+          />
         </div>
       </LayerWrapper>
     )

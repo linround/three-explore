@@ -1,32 +1,17 @@
-import { sceneData } from '../data.js'
-export function paintSvg(container, svgContainer) {
-  if (!container) return
-  const observationPointOutPutNode =  container.querySelector('#' + sceneData.observationPoint.outPutNode)
-  const observationDirectionInPutNode =  container.querySelector('#' + sceneData.observationDirection.inPutNode)
-  createConnection(
-    observationDirectionInPutNode,
-    observationPointOutPutNode,
-    container,
-    svgContainer
-  )
-}
-export function createConnection(
-  input, output, container, svgContainer
-) {
+
+export function createConnection(inputID, outputID) {
+  const input = document.getElementById(inputID)
+  const output = document.getElementById(outputID)
   const inputRect = input.getBoundingClientRect()
   const outputRect = output.getBoundingClientRect()
-  const containerRect = container.getBoundingClientRect()
-  const startX = inputRect.x - containerRect.x
-  const startY = inputRect.top - containerRect.y
-  const endX = outputRect.x - containerRect.x
-  const endY = outputRect.y - containerRect.y
+  const startX = inputRect.x
+  const startY = inputRect.y
+  const endX = outputRect.x
+  const endY = outputRect.y
   const curve = createCurve(
     startX, startY, endX, endY
   )
-  const path = createPath(curve)
-  const svg = createSvg(path)
-
-  svgContainer.appendChild(svg)
+  return  createPath(curve)
 }
 export function createSvg(ele) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
