@@ -5,6 +5,7 @@ import items from './items.js'
 import { ObservationPoint } from '../ObservationPoint/ObservationPoint.jsx'
 import { ObservationDirection } from '../ObservationDirection/ObservationPoint.jsx'
 import { paintSvg } from './paint.js'
+import PropTypes from 'prop-types'
 
 export class Layer extends React.Component {
   constructor(props) {
@@ -27,24 +28,25 @@ export class Layer extends React.Component {
   }
 
   render() {
+    const { sceneData, } = this.props
     return (
       <LayerWrapper>
         <div className={css.container} ref={this.layerContainer}>
-          <ObservationPoint />
-          <ObservationDirection />
+          <ObservationPoint point={sceneData.observationPoint} />
+          <ObservationDirection point={sceneData.observationDirection} />
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" ref={this.svgContainer}>
-
             {/*<path d="M10 10"/>*/}
             {/*<path d="M 0 0 C 100 0, 100 200, 200 200" stroke="red" fill="none" strokeWidth="6px"/>*/}
-
             {/*/!*Points*!/*/}
             {/*<circle cx="100" cy="0" r="10" fill="red"/>*/}
             {/*<circle cx="200" cy="0" r="10" fill="red"/>*/}
             {/*<circle cx="200" cy="0" r="10" fill="red"/>*/}
-
           </svg>
         </div>
       </LayerWrapper>
     )
   }
+}
+Layer.propTypes = {
+  sceneData: PropTypes.object,
 }

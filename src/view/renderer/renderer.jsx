@@ -6,6 +6,7 @@ import bayer from '../../assets/bayer.png'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 import css from './css.module.less'
 import { Layer } from './layer/layer.jsx'
+import { sceneData } from './data.js'
 
 export class Renderer extends Component {
   constructor(props) {
@@ -13,6 +14,9 @@ export class Renderer extends Component {
     this.canvas = createRef()
     this.renderScene = this.renderScene.bind(this)
     this.renderCornellBox = this.renderCornellBox.bind(this)
+    this.state = {
+      sceneData,
+    }
   }
   componentDidMount() {
     this.renderCornellBox()
@@ -73,10 +77,11 @@ export class Renderer extends Component {
     })
   }
   render() {
+    const { sceneData, } = this.state
     return (
       <div className={css.container}>
         <canvas ref={this.canvas}className={css.canvas} />
-        <Layer />
+        <Layer sceneData={sceneData} />
       </div>
     )
   }

@@ -3,20 +3,16 @@ import { ComponentWrapper } from '../ComponentWrapper/ComponentWrapper.jsx'
 import css from './css.module.less'
 import { stopPropagation } from '../layer/utils.js'
 import { Output } from '../OutputNode/Output.jsx'
-import { sceneData } from '../data.js'
+import PropTypes from 'prop-types'
 
 export class ObservationDirection extends React.Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
-      transform: {
-        translateX: 500,
-        translateY: 500,
-      },
-      position: {
-        last: { x: 0, y: 0, },
-        next: { x: 0, y: 0, },
+      translate: {
+        x: 0,
+        y: 0,
       },
     }
   }
@@ -25,16 +21,16 @@ export class ObservationDirection extends React.Component {
     console.log('click ObservationPoint')
   }
   render() {
-    const inlineStyle = {
-      translate: `${this.state.transform.translateX}px ${this.state.transform.translateY}px`,
-    }
+    const { point, } = this.props
+    const { translate, } = this.state
     return (
-      <ComponentWrapper>
+      <ComponentWrapper
+        translate={translate}
+        position={point.page.position}>
         <div
           onClick={this.handleClick}
-          style={inlineStyle}
           className={css.container}>
-          <Output id={sceneData.observationDirection.inPutNode} />
+          <Output id={point.inPutNode} />
           <div className={css.content}>
             ObservationDirection
           </div>
@@ -42,4 +38,8 @@ export class ObservationDirection extends React.Component {
       </ComponentWrapper>
     )
   }
+}
+
+ObservationDirection.propTypes = {
+  point: PropTypes.object,
 }
