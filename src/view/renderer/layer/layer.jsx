@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React  from 'react'
 import css from './css.module.less'
 import { LayerWrapper } from './layerWrapper.js'
 import { ObservationPoint } from '../ObservationPoint/ObservationPoint.jsx'
@@ -40,8 +40,12 @@ export class Layer extends React.Component {
     return (
       <LayerWrapper>
         <div className={css.container}>
-          <ObservationPoint point={sceneData.observationPoint} handleSetPagePosition={this.handleSetObservationPointPagePosition} />
-          <ObservationDirection point={sceneData.observationDirection} handleSetPagePosition={this.handleSetObservationDirectionPagePosition} />
+          <ObservationPoint
+            point={sceneData.observationPoint}
+            handleSetPagePosition={this.handleSetObservationPointPagePosition} />
+          <ObservationDirection
+            point={sceneData.observationDirection}
+            handleSetPagePosition={this.handleSetObservationDirectionPagePosition} />
           <SvgComponent
             connections={sceneData.connections}
           />

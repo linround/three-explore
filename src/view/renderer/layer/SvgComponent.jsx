@@ -1,4 +1,4 @@
-import  {  useEffect } from 'react'
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { createConnection } from './paint.js'
 
@@ -9,7 +9,7 @@ export function SvgComponent({ connections, }) {
       createConnection(connection[0], connection[1])
     })
 
-  }, [])
+  }, [connections])
   return (
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" >
       {/*<path d="M10 10"/>*/}
