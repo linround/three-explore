@@ -20,7 +20,6 @@ export function SvgComponent({ connections, }) {
       {/*<circle cx="200" cy="0" r="10" fill="red"/>*/}
     </svg>
   )
-
 }
 SvgComponent.propTypes = {
   connections: PropTypes.array,
