@@ -27,7 +27,7 @@ export default function Menus() {
         <p>拓展阅读：</p>
         <li><Link to={'https://www.scratchapixel.com/'}>
           scratchapixel（对计算机图形学的介绍）</Link></li>
-        <li><Link to={'https://medium.com/@junyingw'}>
+        <li><Link to={'https://medium.com/@junyingw/future-of-gaming-rasterization-vs-ray-tracing-vs-path-tracing-32b334510f1f'}>
           Rasterization vs Ray Tracing vs Path Tracing
         </Link></li>
         <li><Link to={'https://learnopengl-cn.github.io/'}>
