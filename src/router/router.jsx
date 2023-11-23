@@ -15,6 +15,7 @@ import SDF from '../view/sdf/sdf.jsx'
 import { Texture } from '../view/texture/texture.jsx'
 import Bump from '../view/bump/bump.jsx'
 import { Renderer } from '../view/renderer/renderer.jsx'
+import { DrawingLine } from '../view/drawingLine/drawingLine.jsx'
 
 
 export const router = createBrowserRouter([
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Menus />,
+      },
+      {
+        path: 'DrawingLine',
+        element: <DrawingLine />,
       },
       {
         path: 'shader',
