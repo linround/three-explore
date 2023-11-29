@@ -102,8 +102,6 @@ export class DrawingLine extends React.Component {
     for (let i = 0;i < maxParticleCount;i++) {
 
     }
-
-
     /************渲染粒子系统******* end****/
 
     render()
