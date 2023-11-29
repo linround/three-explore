@@ -16,7 +16,103 @@ export class DrawingLine extends React.Component {
     }
   }
   componentDidMount() {
-    this.renderScene()
+    // this.renderScene()
+    this.renderLine()
+  }
+  renderLine() {
+    const sceneSize = 100
+    const { canvasWidth, canvasHeight, } = this.state
+    const canvas = this.canvas.current
+    const renderer = new THREE.WebGLRenderer({ canvas, })
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      canvasWidth / canvasHeight,
+      1,
+      500
+    )
+    camera.position.set(
+      0, 0, sceneSize * 2
+    )
+    camera.lookAt(
+      0, 0, 0
+    )
+
+    const controls = new OrbitControls(camera, canvas)
+    controls.minDistance = 100
+    controls.maxDistance = 5000
+    controls.update()
+
+    const scene = new THREE.Scene()
+
+    /************添加一个立方体盒子******* start****/
+    const boxGeometry = new THREE.BoxGeometry(
+      sceneSize, sceneSize, sceneSize
+    )
+    const box = new THREE.Mesh(boxGeometry)
+    const boxHelper = new THREE.BoxHelper(box)
+    boxHelper.material.color.setHex(0x474747)
+    boxHelper.material.blending = THREE.AdditiveBlending
+    scene.add(boxHelper)
+    /************添加一个立方体盒子******* end****/
+
+
+    /************渲染一个线条******* start****/
+    // 创建线条的材质
+    const material = new THREE.LineBasicMaterial({
+      color: 0xffff00,
+      fog: true, // 材料是否受雾的影响
+      linejoin: 'round', // 确定线条连接的外观
+      linecap: '', // 定义线条末端的外观
+    })
+
+    const points = []
+    points.push(new THREE.Vector3(
+      -0, 0, 0
+    ))
+    points.push(new THREE.Vector3(
+      0, 10, 0
+    ))
+    points.push(new THREE.Vector3(
+      10, 0, 0
+    ))
+    // 创建 几何的 顶点数据
+    const geometry = new THREE.BufferGeometry()
+      .setFromPoints(points) // 这里的本质是 setAttribute('position',···)
+    // 使用顶点 和 材质 创建线条
+    const line = new THREE.Line(geometry, material)
+    // 将线条添加到场景种
+    scene.add(line)
+    /************渲染一个线条******* end****/
+
+
+
+
+    /************渲染粒子系统******* start****/
+    // 定义点的材质
+    const pointsMaterial = new THREE.PointsMaterial({
+      color: 0x0000ff,
+      size: 10,
+      sizeAttenuation: false, // 指定点的大小是否会因摄像机深度而衰减
+    })
+    // 定义粒子数
+    const maxParticleCount = 300
+    // 记录每一个粒子的位置索引
+    const particlePositions = new Float32Array(maxParticleCount * 3)
+    const particles = new THREE.BufferGeometry()
+    for (let i = 0;i < maxParticleCount;i++) {
+
+    }
+
+
+    /************渲染粒子系统******* end****/
+
+    render()
+    function render() {
+      // 渲染器渲染场景
+      renderer.render(scene, camera)
+      requestAnimationFrame(render)
+
+    }
   }
   renderScene() {
     const maxParticleCount = 200

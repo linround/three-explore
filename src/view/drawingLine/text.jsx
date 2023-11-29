@@ -13,6 +13,8 @@ export function Text() {
         <li>THREE.PointsMaterial</li>
         <li>Stats</li>
       </ul>
+      <h2>tips</h2>
+      <li>LineBasicMaterial.linewidth；由于opengl的限制，linewidth始终是设置为1。</li>
     </div>
   )
 }
