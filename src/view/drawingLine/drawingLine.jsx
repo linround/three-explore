@@ -115,9 +115,9 @@ export class DrawingLine extends React.Component {
     const effectController = {
       showDots: true,
       showLine: true,
-      minDistance: 150,
+      minDistance: 10,
       limitConnections: false,
-      maxConnections: 20,
+      maxConnections: 200,
       particleCount: 200,
 
     }
@@ -135,6 +135,8 @@ export class DrawingLine extends React.Component {
         particlePositions[(i * 3)] = particleData.velocity.x
         particlePositions[(i * 3) + 1] = particleData.velocity.y
         particlePositions[(i * 3) + 2] = particleData.velocity.z
+
+
         if (particlePositions[(i * 3) + 1] < -boxHalf || particlePositions[(i * 3) + 1] > boxHalf) {
           particleData.velocity.y = - particleData.velocity.y
         }
@@ -158,8 +160,8 @@ export class DrawingLine extends React.Component {
           const dz = particlePositions[(i * 3) + 2] - particlePositions[(j * 3) + 2]
           const dist = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
           if (dist < effectController.minDistance) {
-            particleData.numConnections += 1
-            particleDataB.numConnections += 1
+            particleData.numConnections++
+            particleDataB.numConnections++
 
             const alpha = 1.0 - (dist / effectController.minDistance)
 
