@@ -91,18 +91,57 @@ export class DrawingLine extends React.Component {
     // 定义点的材质
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0x0000ff,
-      size: 10,
+      size: 2,
       sizeAttenuation: false, // 指定点的大小是否会因摄像机深度而衰减
     })
     // 定义粒子数
     const maxParticleCount = 300
+    // 定义场景种渲染的粒子数目
+    const particleCount = 20
     // 记录每一个粒子的位置索引
     const particlePositions = new Float32Array(maxParticleCount * 3)
     const particles = new THREE.BufferGeometry()
     for (let i = 0;i < maxParticleCount;i++) {
-
+      const x = (Math.random() - 0.5) * sceneSize
+      const y = (Math.random() - 0.5) * sceneSize
+      const z = (Math.random() - 0.5) * sceneSize
+      // 定义粒子系统的 顶点坐标索引
+      particlePositions[i * 3] = x
+      particlePositions[(i * 3) + 1] = y
+      particlePositions[(i * 3) + 2] = z
     }
+
+    particles.setDrawRange(0, particleCount)
+    particles.setAttribute('position',
+      new THREE.BufferAttribute(particlePositions, 3))
+    // 定义一个点云
+    const pointCloud = new THREE.Points(particles, pointsMaterial)
+    scene.add(pointCloud)
     /************渲染粒子系统******* end****/
+
+
+    /************渲染线条系统******* start****/
+    // 定义线条快
+    const segments = maxParticleCount * maxParticleCount
+    // 线条的顶点位置索引
+    const positions = new Float32Array(segments * 3)
+    // 顶点颜色索引
+    const colors = new Float32Array(segments * 3)
+    const lineGeometry = new THREE.BufferGeometry()
+    lineGeometry.setAttribute('position',
+      new THREE.BufferAttribute(positions, 3))
+    lineGeometry.setAttribute('color',
+      new THREE.BufferAttribute(colors, 3))
+    const lineMaterial = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+    })
+    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial)
+    scene.add(lineMesh)
+    /************渲染线条系统******* end****/
+
+
+
 
     render()
     function render() {
