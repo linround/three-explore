@@ -66,13 +66,22 @@ export class DrawingLine extends React.Component {
 
     const points = []
     points.push(new THREE.Vector3(
-      -0, 0, 0
+      0, 0, 0
     ))
     points.push(new THREE.Vector3(
-      0, 10, 0
+      0, sceneSize / 2, 0
     ))
     points.push(new THREE.Vector3(
-      10, 0, 0
+      0, 0, 0
+    ))
+    points.push(new THREE.Vector3(
+      sceneSize / 2, 0, 0
+    ))
+    points.push(new THREE.Vector3(
+      0, 0, 0
+    ))
+    points.push(new THREE.Vector3(
+      0, 0, sceneSize / 2
     ))
     // 创建 几何的 顶点数据
     const geometry = new THREE.BufferGeometry()
@@ -154,14 +163,14 @@ export class DrawingLine extends React.Component {
           const dz = particlePositions[(i * 3) + 2] - particlePositions[(j * 3) + 2]
           const dist = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
 
-          if (dist < sceneSize / 4) {
-            positions[vertexPos] = particlePositions[i * 3]
-            positions[vertexPos + 1] = particlePositions[(i * 3) + 1]
-            positions[vertexPos + 2] = particlePositions[(i * 3) + 2]
+          if (dist < sceneSize / 8) {
+            positions[vertexPos] = particlePositions[i * 3] * Math.random()
+            positions[vertexPos + 1] = particlePositions[(i * 3) + 1] * Math.random()
+            positions[vertexPos + 2] = particlePositions[(i * 3) + 2] * Math.random()
 
-            positions[vertexPos + 3] = particlePositions[j * 3]
-            positions[vertexPos + 4] = particlePositions[(j * 3) + 1]
-            positions[vertexPos + 5] = particlePositions[(j * 3) + 2]
+            positions[vertexPos + 3] = particlePositions[j * 3] * Math.random()
+            positions[vertexPos + 4] = particlePositions[(j * 3) + 1] * Math.random()
+            positions[vertexPos + 5] = particlePositions[(j * 3) + 2] * Math.random()
             vertexPos += 6
 
             const alpha = 1.0 - (dist / sceneSize)
