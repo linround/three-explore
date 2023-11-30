@@ -13,6 +13,10 @@ export function Text() {
         <li>THREE.PointsMaterial</li>
         <li>Stats</li>
       </ul>
+      <h2>要点</h2>
+      <ul>
+        <li>顶点信息设置的两种方式：<a>setAttribute</a>、<a>setFromPoints</a></li>
+      </ul>
       <h2>tips</h2>
       <li>LineBasicMaterial.linewidth；由于opengl的限制，linewidth始终是设置为1。</li>
     </div>
