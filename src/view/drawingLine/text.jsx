@@ -8,10 +8,9 @@ export function Text() {
       <p>之后定义几何顶点。每队连续的顶点之间都会画线，但是第一个和最后一个不会画线。</p>
       <ul>
         <li>THREE.PerspectiveCamera</li>
-        <li>THREE.Group</li>
+        <li>THREE.Group.</li>
         <li>material.blending</li>
         <li>THREE.PointsMaterial</li>
-        <li>Stats</li>
       </ul>
       <h2>要点</h2>
       <ul>

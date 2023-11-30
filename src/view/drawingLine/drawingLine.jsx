@@ -99,7 +99,7 @@ export class DrawingLine extends React.Component {
     // 定义点的材质
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0x0000ff,
-      size: 2,
+      size: 8,
       sizeAttenuation: false, // 指定点的大小是否会因摄像机深度而衰减
     })
     // 定义粒子数
@@ -144,8 +144,7 @@ export class DrawingLine extends React.Component {
 
     const lineMaterial = new THREE.LineBasicMaterial({
       vertexColors: true,
-      transparent: true,
-      color: 0xff00ff,
+      transparent: false, // 这个参数 会让线条 变得和背景色一致
     })
     const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial)
     scene.add(lineMesh)
@@ -155,6 +154,11 @@ export class DrawingLine extends React.Component {
       let vertexPos = 0
       let colorPos = 0
       let numConnected = 0
+
+      // 利用粒子系统中的顶点
+      // 测量每一个顶点和其后面的顶点之间的距离
+      // 如果距离小于 某一个值的时候，这两个前后顶点即可形成一条线
+
       for (let i = 0;i < particleCount;i++) {
 
         for (let j = i + 1;j < particleCount;j++) {
@@ -163,24 +167,24 @@ export class DrawingLine extends React.Component {
           const dz = particlePositions[(i * 3) + 2] - particlePositions[(j * 3) + 2]
           const dist = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
 
-          if (dist < sceneSize / 8) {
-            positions[vertexPos] = particlePositions[i * 3] * Math.random()
-            positions[vertexPos + 1] = particlePositions[(i * 3) + 1] * Math.random()
-            positions[vertexPos + 2] = particlePositions[(i * 3) + 2] * Math.random()
+          if (dist < sceneSize / 3) {
+            positions[vertexPos] = particlePositions[i * 3]
+            positions[vertexPos + 1] = particlePositions[(i * 3) + 1]
+            positions[vertexPos + 2] = particlePositions[(i * 3) + 2]
 
-            positions[vertexPos + 3] = particlePositions[j * 3] * Math.random()
-            positions[vertexPos + 4] = particlePositions[(j * 3) + 1] * Math.random()
-            positions[vertexPos + 5] = particlePositions[(j * 3) + 2] * Math.random()
+            positions[vertexPos + 3] = particlePositions[j * 3]
+            positions[vertexPos + 4] = particlePositions[(j * 3) + 1]
+            positions[vertexPos + 5] = particlePositions[(j * 3) + 2]
             vertexPos += 6
 
             const alpha = 1.0 - (dist / sceneSize)
-            colors[colorPos] = alpha * Math.random()
-            colors[colorPos + 1] = alpha * Math.random()
-            colors[colorPos + 2] = alpha * Math.random()
+            colors[colorPos] = alpha
+            colors[colorPos + 1] = alpha
+            colors[colorPos + 2] = alpha
 
-            colors[colorPos + 3] = alpha * Math.random()
-            colors[colorPos + 4] = alpha * Math.random()
-            colors[colorPos + 5] = alpha * Math.random()
+            colors[colorPos + 3] = 1 - alpha
+            colors[colorPos + 4] = 1 - alpha
+            colors[colorPos + 5] = 1 - alpha
             colorPos += 6
             numConnected += 1
           }
