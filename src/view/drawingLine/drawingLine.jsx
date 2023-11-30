@@ -154,7 +154,7 @@ export class DrawingLine extends React.Component {
           const dz = particlePositions[(i * 3) + 2] - particlePositions[(j * 3) + 2]
           const dist = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
 
-          if (dist < sceneSize / 8) {
+          if (dist < sceneSize / 4) {
             positions[vertexPos] = particlePositions[i * 3]
             positions[vertexPos + 1] = particlePositions[(i * 3) + 1]
             positions[vertexPos + 2] = particlePositions[(i * 3) + 2]
@@ -165,13 +165,13 @@ export class DrawingLine extends React.Component {
             vertexPos += 6
 
             const alpha = 1.0 - (dist / sceneSize)
-            colors[colorPos] = alpha
-            colors[colorPos + 1] = alpha
-            colors[colorPos + 2] = alpha
+            colors[colorPos] = alpha * Math.random()
+            colors[colorPos + 1] = alpha * Math.random()
+            colors[colorPos + 2] = alpha * Math.random()
 
-            colors[colorPos + 3] = alpha
-            colors[colorPos + 4] = alpha
-            colors[colorPos + 5] = alpha
+            colors[colorPos + 3] = alpha * Math.random()
+            colors[colorPos + 4] = alpha * Math.random()
+            colors[colorPos + 5] = alpha * Math.random()
             colorPos += 6
             numConnected += 1
           }
