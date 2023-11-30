@@ -3,6 +3,8 @@ import { NurbsText } from './NurbsText.jsx'
 import css from './css.module.less'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { NURBSCurve } from 'three/addons/curves/NURBSCurve.js'
+import img from './logo.jpg?url'
 
 export class Nurbs extends React.Component {
   constructor(prop) {
@@ -15,7 +17,6 @@ export class Nurbs extends React.Component {
     }
   }
   componentDidMount() {
-    // this.renderScene()
     this.renderLine()
   }
   renderLine() {
@@ -41,9 +42,23 @@ export class Nurbs extends React.Component {
     controls.maxDistance = 5000
     controls.update()
 
-    const scene = new THREE.Scene()
 
-    /************添加一个立方体盒子******* start****/
+
+    // 用于绘制曲线
+    const group1 = new THREE.Group()
+    group1.position.x = -sceneSize / 2
+    // 用于绘制曲面
+    const group2 = new THREE.Group()
+    group2.position.x = sceneSize / 2
+
+
+    const scene = new THREE.Scene()
+    // 设置场景背景
+    scene.background = new THREE.Color(0x00002f)
+    scene.add(group1)
+    scene.add(group2)
+
+    /************添加立方体盒子******* start****/
     const boxGeometry = new THREE.BoxGeometry(
       sceneSize, sceneSize, sceneSize
     )
@@ -51,18 +66,80 @@ export class Nurbs extends React.Component {
     const boxHelper = new THREE.BoxHelper(box)
     boxHelper.material.color.setHex(0x474747)
     boxHelper.material.blending = THREE.AdditiveBlending
-    scene.add(boxHelper)
+    group1.add(boxHelper)
+
+
+    const boxHelper2 = new THREE.BoxHelper(box)
+    boxHelper2.material.color.setHex(0x474747)
+    boxHelper2.material.blending = THREE.AdditiveBlending
+    group2.add(boxHelper2)
     /************添加一个立方体盒子******* end****/
 
 
+    /************添加 nurbs 曲线******* start****/
+    const nurbsPosition = sceneSize / 2
+    // 定义了四个控制点
+    const nurbsControlPoints = [
+      new THREE.Vector4(
+        -nurbsPosition, -nurbsPosition, -nurbsPosition, 1
+      ),
+      new THREE.Vector4(
+        -nurbsPosition, nurbsPosition, -nurbsPosition, 1
+      ),
+      new THREE.Vector4(
+        nurbsPosition, nurbsPosition, -nurbsPosition, 1
+      ),
+      new THREE.Vector4(
+        nurbsPosition, -nurbsPosition, nurbsPosition, 1
+      )
+    ]
+    const nurbsKnots = []
+    const nurbsDegree = 3
+    for (let i = 0;i <= nurbsDegree;i++) {
+      nurbsKnots.push(0)
+    }
+    for (let i = 0, j = 4;i < j;i++) {
+      const knot = (i + 1) / (j - nurbsDegree)
+      nurbsKnots.push(THREE.MathUtils.clamp(
+        knot, 0, 1
+      ))
+    }
+    // 得到该曲线
+    const nurbsCurve = new NURBSCurve(
+      nurbsDegree, nurbsKnots, nurbsControlPoints
+    )
+    const nurbsGeometry = new THREE.BufferGeometry()
+    // 从曲线中获取 对应的点数，从而形成线的几何
+    nurbsGeometry.setFromPoints(nurbsCurve.getPoints(200))
+    // 设置材质
+    const nurbsMaterial = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+    })
+    // 使用材质和几何生成该线条
+    const nurbsLine = new THREE.Line(nurbsGeometry, nurbsMaterial)
+    group1.add(nurbsLine)
+    /************添加 nurbs 曲线******* end****/
+    /************添加 nurbs 曲线控制点******* end****/
+    const nurbsControlPointsGeometry = new THREE.BufferGeometry()
+    nurbsControlPointsGeometry.setFromPoints(nurbsCurve.controlPoints)
+    const nurbsControlPointsMaterial = new THREE.LineBasicMaterial({
+      color: 0xff0000,
+    })
+    const nurbsControlPointsLine = new THREE.Line(nurbsControlPointsGeometry,
+      nurbsControlPointsMaterial)
+    nurbsControlPointsLine.position.copy(nurbsLine.position)
+    group1.add(nurbsControlPointsLine)
+    /************添加 nurbs 曲线控制点******* end****/
 
 
+    /************添加 nurbs 曲面******* start****/
+
+    /************添加 nurbs 曲面******* end****/
 
 
     render()
-    function render(time) {
-      const rotation = time * 0.0005
-      scene.rotation.x = rotation
+    function render() {
+      const rotation =  0
       scene.rotation.y = rotation
       scene.rotation.z = rotation
       // 渲染器渲染场景
