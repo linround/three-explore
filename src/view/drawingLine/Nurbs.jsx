@@ -242,8 +242,8 @@ export class Nurbs extends React.Component {
 
 
     render()
-    function render() {
-      const rotation =  0
+    function render(time) {
+      const rotation =  time * 0.0005
       scene.rotation.x = rotation
       scene.rotation.y = rotation
       // 渲染器渲染场景

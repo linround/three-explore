@@ -4,6 +4,7 @@ import css from './css.module.less'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Nurbs } from './Nurbs.jsx'
+import { Dashed } from './Dashed.jsx'
 
 export class DrawingLine extends React.Component {
   constructor(prop) {
@@ -221,6 +222,7 @@ export class DrawingLine extends React.Component {
     const { canvasWidth, canvasHeight, } = this.state
     return (
       <>
+        <Dashed />
         <Nurbs />
         <canvas
           className={css.canvas}
