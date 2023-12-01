@@ -50,7 +50,7 @@ export class Nurbs extends React.Component {
 
     // 用于绘制曲线
     const group1 = new THREE.Group()
-    group1.position.x = -sceneSize / 2
+    group1.position.x = (-sceneSize / 2) - 10
     // 用于绘制曲面
     const group2 = new THREE.Group()
     group2.position.x = sceneSize / 2
@@ -94,7 +94,7 @@ export class Nurbs extends React.Component {
         nurbsPosition, nurbsPosition, -nurbsPosition, 1
       ),
       new THREE.Vector4(
-        nurbsPosition, -nurbsPosition, nurbsPosition, 1
+        nurbsPosition, nurbsPosition, nurbsPosition, 1
       )
     ]
     const nurbsKnots = []
@@ -139,54 +139,79 @@ export class Nurbs extends React.Component {
     /************添加 nurbs 曲面******* start****/
     const nsControlPoints = [
       [
+
         new THREE.Vector4(
-          0, 0, 100, 1
+          -nurbsPosition, -nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          -200, -100, -200, 1
+          -nurbsPosition, nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          -200, 100, 250, 1
+          nurbsPosition, nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          -200, 200, -100, 1
+          nurbsPosition, nurbsPosition, nurbsPosition, 1
         )
       ],
       [
+
         new THREE.Vector4(
-          0, -200, 0, 1
+          -nurbsPosition, -nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          0, -100, -100, 1
+          -nurbsPosition, -nurbsPosition, nurbsPosition, 1
         ),
         new THREE.Vector4(
-          0, 100, 150, 1
+          -nurbsPosition, nurbsPosition, nurbsPosition, 1
         ),
         new THREE.Vector4(
-          0, 200, 0, 1
+          nurbsPosition, nurbsPosition, nurbsPosition, 1
         )
       ],
       [
+
         new THREE.Vector4(
-          200, -200, -100, 1
+          -nurbsPosition, -nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          200, -100, 200, 1
+          nurbsPosition, -nurbsPosition, -nurbsPosition, 1
         ),
         new THREE.Vector4(
-          200, 100, -250, 1
+          nurbsPosition, -nurbsPosition, nurbsPosition, 1
         ),
         new THREE.Vector4(
-          200, 200, 100, 1
+          nurbsPosition, nurbsPosition, nurbsPosition, 1
         )
       ]
     ]
+    function getColor(index) {
+      const colors = [0xff0000, 0x00ff00, 0x0000ff]
+      return colors[index]
+    }
+    function visibleNSControlPoints() {
+      nsControlPoints.map((points, index) => {
+        const lineGeometry = new THREE.BufferGeometry()
+        lineGeometry.setFromPoints(points)
+        const lineMaterial = new THREE.LineDashedMaterial({
+          color: getColor(index),
+          dashSize: 3,
+          gapSize: 3,
+        })
+        const line = new THREE.Line(lineGeometry, lineMaterial)
+        group2.add(line)
+      })
+    }
+    visibleNSControlPoints()
     const degree1 = 2
     const degree2 = 3
     const knots1 = [0, 0, 0, 1, 1, 1]
     const knots2 = [0, 0, 0, 0, 1, 1, 1, 1]
     const nurbsSurface = new NURBSSurface(
-      degree1, degree2, knots1, knots2, nsControlPoints
+      degree1, // u方向 >=2
+      degree2, // v方向 >=2
+      knots1, // u 方向的控制点计数 >=degree1
+      knots2, // v 方向的控制点计数 >=degree2
+      nsControlPoints // 控制点的二维数组
     )
     const map  = new THREE.TextureLoader()
       .load(img)
@@ -204,12 +229,12 @@ export class Nurbs extends React.Component {
       map: map,
       side: THREE.DoubleSide,
     })
-    const imgObject = new THREE.Mesh(geometry, material)
-    const scaleValue = 0.2
-    imgObject.scale.set(
+    const imgMesh = new THREE.Mesh(geometry, material)
+    const scaleValue = 1.
+    imgMesh.scale.set(
       scaleValue, scaleValue, scaleValue
     )
-    group2.add(imgObject)
+    group2.add(imgMesh)
     /************添加 nurbs 曲面******* end****/
 
     /************添加 光线******* start****/
@@ -221,8 +246,8 @@ export class Nurbs extends React.Component {
     render()
     function render() {
       const rotation =  0
+      scene.rotation.x = rotation
       scene.rotation.y = rotation
-      scene.rotation.z = rotation
       // 渲染器渲染场景
       renderer.render(scene, camera)
       requestAnimationFrame(render)
