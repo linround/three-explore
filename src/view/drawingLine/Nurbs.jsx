@@ -4,7 +4,11 @@ import css from './css.module.less'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { NURBSCurve } from 'three/addons/curves/NURBSCurve.js'
-import img from './logo.jpg?url'
+import { NURBSSurface } from 'three/addons/curves/NURBSSurface.js'
+import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js'
+import img from './avater.jpg?url'
+
+console.log(ParametricGeometry)
 
 export class Nurbs extends React.Component {
   constructor(prop) {
@@ -133,8 +137,85 @@ export class Nurbs extends React.Component {
 
 
     /************添加 nurbs 曲面******* start****/
-
+    const nsControlPoints = [
+      [
+        new THREE.Vector4(
+          0, 0, 100, 1
+        ),
+        new THREE.Vector4(
+          -200, -100, -200, 1
+        ),
+        new THREE.Vector4(
+          -200, 100, 250, 1
+        ),
+        new THREE.Vector4(
+          -200, 200, -100, 1
+        )
+      ],
+      [
+        new THREE.Vector4(
+          0, -200, 0, 1
+        ),
+        new THREE.Vector4(
+          0, -100, -100, 1
+        ),
+        new THREE.Vector4(
+          0, 100, 150, 1
+        ),
+        new THREE.Vector4(
+          0, 200, 0, 1
+        )
+      ],
+      [
+        new THREE.Vector4(
+          200, -200, -100, 1
+        ),
+        new THREE.Vector4(
+          200, -100, 200, 1
+        ),
+        new THREE.Vector4(
+          200, 100, -250, 1
+        ),
+        new THREE.Vector4(
+          200, 200, 100, 1
+        )
+      ]
+    ]
+    const degree1 = 2
+    const degree2 = 3
+    const knots1 = [0, 0, 0, 1, 1, 1]
+    const knots2 = [0, 0, 0, 0, 1, 1, 1, 1]
+    const nurbsSurface = new NURBSSurface(
+      degree1, degree2, knots1, knots2, nsControlPoints
+    )
+    const map  = new THREE.TextureLoader()
+      .load(img)
+    function getSurfacePoint(
+      u, v, target
+    ) {
+      return nurbsSurface.getPoint(
+        u, v, target
+      )
+    }
+    const geometry = new ParametricGeometry(
+      getSurfacePoint, 20, 20
+    )
+    const material = new THREE.MeshLambertMaterial({
+      map: map,
+      side: THREE.DoubleSide,
+    })
+    const imgObject = new THREE.Mesh(geometry, material)
+    const scaleValue = 0.2
+    imgObject.scale.set(
+      scaleValue, scaleValue, scaleValue
+    )
+    group2.add(imgObject)
     /************添加 nurbs 曲面******* end****/
+
+    /************添加 光线******* start****/
+    const ambientLight = new THREE.AmbientLight(0xffffff)
+    scene.add(ambientLight)
+    /************添加 光线******* end****/
 
 
     render()
