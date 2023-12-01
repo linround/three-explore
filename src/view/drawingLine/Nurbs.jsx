@@ -192,10 +192,8 @@ export class Nurbs extends React.Component {
       nsControlPoints.map((points, index) => {
         const lineGeometry = new THREE.BufferGeometry()
         lineGeometry.setFromPoints(points)
-        const lineMaterial = new THREE.LineDashedMaterial({
+        const lineMaterial = new THREE.LineBasicMaterial({
           color: getColor(index),
-          dashSize: 3,
-          gapSize: 3,
         })
         const line = new THREE.Line(lineGeometry, lineMaterial)
         group2.add(line)
