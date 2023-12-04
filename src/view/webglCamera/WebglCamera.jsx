@@ -117,14 +117,19 @@ export class WebglCamera extends React.Component {
     }
     document.querySelectorAll('[data-diagram]')
       .forEach((elem) => {
+        // 获取函数名
         const sceneName = elem.dataset.diagram
+        // 获取函数
         const sceneInitFunction = sceneInitFunctionsByName[sceneName]
+        // 调用函数并传入elem，返回的函数关键是渲染和设置比例
         const sceneRenderFunction = sceneInitFunction(elem)
+        // 收集创建得场景
         addScene(elem, sceneRenderFunction)
       })
 
     function render(t) {
       const time = t * 0.001
+      // 在render 过程中
       for (const { elem, fn, ctx, } of sceneElements) {
         const rect = elem.getBoundingClientRect()
         const {
@@ -163,6 +168,7 @@ export class WebglCamera extends React.Component {
 
           fn(time, rect)
 
+          // 在2d 上下文中渲染3d 场景中的区域
           ctx.globalCompositeOperation = 'copy'
           ctx.drawImage(
             rendererCanvas,

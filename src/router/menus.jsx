@@ -24,7 +24,7 @@ export default function Menus() {
 
 
 
-        {/*<li><Link to='WebglCamera'>webglCamera；</Link></li>*/}
+        <li><Link to='WebglCamera'>multiple webgl；</Link></li>
 
         {/*<p>工具</p>*/}
         {/*<li>*/}
