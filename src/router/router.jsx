@@ -16,6 +16,7 @@ import { Texture } from '../view/texture/texture.jsx'
 import Bump from '../view/bump/bump.jsx'
 import { Renderer } from '../view/renderer/renderer.jsx'
 import { DrawingLine } from '../view/drawingLine/drawingLine.jsx'
+import { WebglCamera } from '../view/webglCamera/WebglCamera.jsx'
 
 
 export const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: 'DrawingLine',
         element: <DrawingLine />,
+      },
+      {
+        path: 'WebglCamera',
+        element: <WebglCamera />,
       },
       {
         path: 'shader',

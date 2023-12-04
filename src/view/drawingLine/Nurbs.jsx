@@ -8,7 +8,6 @@ import { NURBSSurface } from 'three/addons/curves/NURBSSurface.js'
 import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js'
 import img from './avater.jpg?url'
 
-console.log(ParametricGeometry)
 
 export class Nurbs extends React.Component {
   constructor(prop) {
