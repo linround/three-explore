@@ -3,9 +3,6 @@ import css from './css.module.less'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { NURBSCurve } from 'three/addons/curves/NURBSCurve.js'
-import { NURBSSurface } from 'three/addons/curves/NURBSSurface.js'
-import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js'
-import img from './avater.jpg?url'
 import { DashedText } from './DashedText.jsx'
 
 
