@@ -3,7 +3,7 @@ import css from './css.module.less'
 import * as THREE from 'three'
 import { WebglCameraText } from './WebglCameraText.jsx'
 import { TrackballControls } from 'three/addons/controls/TrackballControls.js'
-
+import { MultipleView } from './MultipleView.jsx'
 
 export class WebglCamera extends React.Component {
   constructor(prop) {
@@ -189,6 +189,7 @@ export class WebglCamera extends React.Component {
 
     return (
       <>
+        <MultipleView />
         <p>
           渲染一个立方体。
           <span data-diagram="box" className={css.dataDiagram}></span>
