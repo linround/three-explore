@@ -17,6 +17,7 @@ export class MultipleView extends React.Component {
     this.renderScene()
   }
   renderScene() {
+    const segments = 100
     const canvas = this.canvas.current
     const { canvasWidth, canvasHeight, } = this.state
     const aspect = canvasWidth / canvasHeight
@@ -53,7 +54,7 @@ export class MultipleView extends React.Component {
 
 
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(
-      2, 16, 8
+      2, segments, segments
     ),
     new THREE.MeshBasicMaterial({
       color: 0xff0000,
@@ -63,7 +64,7 @@ export class MultipleView extends React.Component {
 
 
     const mesh2 = new THREE.Mesh(new THREE.SphereGeometry(
-      1, 16, 8
+      1, segments, segments
     ),
     new THREE.MeshBasicMaterial({
       color: 0x00ff00,
@@ -73,7 +74,7 @@ export class MultipleView extends React.Component {
     mesh.add(mesh2)
 
     const mesh3 = new THREE.Mesh(new THREE.SphereGeometry(
-      1, 16, 8
+      1, segments, segments
     ),
     new THREE.MeshBasicMaterial({
       color: 0x0000ff,
