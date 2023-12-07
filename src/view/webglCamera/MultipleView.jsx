@@ -55,6 +55,48 @@ export class MultipleView extends React.Component {
     cameraRig.add(cameraPerspective)
     scene.add(cameraRig)
 
+    const mesh3 = new THREE.Mesh(new THREE.SphereGeometry(
+      0.5, segments, segments
+    ),
+    new THREE.MeshBasicMaterial({
+      color: 0x0000ff,
+      wireframe: true,
+    }))
+    // mesh3 是透视相机的起始端
+    mesh3.position.z = 0
+    cameraRig.add(mesh3)
+
+
+    // 创建第二个透视相机
+    const cameraPerspective2 = new THREE.PerspectiveCamera(
+      50,
+      0.5 * aspect,
+      1,
+      100
+    )
+    cameraPerspective2.rotation.y =  Math.PI
+    scene.add(cameraPerspective2)
+    const cameraPerspective2Helper = new THREE.CameraHelper(cameraPerspective2)
+    scene.add(cameraPerspective2Helper)
+    const cameraRig2 = new THREE.Group()
+    cameraRig2.add(cameraPerspective2)
+    scene.add(cameraRig2)
+
+    const mesh4 = new THREE.Mesh(new THREE.SphereGeometry(
+      0.1, segments, segments
+    ),
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+    }))
+    // mesh3 是透视相机的起始端
+    mesh4.position.z = 0
+    cameraRig2.add(mesh4)
+    cameraRig2.position.set(
+      1, 5, 1
+    )
+
+
 
 
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(
@@ -77,16 +119,6 @@ export class MultipleView extends React.Component {
     mesh2.position.y = 2
     mesh.add(mesh2)
 
-    const mesh3 = new THREE.Mesh(new THREE.SphereGeometry(
-      1, segments, segments
-    ),
-    new THREE.MeshBasicMaterial({
-      color: 0x0000ff,
-      wireframe: true,
-    }))
-    // mesh3 是透视相机的起始端
-    mesh3.position.z = 0
-    cameraRig.add(mesh3)
 
 
     const renderer = new THREE.WebGLRenderer({
@@ -99,27 +131,45 @@ export class MultipleView extends React.Component {
 
     function render() {
       const r = Date.now() * 0.0005
+      // 观察目标 红球位置不断变化
       mesh.position.x = 5 * Math.cos(r)
       mesh.position.z = 5 * Math.sin(r)
       mesh.position.y = 5 * Math.sin(r)
       // 设置月球的位置变化
       mesh.children[0].position.x = 2 * Math.cos(2 * r)
       mesh.children[0].position.z = 2 * Math.sin(r)
+
+      // 透视相机1 不断变化
       cameraPerspective.fov = 40 + (20 * Math.sin(2 * r))
       cameraPerspective.far = mesh.position.length()
       cameraPerspective.updateProjectionMatrix()
       cameraPerspectiveHelper.update()
       cameraPerspectiveHelper.visible = true
 
+      // 透视相机2 不断变化
+      cameraPerspective2.updateProjectionMatrix()
+      cameraPerspective2Helper.update()
+      cameraPerspective2Helper.visible = true
 
+
+      cameraRig2.lookAt(mesh3.position)
       //
       cameraRig.lookAt(mesh.position)
       renderer.clear()
 
 
+
+      cameraPerspective2Helper.visible = false
+      renderer.setViewport(
+        0, canvasHeight / 2, canvasWidth / 2, canvasHeight / 2
+      )
+      renderer.render(scene, cameraPerspective2)
+      cameraPerspective2Helper.visible = true
+
+
       cameraPerspectiveHelper.visible = false
       renderer.setViewport(
-        0, 0, canvasWidth / 2, canvasHeight
+        0, 0, canvasWidth / 2, canvasHeight / 2
       )
       renderer.render(scene, cameraPerspective)
       cameraPerspectiveHelper.visible = true
