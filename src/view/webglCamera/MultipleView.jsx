@@ -32,6 +32,10 @@ export class MultipleView extends React.Component {
     )
     // 设置相机位置
     camera.position.z = 100
+    const controls = new OrbitControls(camera, canvas)
+    controls.minDistance = 100
+    controls.maxDistance = 5000
+    controls.update()
 
     // 一个透视相机
     const cameraPerspective = new THREE.PerspectiveCamera(
