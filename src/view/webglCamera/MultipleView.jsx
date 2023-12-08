@@ -147,12 +147,13 @@ export class MultipleView extends React.Component {
       cameraPerspectiveHelper.visible = true
 
       // 透视相机2 不断变化
+      cameraPerspective2.far = mesh.position.length()
       cameraPerspective2.updateProjectionMatrix()
       cameraPerspective2Helper.update()
       cameraPerspective2Helper.visible = true
 
 
-      cameraRig2.lookAt(mesh3.position)
+      cameraRig2.lookAt(mesh.position)
       //
       cameraRig.lookAt(mesh.position)
       renderer.clear()
