@@ -30,6 +30,7 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 ## 相关项目案例
 - https://github.com/fengtianxi001/MF-TurbineMonitor
 - https://github.com/alwxkxk/iot-visualization-examples
+- https://gitee.com/linyuan1105/go-view
 
 ## commit规范
 - `feat`：新功能（feature）
