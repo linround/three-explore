@@ -17,6 +17,7 @@ import Bump from '../view/bump/bump.jsx'
 import { Renderer } from '../view/renderer/renderer.jsx'
 import { DrawingLine } from '../view/drawingLine/drawingLine.jsx'
 import { WebglCamera } from '../view/webglCamera/WebglCamera.jsx'
+import { GeometryConvex } from '../view/geometryConvex/GeometryConvex.jsx'
 
 
 export const router = createBrowserRouter([
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: 'DrawingLine',
         element: <DrawingLine />,
+      },
+      {
+        path: 'GeometryConvex',
+        element: <GeometryConvex />,
       },
       {
         path: 'WebglCamera',

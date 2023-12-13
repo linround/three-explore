@@ -24,7 +24,8 @@ export default function Menus() {
 
 
 
-        <li><Link to='WebglCamera'>multiple webgl；</Link></li>
+        <li><Link to='WebglCamera'>WebglCamera：多个观察角度下的渲染；</Link></li>
+        <li><Link to='GeometryConvex'>GeometryConvex；</Link></li>
 
         {/*<p>工具</p>*/}
         {/*<li>*/}

@@ -1,7 +1,7 @@
 export function MultipleViewText() {
   return (
     <>
-      MultipleViewText
+      在多个视角下，所渲染的观察场景
     </>
   )
 }

@@ -15,7 +15,6 @@ export default class Native extends Component {
           <CanvasComponent
             ref={this.canvas} >
             <div className={css.buttons}>
-              <button>test</button>
             </div>
           </CanvasComponent>
           <Text />
