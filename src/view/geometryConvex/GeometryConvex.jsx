@@ -110,12 +110,12 @@ export class GeometryConvex extends React.Component {
     return (
       <>
         <Cube />
+        <GeometryConvexText />
         <canvas
           className={css.canvas}
           height={canvasHeight}
           width={canvasWidth}
           ref={this.canvas}></canvas>
-        <GeometryConvexText />
       </>
     )
   }

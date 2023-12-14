@@ -135,12 +135,12 @@ export class Cube extends React.Component {
     const { canvasWidth, canvasHeight, } = this.state
     return (
       <>
+        <CubeText />
         <canvas
           className={css.canvas}
           height={canvasHeight}
           width={canvasWidth}
           ref={this.canvas}></canvas>
-        <CubeText />
       </>
     )
   }
