@@ -1,3 +1,33 @@
+@sliderBgColor: #349dad;
+@sliderSelectColor: #b0e70d;
+
 .input{
-  color: yellow;
+  appearance: none;
+  outline: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 100%;
+  border-radius: 1em;
+  cursor: pointer;
+  font-size: inherit;
+  background: @sliderBgColor;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    border: none;
+    border-radius: 1em;
+    box-shadow: 0 0 0 .3em @sliderSelectColor;
+    background: @sliderSelectColor;
+    transform: scale(1);
+    transition: transform .3s ease-out;
+  }
+  &::-webkit-slider-thumb:focus,
+  &::-webkit-slider-thumb:active {
+    appearance: none;
+    transform: scale(.85);
+  }
 }
