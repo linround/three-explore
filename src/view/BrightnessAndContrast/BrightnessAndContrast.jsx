@@ -10,6 +10,7 @@ import fragmentShader from './fragmentShader.glsl?raw'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 
 
+
 export function BrightnessAndContrast() {
   const [brightness, setBrightness] = useState(0)
   const [contrast, setContrast] = useState(10)
@@ -35,7 +36,7 @@ export function BrightnessAndContrast() {
 
       const scene = new THREE.Scene()
 
-      const plane = new THREE.PlaneGeometry(2, 2)
+      const plane = new THREE.PlaneGeometry(640, 480)
       const loader = new THREE.TextureLoader()
       const texture = loader.load(leaf)
 
@@ -62,6 +63,7 @@ export function BrightnessAndContrast() {
       const render = (t) => {
         const time = t * 0.001
         resizeRendererToDisplaySize(renderer)
+
         uniforms.iResolution.value.set(
           canvas.width, canvas.height, 1
         )
