@@ -8,6 +8,8 @@ import leaf from '/src/assets/leaf.jpg'
 import vertexShader from '/src/common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
 import { resizeRendererToDisplaySize } from '../../utils.js'
+import css from './css.module.less'
+import { Text } from './Text.jsx'
 
 
 
@@ -87,14 +89,22 @@ export function BrightnessAndContrast() {
   }, [canvasRef])
 
   return (
-    <div>
-      <div>
-        <label>Brightness</label>：<RangeInput onChange={onBrightnessChange} value={brightness}/>
+    <>
+      <div className={css.container}>
+        <div className={css.left}>
+          <div>
+            <label>Brightness</label>：<RangeInput onChange={onBrightnessChange} value={brightness}/>
+          </div>
+          <div>
+            <label>Contrast</label>：<RangeInput onChange={onContrastChange} value={contrast}/>
+          </div>
+        </div>
+        <div className={css.right}>
+
+          <canvas width={640} height={480} ref={canvasRef}></canvas>
+        </div>
       </div>
-      <div>
-        <label>Contrast</label>：<RangeInput onChange={onContrastChange} value={contrast}/>
-      </div>
-      <canvas width={640} height={480} ref={canvasRef}></canvas>
-    </div>
+      <Text />
+    </>
   )
 }
