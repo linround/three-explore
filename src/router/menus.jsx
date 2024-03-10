@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { WebglCamera } from '../view/webglCamera/WebglCamera.jsx'
+
 
 export default function Menus() {
   return (
@@ -19,6 +19,9 @@ export default function Menus() {
         <li><Link to='image'>使用 shader 进行图像处理，模糊，边缘检测、锐化······；</Link></li>
         <li><Link to='native'>使用一种接近原生的方式去定义图形；</Link></li>
         <li><Link to='bump'>凹凸贴图；</Link></li>
+        <h1>图像处理</h1>
+        <li><Link to='BrightnessAndContrast'>Brightness And Contrast</Link></li>
+
         <h1>threejs</h1>
         <li><Link to='DrawingLine'>绘制线条；</Link></li>
 
