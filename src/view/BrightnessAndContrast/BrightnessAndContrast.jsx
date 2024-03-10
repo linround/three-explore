@@ -36,7 +36,9 @@ export function BrightnessAndContrast() {
 
       const scene = new THREE.Scene()
 
-      const plane = new THREE.PlaneGeometry(640, 480)
+      const plane = new THREE.PlaneGeometry(
+        2, 2, 1, 1
+      )
       const loader = new THREE.TextureLoader()
       const texture = loader.load(leaf)
 
