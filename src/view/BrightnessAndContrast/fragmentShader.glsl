@@ -3,6 +3,9 @@ uniform float iTime;
 uniform vec2 iMouse;
 uniform sampler2D iChannel0;
 
+uniform float brightness;
+uniform float contrast;
+
 #define WIDTH 640.0
 #define HEIGHT 480.0
 
@@ -13,9 +16,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 
     // 对uv向下取整 floor(uv) 可减少坐标数目
     // 最终对该坐标进行 纹理采样 获取到坐标点得颜色值
-    vec4 textureColor = texture2D(iChannel0, uv);
+    vec4 color = texture2D(iChannel0, uv);
 
-    fragColor=vec4(textureColor.xyz,1.0);
+    color.rgb += brightness;
+
+    if(contrast>0.){
+        color.rgb = (color.rgb-0.5)/(1.-contrast) + 0.5;
+    } else{
+        color.rgb = (color.rgb-0.5)/(1.+contrast) + 0.5;
+    }
+
+    fragColor=vec4(color.rgb,1.0);
 }
 void main() {
 

@@ -14,15 +14,25 @@ import { Text } from './Text.jsx'
 
 
 export function BrightnessAndContrast() {
-  const [brightness, setBrightness] = useState(0)
-  const [contrast, setContrast] = useState(10)
+  const [brightness, setBrightness] = useState(0.2)
+  const [contrast, setContrast] = useState(1.)
+
+  const [webglRenderer, setWebglRenderer] = useState(null)
 
   const onBrightnessChange = (e) => {
     const value = e.target.value
+    const webglRenderingContext = webglRenderer.getContext()
+    const program = webglRenderer.info.programs[0]
+    const location = webglRenderingContext.getUniformLocation(program.program, 'brightness')
+    webglRenderingContext.uniform1f(location, value)
     setBrightness(+value)
   }
   const onContrastChange = (e) => {
     const value = e.target.value
+    const webglRenderingContext = webglRenderer.getContext()
+    const program = webglRenderer.info.programs[0]
+    const location = webglRenderingContext.getUniformLocation(program.program, 'contrast')
+    webglRenderingContext.uniform1f(location, value)
     setContrast(+value)
   }
 
@@ -32,6 +42,8 @@ export function BrightnessAndContrast() {
     const canvas = canvasRef.current
     if (canvas !== null) {
       const renderer = new THREE.WebGL1Renderer({ canvas, })
+      window.renderer = renderer
+      setWebglRenderer(renderer)
       const camera = new THREE.OrthographicCamera(
         -1, 1, 1, -1, -1, 1
       )
@@ -50,6 +62,8 @@ export function BrightnessAndContrast() {
       texture.wrapT = THREE.RepeatWrapping
 
       const uniforms = {
+        brightness: { value: brightness, },
+        contrast: { value: contrast, },
         iTime: { value: 0, },
         iResolution: { value: new THREE.Vector3(), },
         iMouse: { value: new THREE.Vector2(), },
@@ -73,6 +87,8 @@ export function BrightnessAndContrast() {
         )
         uniforms.iMouse.value.set(x, y)
         uniforms.iTime.value = time
+        uniforms.contrast.value = contrast
+        uniforms.brightness.value = brightness
 
         renderer.render(scene, camera)
         requestAnimationFrame(render)
@@ -93,10 +109,21 @@ export function BrightnessAndContrast() {
       <div className={css.container}>
         <div className={css.left}>
           <div>
-            <label>Brightness</label>：<RangeInput onChange={onBrightnessChange} value={brightness}/>
+            <label>Brightness</label>：
+            <RangeInput
+              max={0.5}
+              min={-0.5}
+              step={0.01}
+              onChange={onBrightnessChange}
+              value={brightness}/>
           </div>
           <div>
-            <label>Contrast</label>：<RangeInput onChange={onContrastChange} value={contrast}/>
+            <label>Contrast</label>：
+            <RangeInput
+              max={1}
+              step={0.01}
+              onChange={onContrastChange}
+              value={contrast}/>
           </div>
         </div>
         <div className={css.right}>
