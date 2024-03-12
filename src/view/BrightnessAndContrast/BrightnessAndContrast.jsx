@@ -10,12 +10,13 @@ import fragmentShader from './fragmentShader.glsl?raw'
 import { resizeRendererToDisplaySize } from '../../utils.js'
 import css from './css.module.less'
 import { Text } from './Text.jsx'
+import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
 
 
 
 export function BrightnessAndContrast() {
-  const [brightness, setBrightness] = useState(0.2)
-  const [contrast, setContrast] = useState(1.)
+  const [brightness, setBrightness] = useState(0)
+  const [contrast, setContrast] = useState(0.5)
 
   const [webglRenderer, setWebglRenderer] = useState(null)
 
@@ -41,8 +42,7 @@ export function BrightnessAndContrast() {
   useEffect(() => {
     const canvas = canvasRef.current
     if (canvas !== null) {
-      const renderer = new THREE.WebGL1Renderer({ canvas, })
-      window.renderer = renderer
+      const renderer = new THREE.WebGLRenderer({ canvas, })
       setWebglRenderer(renderer)
       const camera = new THREE.OrthographicCamera(
         -1, 1, 1, -1, -1, 1
@@ -56,8 +56,8 @@ export function BrightnessAndContrast() {
       const loader = new THREE.TextureLoader()
       const texture = loader.load(leaf)
 
-      texture.minFilter = THREE.NearestFilter
-      texture.magFilter = THREE.NearestFilter
+      texture.minFilter = THREE.LinearFilter
+      texture.magFilter = THREE.LinearFilter
       texture.wrapS = THREE.RepeatWrapping
       texture.wrapT = THREE.RepeatWrapping
 
@@ -106,6 +106,7 @@ export function BrightnessAndContrast() {
 
   return (
     <>
+      <ImgPageHeader />
       <div className={css.container}>
         <div className={css.left}>
           <div>
@@ -121,13 +122,13 @@ export function BrightnessAndContrast() {
             <label>Contrast</label>：
             <RangeInput
               max={1}
+              min={0}
               step={0.01}
               onChange={onContrastChange}
               value={contrast}/>
           </div>
         </div>
         <div className={css.right}>
-
           <canvas width={640} height={480} ref={canvasRef}></canvas>
         </div>
       </div>

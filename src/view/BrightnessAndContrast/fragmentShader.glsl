@@ -6,8 +6,8 @@ uniform sampler2D iChannel0;
 uniform float brightness;
 uniform float contrast;
 
-#define WIDTH 640.0
-#define HEIGHT 480.0
+uniform float WIDTH;
+uniform float HEIGHT;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 
