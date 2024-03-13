@@ -28,6 +28,7 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - 参考小程序**包包认昆虫**（一款利用webgl实现昆虫模型的渲染工具）；
 - 倾斜摄影：无人机+reality capture
 - NeRF：无人机+LUMA AI
+- 基于midjounity服务的图片工具
 
 ## 相关项目案例
 - https://github.com/fengtianxi001/MF-TurbineMonitor
