@@ -1,19 +1,30 @@
 import * as THREE from 'three'
 
 
+export function getImageSizeByUrl(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      resolve({
+        width: img.width,
+        height: img.height,
+      })
+    }
+    img.onerror = reject
+    img.src = url
+  })
+}
+
 export function createImgTexture(url) {
 
   const loader = new THREE.TextureLoader()
 
-  const texture = loader.load(url, function (t) {
-    console.log('ttttttttttttt', t)
-    t.minFilter = THREE.LinearFilter
-    t.magFilter = THREE.LinearFilter
-    t.wrapS = THREE.RepeatWrapping
-    t.wrapT = THREE.RepeatWrapping
-  })
+  const texture = loader.load(url)
 
-  console.log('texture', texture)
+  texture.minFilter = THREE.LinearFilter
+  texture.magFilter = THREE.LinearFilter
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
 
   return texture
 }

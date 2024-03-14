@@ -4,47 +4,71 @@ import {
 } from 'react'
 
 import * as THREE from 'three'
-import leaf from '/src/assets/leaf.jpg'
+import defaultUrl from '/src/assets/face.jpg'
 import vertexShader from '/src/common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
-import { createImgTexture, resizeRendererToDisplaySize } from '../../utils.js'
+import {
+  createImgTexture, getImageSizeByUrl, resizeRendererToDisplaySize
+} from '../../utils.js'
 import css from './css.module.less'
 import { Text } from './Text.jsx'
 import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
 
-
+let renderer = null
 let uniforms = null
+let canvas = null
+
+
 export function BrightnessAndContrast() {
+  const [height, setHeight] = useState(0)
+  const [width, setWidth] = useState(0)
   const [brightness, setBrightness] = useState(0)
   const [contrast, setContrast] = useState(0.5)
 
-  const [webglRenderer, setWebglRenderer] = useState(null)
+
+
 
   const onBrightnessChange = (e) => {
-    const value = e.target.value
-    const webglRenderingContext = webglRenderer.getContext()
-    const program = webglRenderer.info.programs[0]
+    const value = +e.target.value
+    const webglRenderingContext = renderer.getContext()
+    const program = renderer.info.programs[0]
     const location = webglRenderingContext.getUniformLocation(program.program, 'brightness')
     webglRenderingContext.uniform1f(location, value)
-    setBrightness(+value)
+    setBrightness(value)
   }
   const onContrastChange = (e) => {
-    const value = e.target.value
-    const webglRenderingContext = webglRenderer.getContext()
-    const program = webglRenderer.info.programs[0]
+    const value = +e.target.value
+    const webglRenderingContext = renderer.getContext()
+    const program = renderer.info.programs[0]
     const location = webglRenderingContext.getUniformLocation(program.program, 'contrast')
     webglRenderingContext.uniform1f(location, value)
-    setContrast(+value)
+    setContrast(value)
   }
 
 
   const canvasRef = useRef(null)
+
+  const updateCanvasSize = async (url) => {
+    const { width, height, } = await getImageSizeByUrl(url)
+    renderer.setSize(
+      width, height, false
+    )
+    setWidth(width)
+    setHeight(height)
+  }
+
   useEffect(() => {
-    const canvas = canvasRef.current
+    (async function () {
+      await updateCanvasSize(defaultUrl)
+    })()
+    return () => {}
+  }, [canvasRef])
+
+
+  useEffect(() => {
+    canvas = canvasRef.current
     if (canvas !== null) {
-      const renderer = new THREE.WebGLRenderer({ canvas, })
-      setWebglRenderer(renderer)
-      window.renderer = renderer
+      renderer = new THREE.WebGLRenderer({ canvas, })
       const camera = new THREE.OrthographicCamera(
         -1, 1, 1, -1, -1, 1
       )
@@ -54,7 +78,7 @@ export function BrightnessAndContrast() {
       const plane = new THREE.PlaneGeometry(
         2, 2, 1, 1
       )
-      const texture = createImgTexture(leaf)
+      const texture = createImgTexture(defaultUrl)
 
       uniforms = {
         brightness: { value: brightness, },
@@ -95,13 +119,14 @@ export function BrightnessAndContrast() {
         x = e.offsetX
         y = canvas.height - e.offsetY
       })
-
     }
   }, [canvasRef])
 
-  const onChangeTexture = (url) => {
+  const onChangeTexture = async (url) => {
     uniforms.iChannel0.value = createImgTexture(url)
+    await updateCanvasSize(url)
   }
+
   return (
     <>
       <ImgPageHeader onSelect={onChangeTexture} />
@@ -127,7 +152,7 @@ export function BrightnessAndContrast() {
           </div>
         </div>
         <div className={css.right}>
-          <canvas width={640} height={480} ref={canvasRef}></canvas>
+          <canvas width={width} height={height} ref={canvasRef}></canvas>
         </div>
       </div>
       <Text />

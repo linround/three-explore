@@ -6,8 +6,6 @@ uniform sampler2D iChannel0;
 uniform float brightness;
 uniform float contrast;
 
-uniform float WIDTH;
-uniform float HEIGHT;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 
