@@ -12,7 +12,7 @@ const images = [
 ]
 
 export function ImagesDialog(props) {
-  const [imgs, setImgs] = useState(images)
+  const [imgList, setImgList] = useState(images)
 
   const { show, onClose, onSelect, } = props
 
@@ -28,7 +28,7 @@ export function ImagesDialog(props) {
     const reader = new FileReader()
     reader.onload = (e) => {
       const src = e.target.result
-      setImgs([...imgs, src])
+      setImgList([...imgList, src])
     }
     reader.readAsDataURL(file)
   }
@@ -39,7 +39,7 @@ export function ImagesDialog(props) {
         style={{ display: show ? '' : 'none', }}>
         <div className={css.title}>选择下列的一张图片或上传图片：</div>
         <div className={css.imgContainer}>
-          {imgs.map((src, index) => (
+          {imgList.map((src, index) => (
             <img
               onClick={() => onSelect(src)}
               key={index}
