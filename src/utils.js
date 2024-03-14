@@ -1,3 +1,19 @@
+import * as THREE from 'three'
+
+
+export function createImgTexture(url) {
+
+  const loader = new THREE.TextureLoader()
+
+  const texture = loader.load(url)
+
+  texture.minFilter = THREE.LinearFilter
+  texture.magFilter = THREE.LinearFilter
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
+
+  return texture
+}
 
 export function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement

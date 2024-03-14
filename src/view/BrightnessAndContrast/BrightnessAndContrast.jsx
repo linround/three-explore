@@ -7,7 +7,7 @@ import * as THREE from 'three'
 import leaf from '/src/assets/leaf.jpg'
 import vertexShader from '/src/common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
-import { resizeRendererToDisplaySize } from '../../utils.js'
+import { createImgTexture, resizeRendererToDisplaySize } from '../../utils.js'
 import css from './css.module.less'
 import { Text } from './Text.jsx'
 import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
@@ -44,6 +44,7 @@ export function BrightnessAndContrast() {
     if (canvas !== null) {
       const renderer = new THREE.WebGLRenderer({ canvas, })
       setWebglRenderer(renderer)
+      window.renderer = renderer
       const camera = new THREE.OrthographicCamera(
         -1, 1, 1, -1, -1, 1
       )
@@ -53,13 +54,7 @@ export function BrightnessAndContrast() {
       const plane = new THREE.PlaneGeometry(
         2, 2, 1, 1
       )
-      const loader = new THREE.TextureLoader()
-      const texture = loader.load(leaf)
-
-      texture.minFilter = THREE.LinearFilter
-      texture.magFilter = THREE.LinearFilter
-      texture.wrapS = THREE.RepeatWrapping
-      texture.wrapT = THREE.RepeatWrapping
+      const texture = createImgTexture(leaf)
 
       const uniforms = {
         brightness: { value: brightness, },
