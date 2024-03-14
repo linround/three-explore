@@ -134,7 +134,7 @@ export function BrightnessAndContrast() {
         <div className={css.paramsTools}>
           <div className={css.moveIcon} data-action={MoveAction}>移动</div>
           <div>
-            <label>Brightness</label>：
+            <label className={css.label}>Brightness：{brightness}</label>
             <RangeInput
               max={0.5}
               min={-0.5}
@@ -143,10 +143,10 @@ export function BrightnessAndContrast() {
               value={brightness}/>
           </div>
           <div>
-            <label>Contrast</label>：
+            <label className={css.label}>Contrast：{contrast}</label>
             <RangeInput
-              max={1}
-              min={0}
+              max={5}
+              min={-5}
               step={0.01}
               onChange={onContrastChange}
               value={contrast}/>
@@ -156,7 +156,6 @@ export function BrightnessAndContrast() {
       <div className={css.canvasContainer}>
         <canvas width={width} height={height} ref={canvasRef}></canvas>
       </div>
-
       <Text />
     </>
   )
