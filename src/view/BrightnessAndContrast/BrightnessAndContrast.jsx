@@ -13,7 +13,7 @@ import { Text } from './Text.jsx'
 import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
 
 
-
+let uniforms = null
 export function BrightnessAndContrast() {
   const [brightness, setBrightness] = useState(0)
   const [contrast, setContrast] = useState(0.5)
@@ -56,7 +56,7 @@ export function BrightnessAndContrast() {
       )
       const texture = createImgTexture(leaf)
 
-      const uniforms = {
+      uniforms = {
         brightness: { value: brightness, },
         contrast: { value: contrast, },
         iTime: { value: 0, },
@@ -99,9 +99,12 @@ export function BrightnessAndContrast() {
     }
   }, [canvasRef])
 
+  const onChangeTexture = (url) => {
+    uniforms.iChannel0.value = createImgTexture(url)
+  }
   return (
     <>
-      <ImgPageHeader />
+      <ImgPageHeader onSelect={onChangeTexture} />
       <div className={css.container}>
         <div className={css.left}>
           <div>

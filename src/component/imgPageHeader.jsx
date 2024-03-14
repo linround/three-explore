@@ -1,8 +1,10 @@
 import { ImagesDialog } from './imagesDialog.jsx'
 import { useState } from 'react'
 import css from './imgPageHeader.module.less'
+import PropTypes from 'prop-types'
 
-export function ImgPageHeader() {
+export function ImgPageHeader(props) {
+  const { onSelect, } = props
   const [visible, setVisible] = useState(false)
   const onOpen = () => {
     setVisible(true)
@@ -11,9 +13,7 @@ export function ImgPageHeader() {
     setVisible(false)
   }
 
-  const onSelect = (url) => {
-    console.log(url)
-  }
+
   return (
     <div className={css.container}>
       <button onClick={onOpen}>选择图片</button>
@@ -21,4 +21,8 @@ export function ImgPageHeader() {
     </div>
   )
 
+}
+
+ImgPageHeader.propTypes = {
+  onSelect: PropTypes.func,
 }

@@ -5,12 +5,15 @@ export function createImgTexture(url) {
 
   const loader = new THREE.TextureLoader()
 
-  const texture = loader.load(url)
+  const texture = loader.load(url, function (t) {
+    console.log('ttttttttttttt', t)
+    t.minFilter = THREE.LinearFilter
+    t.magFilter = THREE.LinearFilter
+    t.wrapS = THREE.RepeatWrapping
+    t.wrapT = THREE.RepeatWrapping
+  })
 
-  texture.minFilter = THREE.LinearFilter
-  texture.magFilter = THREE.LinearFilter
-  texture.wrapS = THREE.RepeatWrapping
-  texture.wrapT = THREE.RepeatWrapping
+  console.log('texture', texture)
 
   return texture
 }
