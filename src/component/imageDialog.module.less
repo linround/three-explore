@@ -1,3 +1,4 @@
+@import "src/common/style.less";
 .container {
   position: fixed;
   top: 10px;
@@ -9,7 +10,7 @@
   padding: 10px 20px;
   z-index: 100;
   border-radius:8px ;
-  box-shadow: 0 0 50px black, 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: @darkBoxShadow;
 }
 .title{
   font-size: 12px;
