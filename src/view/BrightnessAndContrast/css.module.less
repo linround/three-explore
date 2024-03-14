@@ -1,12 +1,31 @@
 @import "src/common/style.less";
 
+
+.moveIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 20px;
+  width: 40px;
+  border-radius: 10px;
+  cursor: move;
+  border: 1px solid rebeccapurple;
+
+  user-select: none;
+  margin-bottom: 10px;
+
+
+  font-size: 12px;
+  font-weight: bold;
+}
 .paramsTools{
   display: flex;
   flex-wrap: wrap;
   border-radius: 8px;
   box-shadow: @darkBoxShadow;
-  margin-right: 20px;
-  margin-top: 20px;
+  right: 20px;
+  top: 20px;
   padding: 10px 20px;
   position: fixed;
   right: 0;

@@ -14,6 +14,7 @@ import css from './css.module.less'
 import { Text } from './Text.jsx'
 import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
 import { MoveContainer } from '../../component/MoveContainer.jsx'
+import { MoveAction } from '../../component/constValue.js'
 
 let renderer = null
 let uniforms = null
@@ -133,6 +134,7 @@ export function BrightnessAndContrast() {
       <ImgPageHeader onSelect={onChangeTexture} />
       <MoveContainer>
         <div className={css.paramsTools}>
+          <div className={css.moveIcon} data-action={MoveAction}>移动</div>
           <div>
             <label>Brightness</label>：
             <RangeInput
