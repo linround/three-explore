@@ -4,7 +4,7 @@ import {
 } from 'react'
 
 import * as THREE from 'three'
-import defaultUrl from '/src/assets/face.jpg'
+import defaultUrl from '/src/assets/leaf.jpg'
 import vertexShader from '/src/common/commonVertexShader.glsl?raw'
 import fragmentShader from './fragmentShader.glsl?raw'
 import {
@@ -13,6 +13,7 @@ import {
 import css from './css.module.less'
 import { Text } from './Text.jsx'
 import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
+import { MoveContainer } from '../../component/MoveContainer.jsx'
 
 let renderer = null
 let uniforms = null
@@ -130,8 +131,8 @@ export function BrightnessAndContrast() {
   return (
     <>
       <ImgPageHeader onSelect={onChangeTexture} />
-      <div className={css.container}>
-        <div className={css.left}>
+      <MoveContainer>
+        <div className={css.paramsTools}>
           <div>
             <label>Brightness</label>：
             <RangeInput
@@ -151,10 +152,11 @@ export function BrightnessAndContrast() {
               value={contrast}/>
           </div>
         </div>
-        <div className={css.right}>
-          <canvas width={width} height={height} ref={canvasRef}></canvas>
-        </div>
+      </MoveContainer>
+      <div className={css.canvasContainer}>
+        <canvas width={width} height={height} ref={canvasRef}></canvas>
       </div>
+
       <Text />
     </>
   )
