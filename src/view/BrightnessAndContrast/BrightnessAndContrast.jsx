@@ -26,6 +26,7 @@ export function BrightnessAndContrast() {
   const [width, setWidth] = useState(0)
   const [brightness, setBrightness] = useState(0)
   const [contrast, setContrast] = useState(0.5)
+  const [angle, setAngle] = useState(0.)
 
 
 
@@ -45,6 +46,14 @@ export function BrightnessAndContrast() {
     const location = webglRenderingContext.getUniformLocation(program.program, 'contrast')
     webglRenderingContext.uniform1f(location, value)
     setContrast(value)
+  }
+  const onAngleChange = (e) => {
+    const value = +e.target.value
+    const webglRenderingContext = renderer.getContext()
+    const program = renderer.info.programs[0]
+    const location = webglRenderingContext.getUniformLocation(program.program, 'angle')
+    webglRenderingContext.uniform1f(location, value)
+    setAngle(value)
   }
 
 
@@ -82,6 +91,7 @@ export function BrightnessAndContrast() {
       uniforms = {
         brightness: { value: brightness, },
         contrast: { value: contrast, },
+        angle: { value: angle, },
         iTime: { value: 0, },
         iResolution: { value: new THREE.Vector3(), },
         iMouse: { value: new THREE.Vector2(), },
@@ -134,7 +144,7 @@ export function BrightnessAndContrast() {
         <div className={css.paramsTools}>
           <div className={css.moveIcon} data-action={MoveAction}>移动</div>
           <div>
-            <label className={css.label}>Brightness：{brightness}</label>
+            <label className={css.label}>设置亮度：{brightness}</label>
             <RangeInput
               max={0.5}
               min={-0.5}
@@ -143,13 +153,22 @@ export function BrightnessAndContrast() {
               value={brightness}/>
           </div>
           <div>
-            <label className={css.label}>Contrast：{contrast}</label>
+            <label className={css.label}>设置对比度：{contrast}</label>
             <RangeInput
               max={5}
               min={-5}
               step={0.01}
               onChange={onContrastChange}
               value={contrast}/>
+          </div>
+          <div>
+            <label className={css.label}>设置旋转角度：{angle}</label>
+            <RangeInput
+              max={5}
+              min={0}
+              step={0.01}
+              onChange={onAngleChange}
+              value={angle}/>
           </div>
         </div>
       </MoveContainer>

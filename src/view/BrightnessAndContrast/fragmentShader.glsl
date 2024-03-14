@@ -2,15 +2,26 @@ uniform vec3 iResolution;
 uniform float iTime;
 uniform vec2 iMouse;
 uniform sampler2D iChannel0;
+uniform float angle;
 
 uniform float brightness;
 uniform float contrast;
+
+// 生成一个旋转矩形
+mat2 roate2d(float angle) {
+    return mat2(cos(angle),-sin(angle),
+    sin(angle),cos(angle)
+    );
+}
 
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 
     // 这里计算的是当前顶点相对于视口所在的二维坐标点
     vec2 uv = vec2(fragCoord.xy / iResolution.xy);
+    mat2 roate = roate2d(angle);
+    uv *=roate;
+
 
     // 对uv向下取整 floor(uv) 可减少坐标数目
     // 最终对该坐标进行 纹理采样 获取到坐标点得颜色值
