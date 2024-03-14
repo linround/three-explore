@@ -59,17 +59,14 @@ export function BrightnessAndContrast() {
     setHeight(height)
   }
 
-  useEffect(() => {
-    (async function () {
-      await updateCanvasSize(defaultUrl)
-    })()
-    return () => {}
-  }, [canvasRef])
-
 
   useEffect(() => {
     canvas = canvasRef.current
     if (canvas !== null) {
+
+      (async function () {
+        await updateCanvasSize(defaultUrl)
+      })()
       renderer = new THREE.WebGLRenderer({ canvas, })
       const camera = new THREE.OrthographicCamera(
         -1, 1, 1, -1, -1, 1
@@ -121,6 +118,7 @@ export function BrightnessAndContrast() {
         x = e.offsetX
         y = canvas.height - e.offsetY
       })
+
     }
   }, [canvasRef])
 
