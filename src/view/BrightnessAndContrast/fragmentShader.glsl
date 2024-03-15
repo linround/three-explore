@@ -20,7 +20,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
     // 这里计算的是当前顶点相对于视口所在的二维坐标点
     vec2 uv = vec2(fragCoord.xy / iResolution.xy);
     mat2 roate = roate2d(angle);
+    vec2 translate = vec2(0.5,0.5);//    移动中心点( 即旋转的中心点坐标)
+    uv-=translate;
     uv *=roate;
+    uv+=translate;
 
 
     // 对uv向下取整 floor(uv) 可减少坐标数目
