@@ -15,6 +15,20 @@ mat2 roate2d(float angle) {
 }
 
 
+vec3 adjustBrightness(vec3 color, float brightness){
+    return color + vec3(brightness);
+}
+
+
+vec3 adjustContrast(vec3 color, float contrast){
+    if(contrast>0.){
+        color.rgb = (color.rgb-0.5)/(1.-contrast) + 0.5;
+    } else{
+        color.rgb = (color.rgb-0.5)/(1.+contrast) + 0.5;
+    }
+    return color;
+}
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 
     // 这里计算的是当前顶点相对于视口所在的二维坐标点
@@ -30,13 +44,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
     // 最终对该坐标进行 纹理采样 获取到坐标点得颜色值
     vec4 color = texture2D(iChannel0, uv);
 
-    color.rgb += brightness;
-
-    if(contrast>0.){
-        color.rgb = (color.rgb-0.5)/(1.-contrast) + 0.5;
-    } else{
-        color.rgb = (color.rgb-0.5)/(1.+contrast) + 0.5;
-    }
+    color.rgb += adjustBrightness(color.rgb, brightness);
+    color.rgb = adjustContrast(color.rgb, contrast);
 
     fragColor=vec4(color.rgb,1.0);
 }
