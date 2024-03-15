@@ -88,7 +88,7 @@ export function Text() {
           </tbody>
 
         </table>
-        <p>在threejs 中，纹理默认的格式如下：</p>
+        <p>在threejs 中，纹理默认的<a href={'https://threejs.org/docs/#api/en/textures/Texture.format'}>格式</a>如下：</p>
         <CodeText>
           <>
 
