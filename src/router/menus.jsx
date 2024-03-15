@@ -21,6 +21,7 @@ export default function Menus() {
         <li><Link to='bump'>凹凸贴图；</Link></li>
         <h1>图像处理</h1>
         <li><Link to='BrightnessAndContrast'>Brightness And Contrast</Link></li>
+        <li><Link to='HueSaturation'>Hue And Saturation</Link></li>
 
         <h1>threejs</h1>
         <li><Link to='DrawingLine'>绘制线条；</Link></li>

@@ -19,6 +19,7 @@ import { DrawingLine } from '../view/drawingLine/drawingLine.jsx'
 import { WebglCamera } from '../view/webglCamera/WebglCamera.jsx'
 import { GeometryConvex } from '../view/geometryConvex/GeometryConvex.jsx'
 import { BrightnessAndContrast } from '../view/BrightnessAndContrast/BrightnessAndContrast.jsx'
+import { HueSaturation } from '../view/HueSaturation/HueSaturation.jsx'
 
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Menus />,
+      },
+      {
+        path: 'HueSaturation',
+        element: <HueSaturation />,
       },
       {
         path: 'BrightnessAndContrast',
