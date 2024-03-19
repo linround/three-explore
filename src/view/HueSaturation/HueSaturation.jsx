@@ -10,10 +10,11 @@ import {
 import {
   createImgTexture, getImageSizeByUrl, resizeRendererToDisplaySize
 } from '../../utils.js'
-import defaultUrl from '../../assets/leaf.jpg'
+import defaultUrl from '../../assets/sunset.jpg'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from '../../common/commonVertexShader.glsl?raw'
+import { Text } from './Text.jsx'
 
 let renderer = null
 let uniforms = null
@@ -27,8 +28,8 @@ function setUniformValue(key, value) {
 
 }
 export function HueSaturation() {
-  const [hue, setHue] = React.useState(0)
-  const [saturation, setSaturation] = React.useState(0)
+  const [hue, setHue] = React.useState(0.5)
+  const [saturation, setSaturation] = React.useState(5)
   const [width, setWidth] = useState(0)
 
   const [height, setHeight] = useState(0)
@@ -117,9 +118,14 @@ export function HueSaturation() {
 
     }
   }, [canvasRef])
+
+  const onChangeTexture = async (url) => {
+    uniforms.iChannel0.value = createImgTexture(url)
+    await updateCanvasSize(url)
+  }
   return  (
     <>
-      <ImgPageHeader />
+      <ImgPageHeader onSelect={onChangeTexture} />
       <MoveContainer>
         <div className={css.paramsTools}>
           <div className={css.moveIcon} data-action={MoveAction}>移动</div>
@@ -146,6 +152,7 @@ export function HueSaturation() {
       <div className={css.canvasContainer}>
         <canvas width={width} height={height} ref={canvasRef}></canvas>
       </div>
+      <Text />
     </>
   )
 }
