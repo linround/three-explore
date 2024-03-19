@@ -143,7 +143,7 @@ export function BrightnessAndContrast() {
       <MoveContainer>
         <div className={css.paramsTools}>
           <div className={css.moveIcon} data-action={MoveAction}>移动</div>
-          <div>
+          <div className={css.inputContainer}>
             <label className={css.label}>设置亮度：{brightness}</label>
             <RangeInput
               max={0.5}
@@ -152,7 +152,7 @@ export function BrightnessAndContrast() {
               onChange={onBrightnessChange}
               value={brightness}/>
           </div>
-          <div>
+          <div className={css.inputContainer}>
             <label className={css.label}>设置对比度：{contrast}</label>
             <RangeInput
               max={5}
@@ -161,7 +161,7 @@ export function BrightnessAndContrast() {
               onChange={onContrastChange}
               value={contrast}/>
           </div>
-          <div>
+          <div className={css.inputContainer}>
             <label className={css.label}>设置旋转角度：{angle}</label>
             <RangeInput
               max={5}
