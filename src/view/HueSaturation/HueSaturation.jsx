@@ -15,6 +15,7 @@ import * as THREE from 'three'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from '../../common/commonVertexShader.glsl?raw'
 import { Text } from './Text.jsx'
+import { PI } from '../../common/constValue.js'
 
 let renderer = null
 let uniforms = null
@@ -28,8 +29,8 @@ function setUniformValue(key, value) {
 
 }
 export function HueSaturation() {
-  const [hue, setHue] = React.useState(0.5)
-  const [saturation, setSaturation] = React.useState(5)
+  const [hue, setHue] = React.useState(0)
+  const [saturation, setSaturation] = React.useState(0)
   const [width, setWidth] = useState(0)
 
   const [height, setHeight] = useState(0)
@@ -132,8 +133,8 @@ export function HueSaturation() {
           <div className={css.inputContainer}>
             <label className={css.label}>色调：{hue}</label>
             <RangeInput
-              max={0.5}
-              min={-0.5}
+              max={2 * PI}
+              min={0}
               step={0.01}
               onChange={onChangeHue}
               value={hue}/>
@@ -142,7 +143,7 @@ export function HueSaturation() {
             <label className={css.label}>饱和度：{saturation}</label>
             <RangeInput
               max={5}
-              min={-5}
+              min={0}
               step={0.01}
               onChange={onChangeSaturation}
               value={saturation}/>
