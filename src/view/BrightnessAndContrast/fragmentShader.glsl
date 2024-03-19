@@ -2,10 +2,10 @@ uniform vec3 iResolution;
 uniform float iTime;
 uniform vec2 iMouse;
 uniform sampler2D iChannel0;
-uniform float angle;
 
 uniform float brightness;
 uniform float contrast;
+uniform float angle;
 
 // 生成一个旋转矩形
 mat2 roate2d(float angle) {
