@@ -2,10 +2,8 @@ import { ImgPageHeader } from '../../component/imgPageHeader.jsx'
 import { MoveContainer } from '../../component/MoveContainer.jsx'
 import css from '../BrightnessAndContrast/css.module.less'
 import { MoveAction } from '../../component/constValue.js'
-import { RangeInput } from '../../component/RangeInput.jsx'
 import  * as React from 'react'
 import {
-  createRef,
   useEffect, useRef, useState
 } from 'react'
 import {
@@ -16,7 +14,6 @@ import * as THREE from 'three'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from '../../common/commonVertexShader.glsl?raw'
 import { Text } from './Text.jsx'
-import { PI } from '../../common/constValue.js'
 import { ViewCanvas } from './ViewCanvas.jsx'
 
 let renderer = null
