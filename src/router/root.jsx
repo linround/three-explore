@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import css from './root.module.less'
 import { addRecords, getRecords } from '@linround/commonapi'
+import GithubAuth from '../common/OAuthApp/GithubAuth.jsx'
 import { useEffect } from 'react'
 
 export default function Root() {
@@ -22,6 +23,7 @@ export default function Root() {
         <a href={href} target='_blank' rel="noreferrer">
           lin round
         </a>
+        <GithubAuth/>
       </div>
       <Outlet />
     </div>
