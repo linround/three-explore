@@ -7,6 +7,15 @@ export default defineConfig({
   build: {
     target: ['es2015', 'edge88', 'firefox78', 'chrome87', 'safari14'],
   },
+  server: {
+    proxy: {
+      '/githubAccessToken': {
+        target: 'https://github.com/login/oauth/access_token',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/github/, ''),
+      },
+    },
+  },
   plugins: [
     react(),
     svgrLoader()
