@@ -9,16 +9,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/githubAccessToken': {
-        target: 'https://github.com/login/oauth/access_token',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/github/, ''),
-      },
-      '/githubUserInfo': {
-        target: 'https://api.github.com/user',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/github/, ''),
-      },
+      '/githubAccessToken': 'https://three.ucalendar.cn/githubAccessToken',
+      '/githubUserInfo': 'https://three.ucalendar.cn/githubUserInfo',
     },
   },
   plugins: [

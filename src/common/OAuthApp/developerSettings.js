@@ -12,7 +12,7 @@ export function getGithubAccessToken({ code, }) {
   }
   return fetch('/githubAccessToken', {
     method: 'POST',
-    mode: 'no-cors',
+    // mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

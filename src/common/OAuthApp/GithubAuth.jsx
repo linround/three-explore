@@ -13,7 +13,7 @@ export default  function GithubAuth() {
   }
   const handleGetUser = async () => {
     await getGithubUser({
-      accessToken: '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',
+      accessToken: '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',
       tokenType: 'bearer',
     })
   }
