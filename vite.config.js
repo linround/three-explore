@@ -14,6 +14,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/github/, ''),
       },
+      '/githubUserInfo': {
+        target: 'https://api.github.com/user',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/github/, ''),
+      },
     },
   },
   plugins: [

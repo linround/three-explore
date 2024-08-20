@@ -10,7 +10,7 @@ export function getGithubAccessToken({ code, }) {
     client_secret: clientSecret,
     code,
   }
-  return fetch('https://github.com/login/oauth/access_token', {
+  return fetch('/githubAccessToken', {
     method: 'POST',
     mode: 'no-cors',
     headers: {
@@ -34,7 +34,7 @@ export function getGithubAccessToken({ code, }) {
 }
 
 export function getGithubUser({ accessToken, tokenType, }) {
-  return fetch('https://api.github.com/user', {
+  return fetch('/githubUserInfo', {
     headers: {
       Authorization: `${tokenType} ${accessToken}`,
     },
