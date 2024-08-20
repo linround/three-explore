@@ -35,6 +35,17 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - https://github.com/alwxkxk/iot-visualization-examples
 - https://gitee.com/linyuan1105/go-view
 
+## 图片创作
+![img_1.png](img_1.png)
+
+| 名称                                                           | 描述                           |
+|--------------------------------------------------------------|------------------------------|
+| [midjourney](https://www.midjourney.com)                     | 文字生成图片的网站。                   |
+| [discord](https://discord.com/)                              | 社区论坛。在论坛中也可以调用midjourney的接口。 |
+| [即梦AI](https://jimeng.jianying.com/ai-tool/home)             | 文字生成视频，文字生成图片的网站。            |
+| [TripoSR](https://huggingface.co/spaces/stabilityai/TripoSR) | 图片生成3D模型。                    |
+
+
 ## commit规范
 - `feat`：新功能（feature）
 - `fix`：修补bug
