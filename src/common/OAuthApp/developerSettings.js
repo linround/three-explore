@@ -1,6 +1,8 @@
 export  const clientID = 'Ov23liNiL6TklEJ3CZNV'
 export const clientSecret = '2ee19f0a65fdb6e5f10ff359fa8cf43312694d2e'
 
+import { Octokit } from '@octokit/core'
+
 
 export function getGithubAccessToken({ code, }) {
   const data = {
@@ -12,7 +14,6 @@ export function getGithubAccessToken({ code, }) {
   }
   return fetch('/githubAccessToken', {
     method: 'POST',
-    // mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -20,27 +21,13 @@ export function getGithubAccessToken({ code, }) {
     body: JSON.stringify(data),
 
   })
-    .then((response) => {
-
-      console.log('response+++++++++', response)
-      return  response.json()
-    })
-    .then((data) => {
-      console.log('data++++++++++', data)
-    })
+    .then((response) => response.json())
     .catch((error) => {
       console.log('error+++++++++', error)
     })
 }
 
-export function getGithubUser({ accessToken, tokenType, }) {
-  return fetch('/githubUserInfo', {
-    headers: {
-      Authorization: `${tokenType} ${accessToken}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('data+++++getGithubUser+++++', data)
-    })
+export  function getGithubUser({ accessToken, }) {
+  const octokit = new Octokit({ auth: accessToken, })
+  return octokit.request('GET /user')
 }

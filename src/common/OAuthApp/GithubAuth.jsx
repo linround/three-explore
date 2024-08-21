@@ -9,15 +9,21 @@ export default  function GithubAuth() {
   const params = parseLocation()
   const code = params.get('code')
   const handleGetToken = async () => {
-    await getGithubAccessToken({ code, })
+    const data = await getGithubAccessToken({ code, })
+    console.log('accessToken++++++++++++', data)
   }
   const handleGetUser = async () => {
-    await getGithubUser({
-      accessToken: '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',
-      tokenType: 'bearer',
+
+    const {
+      access_token: accessToken,
+      token_type: tokenType,
+    } = await getGithubAccessToken({ code, })
+    const user = await getGithubUser({
+      accessToken,
+      tokenType,
     })
+    console.log('user', user)
   }
-  console.log('code', code)
   return (
     <>
       <a className={styles.githubAuthLink}

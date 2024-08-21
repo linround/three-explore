@@ -9,8 +9,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/githubAccessToken': 'https://three.ucalendar.cn/githubAccessToken',
-      '/githubUserInfo': 'https://three.ucalendar.cn/githubUserInfo',
+      '/githubAccessToken': {
+        rewrite: (path) => path.replace(/^\/githubAccessToken/, ''),
+        changeOrigin: true,
+        target: 'https://three.ucalendar.cn/githubAccessToken',
+      },
     },
   },
   plugins: [
