@@ -12,7 +12,7 @@ export default defineConfig({
       '/githubAccessToken': {
         rewrite: (path) => path.replace(/^\/githubAccessToken/, ''),
         changeOrigin: true,
-        target: 'https://github.com/login/oauth/access_token',
+        target: 'https://three.ucalendar.cn/githubAccessToken',
       },
       '/githubCode': {
         rewrite: (path) => path.replace(/^\/githubCode/, ''),
