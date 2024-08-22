@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import * as PropTypes from 'prop-types'
 import { useState } from 'react'
 
+
 export default  function GithubAuth() {
   const navigate = useNavigate()
   const params = parseLocation()
@@ -68,8 +69,7 @@ function LoginLink() {
 }
 
 function UserInfo({ user, }) {
-  console.log('render user info')
-  const [showClear, setShowClear] = useState(true)
+  const [showClear, setShowClear] = useState(false)
   const { handleClearStore, } = useBearStore()
   const handleClear = () => {
     setShowClear(false)
@@ -79,15 +79,17 @@ function UserInfo({ user, }) {
     setShowClear(true)
   }
   const handleMouseLeave = () => {
-    setShowClear(true)
+    setShowClear(false)
   }
   return (
     <span className={styles.useInfoContainer}
       onMouseLeave={handleMouseLeave}
       onMouseOver={handleMouseOver}>
-      <a href={'#'}
+      <a href={user.html_url}
+        target={'_blank'}
+        className={styles.useInfoLink}
         rel="noreferrer">{user.name}</a>
-      {showClear && (<button onClick={handleClear}>退出</button>)}
+      {showClear && (<button className={styles.logoutBtn} onClick={handleClear}>退出</button>)}
     </span>
   )
 }
