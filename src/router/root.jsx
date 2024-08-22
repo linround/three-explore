@@ -23,8 +23,8 @@ export default function Root() {
         <a href={href} target='_blank' rel="noreferrer">
           lin round
         </a>
-        <GithubAuth/>
       </div>
+      <GithubAuth/>
       <Outlet />
     </div>
   )

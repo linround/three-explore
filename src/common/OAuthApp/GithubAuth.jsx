@@ -4,15 +4,16 @@ import {
 import styles from './GithubAuth.module.less'
 import { parseLocation, SUCCESS_CODE } from '../utils.js'
 import { useBearStore } from '../../store/index.js'
+import { useNavigate } from 'react-router-dom'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
 
 export default  function GithubAuth() {
-  const href = 'https://github.com/login/oauth/authorize?client_id=' + clientID
+  const navigate = useNavigate()
   const params = parseLocation()
   const code = params.get('code')
 
   const {
-    bears,
-    addABear,
     accessToken,
     setAccessToken,
     tokenType,
@@ -29,6 +30,7 @@ export default  function GithubAuth() {
       } = await getGithubAccessToken({ code, })
       setAccessToken(accessToken)
       setTokenType(tokenType)
+      return
     }
 
     const { data, status, } = await getGithubUser({
@@ -43,16 +45,51 @@ export default  function GithubAuth() {
   if (code) {
     (async () => {
       await handleGetUser()
+      navigate('/')
     })()
   }
   return (
-    <>
-      <a className={styles.githubAuthLink}
-        href={href}
-        rel="noreferrer">{user ? user.name : 'github登录'}</a>
-      <span>{user && user.name}</span>
-      <button onClick={addABear}>addABear:{bears}</button>
-      <button onClick={handleGetUser}>getUser</button>
-    </>
+    <div>
+      {user ? <UserInfo user={user} /> : <LoginLink />}
+    </div>
   )
 }
+
+
+
+function LoginLink() {
+  const href = 'https://github.com/login/oauth/authorize?client_id=' + clientID
+  return (
+
+    <a className={styles.githubAuthLink}
+      href={href}
+      rel="noreferrer">{ 'Github账户登录'}</a>
+  )
+}
+
+function UserInfo({ user, }) {
+  console.log('render user info')
+  const [showClear, setShowClear] = useState(true)
+  const { handleClearStore, } = useBearStore()
+  const handleClear = () => {
+    setShowClear(false)
+    handleClearStore()
+  }
+  const handleMouseOver = () => {
+    setShowClear(true)
+  }
+  const handleMouseLeave = () => {
+    setShowClear(true)
+  }
+  return (
+    <span className={styles.useInfoContainer}
+      onMouseLeave={handleMouseLeave}
+      onMouseOver={handleMouseOver}>
+      <a href={'#'}
+        rel="noreferrer">{user.name}</a>
+      {showClear && (<button onClick={handleClear}>退出</button>)}
+    </span>
+  )
+}
+
+UserInfo.propTypes = { user: PropTypes.any, }
