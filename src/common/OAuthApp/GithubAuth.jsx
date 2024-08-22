@@ -59,7 +59,7 @@ export default  function GithubAuth() {
 
 
 function LoginLink() {
-  const href = 'https://github.com/login/oauth/authorize?client_id=' + clientID
+  const href = '/githubCode'
   return (
 
     <a className={styles.githubAuthLink}
