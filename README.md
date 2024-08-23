@@ -6,7 +6,7 @@ https://www.shadertoy.com/user/linround
 https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J 
 
 ## 图片创作
-![img_1.png](img_1.png)
+![img_3.png](img_3.png)
 
 | 名称                                                           | 描述                           |
 |--------------------------------------------------------------|------------------------------|
@@ -14,6 +14,7 @@ https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J
 | [discord](https://discord.com/)                              | 社区论坛。在论坛中也可以调用midjourney的接口。 |
 | [即梦AI](https://jimeng.jianying.com/ai-tool/home)             | 文字生成视频，文字生成图片的网站。            |
 | [TripoSR](https://huggingface.co/spaces/stabilityai/TripoSR) | 图片生成3D模型。                    |
+| [可灵AI](https://klingai.kuaishou.com/)                        | 文字生成视频，文字生成图片的网站。            |
 
 ## 强大的rust
 https://www.egui.rs/   
