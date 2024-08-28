@@ -6,7 +6,7 @@ export function getGithubAccessToken({ code, }) {
   const data = {
     code,
   }
-  return fetch('/githubAccessToken', {
+  return fetch('https://ucalendar.cn/githubAccessToken', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
