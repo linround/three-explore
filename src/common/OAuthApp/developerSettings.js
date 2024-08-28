@@ -6,7 +6,7 @@ export function getGithubAccessToken({ code, }) {
   const data = {
     code,
   }
-  return fetch('http://192.168.0.100:8888/githubAccessToken', {
+  return fetch('/githubAccessToken', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
