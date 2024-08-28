@@ -1,6 +1,8 @@
 # 3D Explore
 Explore th 3D world
 
+- node v18.17.1
+- npm v8.1.3
 
 https://www.shadertoy.com/user/linround  
 https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J 
@@ -25,6 +27,7 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - [d3-数据可视化简介](https://observablehq.com/tutorials)
 - [blender软件建模](https://www.youtube.com/playlist?list=PLjEaoINr3zgFX8ZsChQVQsuDSjEqdWMAD)
 ## 关于建模的一些库
+
 - [更现代的3D建模工具：3d-scanner](https://3dlabstore.com.hk/3d-scanner)
 - [meshlab](https://www.meshlab.net/#description)
 - [mixamo](https://www.mixamo.com/#/)
