@@ -1,6 +1,4 @@
-import {
-  clientID, getGithubAccessToken, getGithubUser
-} from './developerSettings.js'
+import { getGithubAccessToken, getGithubUser } from './developerSettings.js'
 import styles from './GithubAuth.module.less'
 import { parseLocation, SUCCESS_CODE } from '../utils.js'
 import { useBearStore } from '../../store/index.js'
