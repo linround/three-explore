@@ -44,6 +44,14 @@ https://developer.mozilla.org/zh-CN/docs/WebAssembly/Rust_to_Wasm
 - NeRF：无人机+LUMA AI
 - 基于midjounity服务的图片工具
 
+# 节点引擎
+
+| 名称                                             | 描述                                                                          |
+|------------------------------------------------|-----------------------------------------------------------------------------|
+| [nge](https://nge.babylonjs.com/)              | 基于babylonjs,暂未找到开源。                                                         |
+| [threejs节点引擎](https://threejs.org/playground/) | 基于threejs,官方的[开源示例](https://github.com/mrdoob/three.js/tree/dev/playground) |
+
+
 ## 相关项目案例
 - https://github.com/fengtianxi001/MF-TurbineMonitor
 - https://github.com/alwxkxk/iot-visualization-examples
