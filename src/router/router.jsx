@@ -21,6 +21,7 @@ import { GeometryConvex } from '../view/geometryConvex/GeometryConvex.jsx'
 import { BrightnessAndContrast } from '../view/BrightnessAndContrast/BrightnessAndContrast.jsx'
 import { HueSaturation } from '../view/HueSaturation/HueSaturation.jsx'
 import { Curves } from '../view/curves/Curves.jsx'
+import {CustomHook} from '../view/customHook/customHook.jsx'
 
 
 export const router = createBrowserRouter([
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Menus />,
+      },
+      {
+        path: 'CustomHook',
+        element: <CustomHook />,
       },
       {
         path: 'HueSaturation',
