@@ -7,8 +7,6 @@ Explore th 3D world
 https://www.shadertoy.com/user/linround  
 https://docs.qq.com/aio/DWVRkZ1RUWHRsdU1J 
 
-## 图片创作
-![img_3.png](img_3.png)
 
 | 名称                                                           | 描述                           |
 |--------------------------------------------------------------|------------------------------|
